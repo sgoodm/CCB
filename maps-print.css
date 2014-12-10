@@ -1,0 +1,37 @@
+img {
+  border: none;
+}
+#map {
+  width: 8.5in;
+  height: 9.5in;
+}
+#web-header {
+  display: none;
+}
+#print-header {
+  width: 8.5in;
+  height: 1.5in;
+  border: 1px solid #000;
+}
+#print-identity {
+  float: left;
+  width: 0.927in;
+  height: 1.5in;
+}
+#print-notice {
+  margin-top: 0.25in;
+  margin-left: 1.3in;
+  width: 6.8in;
+  height: 1.45in;
+  font-family: Tahoma, Helvetica, Arial, sans-serif;
+  font-size: 12pt;
+}
+#toolbox {
+  display: none;
+}
+.gmnoprint{
+  display:none;
+}
+div.cartodb-popup-tip-container {
+  visibility: hidden !important;
+}
