@@ -32,6 +32,8 @@ img {
 .gmnoprint{
   display:none;
 }
+
+/*.leaflet-control-container,*/
 div.cartodb-popup-tip-container {
   visibility: hidden !important;
 }

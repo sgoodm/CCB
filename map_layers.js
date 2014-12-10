@@ -2,7 +2,7 @@
 
   // init
   var active_layers, afterPrint, beforePrint, close_toolbox, control, do_open_hashtag, init_map, layer_colors, map, mediaQueryList, open_hashtag, open_toolbox, refresh_layers, sql, toggle_filter, toggle_layer;
-
+  var drawnItems
   map = void 0;
 
   active_layers = {};
@@ -35,6 +35,7 @@
     var overlayMaps = {}
 
     map = new L.map('map', {
+      measureControl: true,
       center: [37.27, -76.70],
       zoom: 8,
       layers: [OpenStreetMap]
@@ -45,6 +46,18 @@
 
     map.on('baselayerchange',function(e){
       map._layers[_.keys(map._layers)[0]].bringToBack()
+    });
+
+
+    drawnItems = L.featureGroup().addTo(map);
+
+    map.addControl(new L.Control.Draw({
+      edit: { featureGroup: drawnItems }
+    }));
+
+    map.on('draw:created', function(event) {
+      var layer = event.layer;
+      drawnItems.addLayer(layer);
     });
 
   };
@@ -109,11 +122,13 @@
     });
   }
 
-
   // filter layer using toolbox (sub list) as selector
   toggle_filter = function (f) {
     var filter, key, sublayer, t, tn;
+
+    $(".cartodb-tooltip").hide()
     $(".cartodb-infowindow").hide()
+    
     $(".filter_sign").removeClass("active_layer_sign");
     $(f).find(".filter_sign").addClass("active_layer_sign");
     t = f.parent().find('.layer_toggle');
@@ -155,6 +170,7 @@
     });
 
     // popup cleanup
+    $(".cartodb-tooltip").hide()
     $(".cartodb-infowindow").hide()
 
     // TEMP legend cleanup
@@ -226,6 +242,7 @@
       })
       
   };
+
 
   // on document ready
   $(function() {
@@ -386,7 +403,9 @@
       $("#search_long").val("");
       $("#search_lat").val("");
       map.setView([37.27, -76.70], 8);
-      map.removeLayer(window.marker)
+      if (window.marker !== void 0) {
+        map.removeLayer(window.marker)
+      }
       return window.marker = void 0;
     });
 
@@ -415,5 +434,6 @@
   }
 
   window.onafterprint = afterPrint;
+
 
 }).call(this);

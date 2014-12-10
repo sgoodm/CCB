@@ -3,27 +3,19 @@
   <head>
     <meta charset="UTF-8">
     <title>Mapping Portal - The Center for Conservation Biology</title>
+    <link rel="icon" type="image/png" href="http://www.ccbbirds.org/wp-content/uploads/2012/10/favicon.png">
+
     <link href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" rel="stylesheet" />
     <link href="maps-style.css?nocache" media="screen, projection" rel="stylesheet" type="text/css" />
     <link href="maps-print.css?nocache" media="print" rel="stylesheet" type="text/css" />
-    <link rel="icon" type="image/png" href="http://www.ccbbirds.org/wp-content/uploads/2012/10/favicon.png">
+
+    <link rel="stylesheet" href="/aiddata/libs/leaflet.measure/leaflet.measure.css" />
+    <link rel="stylesheet" href="/aiddata/libs/Leaflet.draw-master/dist/leaflet.draw.css" />
+
     <!--[if lte IE 8]><link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.ie.css" /><![endif]-->
    
     <!--<link rel='stylesheet' href='https://api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.css'/>-->
 
-    <!--<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.js'></script>-->
-
-    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-
-    <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
-    <script src="http://codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
-
-    <script src="/aiddata/libs/leaflet.spin.js"></script>
-    <script src="/aiddata/libs/spin.min.js"></script>
-    
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
-
-    <script src="map_layers.js"></script>
   </head>
 
   <body>
@@ -83,6 +75,7 @@
       <div class="body"></div>
     </div>
 
+
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-35437390-1']);
@@ -94,6 +87,50 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
     </script>
+
+
+    <!--<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.js'></script>-->
+
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+    <script src="http://codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
+
+    <script src="/aiddata/libs/leaflet.spin.js"></script>
+    <script src="/aiddata/libs/spin.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+
+    <script src="map_layers.js"></script>
+
+    <script src="/aiddata/libs/leaflet.measure/leaflet.measure.js"></script>
+
+
+    <script src="/aiddata/libs/Leaflet.draw-master/src/Leaflet.draw.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/Toolbar.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/Tooltip.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/ext/GeometryUtil.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/ext/LatLngUtil.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/ext/LineUtil.Intersect.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/ext/Polygon.Intersect.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/ext/Polyline.Intersect.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/draw/DrawToolbar.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/draw/handler/Draw.Feature.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/draw/handler/Draw.SimpleShape.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/draw/handler/Draw.Polyline.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/draw/handler/Draw.Circle.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/draw/handler/Draw.Marker.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/draw/handler/Draw.Polygon.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/draw/handler/Draw.Rectangle.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/edit/EditToolbar.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/edit/handler/EditToolbar.Edit.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/edit/handler/EditToolbar.Delete.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/Control.Draw.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/edit/handler/Edit.Poly.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/edit/handler/Edit.SimpleShape.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/edit/handler/Edit.Circle.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/edit/handler/Edit.Rectangle.js"></script>
+    <script src="/aiddata/libs/Leaflet.draw-master/src/edit/handler/Edit.Marker.js"></script>
 
   </body>
 </html>
