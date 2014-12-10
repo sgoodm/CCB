@@ -56,7 +56,7 @@
 			        "description":"A systematic aerial and ground survey of colonial waterbirds in coastal Virginia during the 2013 breeding season. Nearly 800 surveys were conducted of 496 colonies and 24 species.",
 					"link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/va-colonial-waterbird-survey/2013-virginia-colonial-waterbird-survey/",
 					"filters":{
-			         	"Black Skimmer":{
+						"Black Skimmer":{
 			           		"sql":"common_nam=&#39;Black Skimmer&#39;",
 			            	"title":"Black Skimmer"
 			            },
@@ -165,7 +165,7 @@
 		            "key_alt":"bb270912-7e08-11e3-9ddf-7789a429ada9",
 		            "description":"A systematic aerial and ground survey of colonial waterbirds in coastal Virginia during the 2008 breeding season. More than 800 surveys were conducted of 446 colonies and 24 species.",
 		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/va-colonial-waterbird-survey/",
-		            "filters":{         
+		            "filters":{ 
 		            	"Black Skimmer":{ 	
 		            		"sql":"common_nam=&#39;Black Skimmer&#39;",
 			              	"title":"Black Skimmer"
