@@ -228,19 +228,18 @@
   };
 
   function readJSON(file, callback) {
-      $.ajax({
-        type: "GET",
+    $.ajax({
+      type: "GET",
       dataType: "json",
       url: file,
       async: false,
-        success: function (request) {
-          callback(request, 0)
-        },    
-        error: function (request, status, error) {
-            callback(null, {request, status, error});
-        }
-      })
-      
+      success: function (request) {
+        callback(request, "good", 0)
+      },    
+      error: function (request, status, error) {
+        callback(request, status, error);
+      }
+    }) 
   };
 
 
@@ -248,10 +247,11 @@
   $(function() {
 
     // build toolbox html
-    readJSON("toolbox.json", function (json, error){
-
+    readJSON("toolbox.json", function (request, status, error){
+      var json = request
       if (error) {
-        console.log(error.error)
+        console.log(status)
+        console.log(error)
         $('#toolbox .body').append("Error Reading Data")
         return 1
       }
