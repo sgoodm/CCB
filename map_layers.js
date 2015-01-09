@@ -19,36 +19,36 @@
     var OpenStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { 
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'//,
       // zIndex: 0
-    })
+    });
     
     var MapQuestOpen_Aerial = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
       attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
       subdomains: '1234'//,
       // zIndex: 0
-    })
+    });
 
     var baseMaps = {
       "OpenStreetMap":OpenStreetMap,
       "MapQuestOpen_Aerial":MapQuestOpen_Aerial
-    }
+    };
 
-    var overlayMaps = {}
+    var overlayMaps = {};
 
     map = new L.map('map', {
-      measureControl: true,
+      measureControl: true, // measure distance tool
       center: [37.27, -76.70],
       zoom: 8,
       layers: [OpenStreetMap]
-    })
-
-    control = L.control.layers(baseMaps, overlayMaps)
-    control.addTo(map)
-
-    map.on('baselayerchange',function(e){
-      map._layers[_.keys(map._layers)[0]].bringToBack()
     });
 
+    control = L.control.layers(baseMaps, overlayMaps);
+    control.addTo(map);
 
+    map.on('baselayerchange',function(e){
+      map._layers[_.keys(map._layers)[0]].bringToBack();
+    });
+
+    // handle map drawing tools
     drawnItems = L.featureGroup().addTo(map);
 
     map.addControl(new L.Control.Draw({
@@ -60,7 +60,16 @@
       drawnItems.addLayer(layer);
     });
 
+    var legend_button = L.easyButton('fa-compass', 
+      function (){
+        map.locate({setView: true});
+      },
+     'Minimize the legend',
+     map
+    )
+
   };
+
 
   // refresh map by searching toolbox for loaded layer
   refresh_layers = function () {
@@ -191,6 +200,9 @@
         console.log("layerUrl")
         active_layers[t.data("key")] = layer;
         addCursorInteraction(layer);
+        $(".cartodb-legend-stack").each(function(){
+          $(this).append("<span id='legend_min'>Test</span>");
+        });
         t.parent().find(".layer_sign").addClass("active_layer_sign");
         map.spin(false)
       });
@@ -346,12 +358,12 @@
     var geocode_result;
 
     geocode_result = function (position) {
-      var position = [position.k, position.B]
+      var position = _.values(position);
 
       if (window.marker === void 0) {
 
         window.marker = new L.marker(position, {draggable:'true'});
-        
+
         window.marker.on('dragend', function(event){
           $("#search_lat").val(window.marker.getLatLng().lat)
           $("#search_long").val(window.marker.getLatLng().lng)
@@ -380,6 +392,7 @@
           console.log('got result');
           $("#search_lat").val(results[0].geometry.location.lat());
           $("#search_long").val(results[0].geometry.location.lng());
+          console.log('sending result');
           geocode_result(results[0].geometry.location);
           console.log('done result');
         }
@@ -411,6 +424,8 @@
     // check hashtag on page load or on change
     open_hashtag();
     $(window).on('hashchange', open_hashtag);
+
+    $("#search-clear").click();
   });
 
 

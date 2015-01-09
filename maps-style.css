@@ -37,10 +37,18 @@ img {
   left: 250px;
   right: 0px;
 }
-
   h4{
     padding: 0;
     margin: 0;
+  }
+  .legend_min{
+    /*float:left;*/
+    width:25px;
+    height: 25px;
+    position:relative;
+    bottom: 10px;
+    right: 10px;
+    float:right;
   }
 #identity {
   position: absolute;
