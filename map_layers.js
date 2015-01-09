@@ -62,9 +62,11 @@
 
     var legend_button = L.easyButton('fa-compass', 
       function (){
-        map.locate({setView: true});
+        $('.cartodb-legend-stack').each(function(){
+          $(this).toggle();
+        })
       },
-     'Minimize the legend',
+     'Toggle the legend display',
      map
     )
 
@@ -200,9 +202,6 @@
         console.log("layerUrl")
         active_layers[t.data("key")] = layer;
         addCursorInteraction(layer);
-        $(".cartodb-legend-stack").each(function(){
-          $(this).append("<span id='legend_min'>Test</span>");
-        });
         t.parent().find(".layer_sign").addClass("active_layer_sign");
         map.spin(false)
       });
