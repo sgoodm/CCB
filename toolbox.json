@@ -42,6 +42,30 @@
 		           	"key_alt":"daa244a2-3e8b-11e4-b57b-0e73339ffa50",
 		            "description":"The 330' \"primary buffer\" is where human activities are considered to be detrimental (e.g. residential, commercial, and industrial development, logging, use of toxic chemicals). The 660' \"secondary buffer\" is where human activities are considered to impact the integrity of the \"primary buffer\" (e.g. construction of high-density developments, multi-story buildings, new roadways).",
 		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/national-eagle-roost-registry/"
+				},
+				"Eagle Roosts":{
+		           	"title":"Eagle Roosts",
+		           	"hashtag":"",
+		           	"key":"fb1c53ee-9a93-11e4-8a96-0e0c41326911",
+		            "description":"Most recent data CCB has on bald eagle roost locations throughout North America. Data is compiled from tracking studies and direct observation. The 330' \"primary buffer\" is where human activities are considered to be detrimental (e.g. residential, commercial, and industrial development, logging, use of toxic chemicals). The 660' \"secondary buffer\" is where human activities are considered to impact the integrity of the \"primary buffer\" (e.g. construction of high-density developments, multi-story buildings, new roadways).",
+		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/national-eagle-roost-registry/",
+		            "sublayers":{
+		            	"Polygons":{
+		            		"title":"Polygons",
+		            		"key":"8ae955ca-7f1a-11e4-8aa7-0e018d66dc29"
+
+		            	},
+		            	"Buffers":{
+		            		"title":"Buffers",
+				           	"key":"b2428ccc-7f1a-11e4-b220-0e853d047bba"
+		            	},
+
+	            		"Centroids":{
+	            			"title":"Centroids",
+				           	"key":"7c5cbf42-7f1a-11e4-9dfa-0e9d821ea90d"
+		            	}
+
+		            }
 				}
 	 		}
 	 	},

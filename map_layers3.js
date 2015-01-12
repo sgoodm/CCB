@@ -18,37 +18,56 @@
   // initialize map
   init_map = function (id) {
 
-    var OpenStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { 
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'//,
-      // zIndex: 0
-    });
+    cartodb.createVis('map', "http://sgoodm.cartodb.com/api/v2/viz/fb1c53ee-9a93-11e4-8a96-0e0c41326911/viz.json", {     
+        tiles_loader: true,
+        center_lat: 37.27,
+        center_lon: -76.70,
+        zoom: 8
+    }).done(function(vis,layers){
+
+      map = vis.getNativeMap();
+      console.log(vis.getLayers()[1].getSubLayer(0));
+        vis.getLayers()[1].getSubLayer(0).hide()
+        vis.getLayers()[1].getSubLayer(1).hide()
+        // vis.getLayers()[1].getSubLayer(2).hide()
+        vis.getLayers()[1].getSubLayer(3).hide()
+      // console.log(layers);
+
+
+
+// -----------------------------------------------
+
+    // var OpenStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { 
+    //   attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'//,
+    //   // zIndex: 0
+    // });
     
-    var MapQuestOpen_Aerial = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
-      attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
-      subdomains: '1234'//,
-      // zIndex: 0
-    });
+    // var MapQuestOpen_Aerial = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
+    //   attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
+    //   subdomains: '1234'//,
+    //   // zIndex: 0
+    // });
 
-    var baseMaps = {
-      "OpenStreetMap":OpenStreetMap,
-      "MapQuestOpen_Aerial":MapQuestOpen_Aerial
-    };
+    // var baseMaps = {
+    //   "OpenStreetMap":OpenStreetMap,
+    //   "MapQuestOpen_Aerial":MapQuestOpen_Aerial
+    // };
 
-    var overlayMaps = {};
+    // var overlayMaps = {};
 
-    map = new L.map('map', {
-      measureControl: true, // measure distance tool
-      center: [37.27, -76.70],
-      zoom: 8,
-      layers: [OpenStreetMap]
-    });
+    // map = new L.map('map', {
+    //   measureControl: true, // measure distance tool
+    //   center: [37.27, -76.70],
+    //   zoom: 8,
+    //   layers: [OpenStreetMap]
+    // });
 
-    control = L.control.layers(baseMaps, overlayMaps);
-    control.addTo(map);
+    // control = L.control.layers(baseMaps, overlayMaps);
+    // control.addTo(map);
 
-    map.on('baselayerchange',function(e){
-      map._layers[_.keys(map._layers)[0]].bringToBack();
-    });
+    // map.on('baselayerchange',function(e){
+    //   map._layers[_.keys(map._layers)[0]].bringToBack();
+    // });
 
     // handle map drawing tools
     drawnItems = L.featureGroup().addTo(map);
@@ -88,6 +107,10 @@
       'Generate url link to current map view',
       map
     )
+
+
+
+    })
 
   };
 
@@ -189,6 +212,7 @@
       layer = active_layers[$(this).data("key")];
       layer.hide();
       layer.remove();
+      // layer.clear();
       delete active_layers[$(this).data("key")];
       $(this).removeClass("active_layer");
       $(this).parent().find('.layer_description').slideUp();
@@ -470,7 +494,7 @@
     open_hashtag();
     $(window).on('hashchange', open_hashtag);
 
-    $("#search-clear").click();
+    // $("#search-clear").click();
   });
 
 

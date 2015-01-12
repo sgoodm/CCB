@@ -189,6 +189,7 @@
       layer = active_layers[$(this).data("key")];
       layer.hide();
       layer.remove();
+      // layer.clear();
       delete active_layers[$(this).data("key")];
       $(this).removeClass("active_layer");
       $(this).parent().find('.layer_description').slideUp();

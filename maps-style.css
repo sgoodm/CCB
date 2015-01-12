@@ -148,10 +148,13 @@ img {
   position: relative;
 }
 
-.filter_toggle {
+.filter_toggle, .sublayer_toggle {
   display: none;
   padding-top: 3px;
   margin-left: 17px;
+  color: #339;
+  cursor: pointer;
+  margin-left: 30px;
 }
 
 .layer_toggle {
@@ -160,11 +163,7 @@ img {
   margin-left: 15px;
 }
 
-.filter_toggle {
-  color: #339;
-  cursor: pointer;
-  margin-left: 30px;
-}
+
 
 .layer_sign, .filter_sign {
   position: absolute;
