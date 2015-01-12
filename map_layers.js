@@ -5,6 +5,8 @@
       layer_colors, map, mediaQueryList, open_hashtag, open_toolbox, refresh_layers, sql, toggle_filter, 
       toggle_layer, drawnItems;
 
+  var filter_list = [], filter_query;
+
   map = void 0;
 
   active_layers = {};
@@ -159,8 +161,8 @@
     $(".cartodb-tooltip").hide()
     $(".cartodb-infowindow").hide()
     
-    $(".filter_sign").removeClass("active_layer_sign");
-    $(f).find(".filter_sign").addClass("active_layer_sign");
+    // $(".filter_sign").removeClass("active_layer_sign");
+    // $(f).find(".filter_sign").addClass("active_layer_sign");
     t = f.parent().find('.layer_toggle');
     filter = "common_nam='" + $(f).data('sql') + "'";
     key = $(t).data('key');
@@ -366,6 +368,22 @@
 
     // sub layer filter click
     $(".filter_toggle").click(function() {
+      $(this).find(".filter_sign").toggleClass("active_layer_sign");
+      if ( $(this).find(".filter_sign").hasClass("active_layer_sign") ) {
+        // add to filter list
+        filter_list.push($(this).data('sql'))
+      } else {
+        // remove from filter list
+        var filter_index = filter_list.indexOf( $(this).data('sql') );
+        if (filter_index > -1) {
+          filter_list.splice(filter_index, 1);
+        }
+      }
+
+      // call filter query
+
+      // CLEAR FILTER LIST WHEN NEW LAYER IS SELECTED
+
       toggle_filter($(this));
     });
 
