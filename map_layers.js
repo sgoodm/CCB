@@ -1,8 +1,10 @@
 (function() {
 
   // init
-  var active_layers, afterPrint, beforePrint, close_toolbox, control, do_open_hashtag, init_map, layer_colors, map, mediaQueryList, open_hashtag, open_toolbox, refresh_layers, sql, toggle_filter, toggle_layer;
-  var drawnItems
+  var active_layers, afterPrint, beforePrint, close_toolbox, control, do_open_hashtag, init_map, 
+      layer_colors, map, mediaQueryList, open_hashtag, open_toolbox, refresh_layers, sql, toggle_filter, 
+      toggle_layer, drawnItems;
+
   map = void 0;
 
   active_layers = {};
@@ -60,14 +62,31 @@
       drawnItems.addLayer(layer);
     });
 
-    var legend_button = L.easyButton('fa-compass', 
+    var legend_button = L.easyButton('fa-exchange', 
       function (){
         $('.cartodb-legend-stack').each(function(){
           $(this).toggle();
         })
       },
-     'Toggle the legend display',
-     map
+      'Toggle the legend display',
+      map
+    )
+
+    var url_button = L.easyButton('fa-external-link', 
+      function (){
+        var url_search = {
+                            layers:["eagles","bird's (stuff)"],
+                            filters:[],
+                            zoom:map.getZoom(), 
+                            lat:map.getCenter().lat, 
+                            lng:map.getCenter().lng
+                          }
+        var url_new = URI(document.URL).addSearch(url_search)
+        window.location.hash = url_new.query()
+
+      },
+      'Generate url link to current map view',
+      map
     )
 
   };
@@ -143,7 +162,7 @@
     $(".filter_sign").removeClass("active_layer_sign");
     $(f).find(".filter_sign").addClass("active_layer_sign");
     t = f.parent().find('.layer_toggle');
-    filter = $(f).data('sql');
+    filter = "common_nam='" + $(f).data('sql') + "'";
     key = $(t).data('key');
     sublayer = active_layers[key].getSubLayer(0);
     tn = sublayer.get('layer_name');
@@ -203,6 +222,9 @@
         active_layers[t.data("key")] = layer;
         addCursorInteraction(layer);
         t.parent().find(".layer_sign").addClass("active_layer_sign");
+        // if ( t.data("hashtag") ) {
+        //   window.location.hash = t.data("hashtag");
+        // }
         map.spin(false)
       });
 
@@ -223,13 +245,30 @@
 
   // attempt toggle_layer call with hashtag as id
   do_open_hashtag = function () {
-    var h;
-    h = window.location.hash.substring(1);
-    $(".layer_toggle").each(function() {
-      if ($(this).data('hashtag') === h) {
-        toggle_layer($(this), true);
-      }
-    });
+
+    var url = document.URL.replace("#", "?")
+
+    var url_query = URI(url).query(true)
+
+    console.log(url_query)
+
+    
+    if (url_query.layers && url_query.zoom && url_query.lat && url_query.lng){
+      console.log("new #")
+      map.setView([url_query.lat, url_query.lng], url_query.zoom);
+    } else {
+      console.log("old #")
+      // old hash filter
+      var h;
+      h = window.location.hash.substring(1);
+      console.log(window.location.hash +" "+ h)
+      $(".layer_toggle").each(function() {
+        if ($(this).data('hashtag') === h) {
+          toggle_layer($(this), true);
+        }
+      });
+
+    }
   };
 
   // check hashtag (called on page load or on hashtag change)
