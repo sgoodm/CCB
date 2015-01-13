@@ -141,14 +141,14 @@ img {
   margin-left: 10px;
 }
 
-#toolbox .layer {
+#toolbox .layer{
   font-size: small;
   padding-top: 2px;
   padding-bottom: 2px;
   position: relative;
 }
 
-.filter_toggle, .sublayer_toggle {
+.filter_toggle {
   display: none;
   padding-top: 3px;
   margin-left: 17px;
@@ -165,13 +165,13 @@ img {
 
 
 
-.layer_sign, .filter_sign, .sublayer_sign {
+.layer_sign, .filter_sign {
   position: absolute;
   color: #777;
   font-weight: bold;
 }
 
-.filter_toggle .active_layer_sign, .sublayer_toggle .active_layer_sign {
+.filter_toggle .active_layer_sign{
   margin-left: -15px;
 }
 

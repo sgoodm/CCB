@@ -1,12 +1,11 @@
 {
 	"categories":{
-	 	"Bald Eagle Nests":{
-	 		"title":"Bald Eagle Nests",
+	 	"Bald Eagle":{
+	 		"title":"Bald Eagle",
 	 		"layers":{
 	 			"Eagle Nests":{
-	 				"title":"Nests",
-	 				"group":"Bald Eagle Nests",
-	 				"type":"sublayer",
+	 				"title":"Eagle Nests",
+	 				"type":"layer",
 	 				"hashtag":"eagles",
 			 		"key":"475234ea-7f19-11e4-bfd5-0e9d821ea90d",
 			 		"key_alt":"d257b844-b697-11e3-b052-0edbca4b5057",
@@ -14,66 +13,80 @@
 			 		"link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/virginia-eagles/nest-locator/"
 	 			},
 			    "Eagle Nest Buffers":{    
-		           	"title":"Nest Buffers 330'/660'",
-		           	"group":"Bald Eagle Nests",
-		           	"type":"sublayer",
+		           	"title":"Eagle Nest Buffers 330'/660'",
+		           	"type":"layer",
 		           	"hashtag":"",
 		           	"key":"c73dde6a-7f1a-11e4-84ac-0e018d66dc29",
 		           	"key_alt":"55671856-b698-11e3-bc20-0e73339ffa50",
 		            "description":"The 330' \"primary buffer\" is where human activities are considered to be detrimental to breeding pairs (e.g. residential, commercial, and industrial development, logging, use of toxic chemicals). The 660' \"secondary buffer\" is where human activities are considered to impact the integrity of the \"primary buffer\" (e.g. construction of high-density developments, multi-story buildings, new roadways).",
 		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/virginia-eagles/nest-locator/"
-		        }
-	 		}
-	 	},
-		"Bald Eagle Roosts":{
-	 		"title":"Bald Eagle Roosts",
-	 		"layers":{
+		        },
 		        "Eagle Roost Centroids":{
-		            "title":"Roost Centroids",       
-		            "group":"Bald Eagle Roosts",
-		            "type":"sublayer",
+		            "title":"Eagle Roost Centroids",
+		            "type":"layer",
 		           	"hashtag":"eagleroosts",
 		           	"key":"7c5cbf42-7f1a-11e4-9dfa-0e9d821ea90d",
+		           	"key_alt":"d180c372-3e8a-11e4-b57b-0e73339ffa50",
 		            "description":"These points represent the roost polygon centroids.",
 		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/national-eagle-roost-registry/"
 				},
 				"Eagle Roost Polygons":{
-					"title":"Roost Polygons",		
-					"group":"Bald Eagle Roosts",
-					"type":"sublayer",
+					"title":"Eagle Roost Polygons",
+					"type":"layer",
 					"hashtag":"",
 		           	"key":"8ae955ca-7f1a-11e4-8aa7-0e018d66dc29" ,
+		           	"key_alt":"51313b60-3e8b-11e4-a44c-0e10bcd91c2b",
 		            "description":"Most recent data CCB has on bald eagle roost locations throughout North America. Data is compiled from tracking studies and direct observation.",
 		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/national-eagle-roost-registry/"
 				},	 
-		        "Eagle Roost Primary Buffers":{
-		           	"title":"Roost Primary Buffers",          
-		           	"group":"Bald Eagle Roosts",
-		           	"type":"sublayer",
+		        "Eagle Roost Buffers":{
+		           	"title":"Eagle Roost Buffers 330'/660'",
+		           	"type":"layer",
 		           	"hashtag":"",
-		           	"key":"32c1fefe-9b50-11e4-b578-0e9d821ea90d",
-		            "description":"The 330' \"primary buffer\" is where human activities are considered to be detrimental (e.g. residential, commercial, and industrial development, logging, use of toxic chemicals).",
+		           	"key":"b2428ccc-7f1a-11e4-b220-0e853d047bba",
+		           	"key_alt":"daa244a2-3e8b-11e4-b57b-0e73339ffa50",
+		            "description":"The 330' \"primary buffer\" is where human activities are considered to be detrimental (e.g. residential, commercial, and industrial development, logging, use of toxic chemicals). The 660' \"secondary buffer\" is where human activities are considered to impact the integrity of the \"primary buffer\" (e.g. construction of high-density developments, multi-story buildings, new roadways).",
 		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/national-eagle-roost-registry/"
 				},
-		        "Eagle Roost Secondary Buffers":{
-		           	"title":"Roost Secondary Buffers",
-		           	"group":"Bald Eagle Roosts",
+				"Eagle Roosts":{
+		           	"title":"Eagle Roosts",
 		           	"type":"sublayer",
 		           	"hashtag":"",
-		           	"key":"cbb63094-9b50-11e4-9bcf-0e0c41326911",
-		            "description":"The 660' \"secondary buffer\" is where human activities are considered to impact the integrity of the \"primary buffer\" (e.g. construction of high-density developments, multi-story buildings, new roadways).",
-		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/national-eagle-roost-registry/"
+		           	"keyx":"fb1c53ee-9a93-11e4-8a96-0e0c41326911",
+		            "description":"Most recent data CCB has on bald eagle roost locations throughout North America. Data is compiled from tracking studies and direct observation. The 330' \"primary buffer\" is where human activities are considered to be detrimental (e.g. residential, commercial, and industrial development, logging, use of toxic chemicals). The 660' \"secondary buffer\" is where human activities are considered to impact the integrity of the \"primary buffer\" (e.g. construction of high-density developments, multi-story buildings, new roadways).",
+		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/national-eagle-roost-registry/",
+		            "sublayers":{
+		            	"Polygons":{
+		            		"title":"Polygons",
+		            		"key":"8ae955ca-7f1a-11e4-8aa7-0e018d66dc29",
+		            		"state":"inactive"
+		            	},
+		            	"Primary Buffers":{
+		            		"title":"Primary Buffers",
+				           	"key":"32c1fefe-9b50-11e4-b578-0e9d821ea90d",
+		            		"state":"inactive"
+		            	},
+		            	"Secondary Buffers":{
+		            		"title":"Secondary Buffers",
+				           	"key":"cbb63094-9b50-11e4-9bcf-0e0c41326911",
+		            		"state":"inactive"
+		            	},
+	            		"Centroids":{
+	            			"title":"Centroids",
+				           	"key":"7c5cbf42-7f1a-11e4-9dfa-0e9d821ea90d",
+		            		"state":"active"
+		            	}
+
+		            }
 				}
 	 		}
 	 	},
 	    "Waterbirds":{
 	    	"title":"Waterbirds",
-	    	"type":"layer",
+	    	"type":"filter",
 	    	"layers":{
 				"Colonial Waterbirds 2013":{
 					"title":"Colonial Waterbirds 2013",
-		            "group":"layer",
-					"type":"layer",
 					"hashtag":"waterbirds2013",
 					"key":"fa4f7878-7f19-11e4-a731-0e4fddd5de28",
 					"key_alt":"fb64c9d2-c57b-11e3-b67f-0e10bcd91c2b",
@@ -176,7 +189,6 @@
 			    },
 			    "Chesapeake Bay Herons 2013":{
 		            "title":"Chesapeake Bay Herons 2013",
-		            "group":"layer",
 		            "type":"layer",
 		            "hashtag":"herons2013",
 		            "key":"bc962aea-7f19-11e4-a731-0e4fddd5de28",
@@ -186,8 +198,7 @@
 		        },
 		        "Colonial Waterbirds 2008":{
 		            "title":"Colonial Waterbirds 2008",
-		            "group":"layer",
-		            "type":"layer",
+		            "type":"filter",
 		            "hashtag":"waterbirds2008", 
 		            "key":"0638a146-7f1a-11e4-9584-0e9d821ea90d",
 		            "key_alt":"bb270912-7e08-11e3-9ddf-7789a429ada9",
@@ -294,8 +305,7 @@
 			    },
 			    "Colonial Waterbirds 2003":{    
 			        "title":"Colonial Waterbirds 2003",
-			        "group":"layer",
-			        "type":"layer",
+			        "type":"filter",
 		            "hashtag":"waterbirds2003" ,
 		            "key":"117c7780-7f1a-11e4-8bbb-0e9d821ea90d",
 		            "key_alt":"851a1a18-7dfd-11e3-92b8-1fcb8db86b9b",
@@ -407,7 +417,6 @@
 	  		"layers":{
 		  		"OspreyWatch Nests":{
 		 			"title":"OspreyWatch Nests",
-		 			"group":"layer",
 		 			"type":"layer",
 		 			"hashtag":"",
 		  	        "key":"5402c244-7f1a-11e4-a6e3-0e9d821ea90d",
@@ -417,7 +426,6 @@
 		        },
 		        "Chesapeake Bay Osprey Nests":{
 		            "title":"Chesapeake Bay Osprey Nests 1995-1996",
-		            "group":"layer",
 		            "type":"layer",
 		            "hashtag":"",
 		            "key":"6833d6d6-7f1a-11e4-a841-0e853d047bba", 
@@ -432,7 +440,6 @@
 	  		"layers":{
 		    	"Nightjar":{
 			    	"title":"Nightjar Survey Network Routes",
-			    	"group":"layer",
 			    	"type":"layer",
 			    	"hashtag":"",
 			    	"key":"306c03c2-7f1a-11e4-a841-0e853d047bba",
