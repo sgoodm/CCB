@@ -165,13 +165,13 @@ img {
 
 
 
-.layer_sign, .filter_sign {
+.layer_sign, .filter_sign, .sublayer_sign {
   position: absolute;
   color: #777;
   font-weight: bold;
 }
 
-.filter_toggle .active_layer_sign {
+.filter_toggle .active_layer_sign, .sublayer_toggle .active_layer_sign {
   margin-left: -15px;
 }
 
