@@ -156,25 +156,46 @@
 
   // filter layer using toolbox (sub list) as selector
   toggle_filter = function (f) {
+
     var filter, key, sublayer, t, tn;
 
     $(".cartodb-tooltip").hide()
     $(".cartodb-infowindow").hide()
-    
-    // $(".filter_sign").removeClass("active_layer_sign");
-    // $(f).find(".filter_sign").addClass("active_layer_sign");
+    $(".cartodb-popup").remove()
+
     t = f.parent().find('.layer_toggle');
-    filter = "common_nam='" + $(f).data('sql') + "'";
     key = $(t).data('key');
     sublayer = active_layers[key].getSubLayer(0);
     tn = sublayer.get('layer_name');
-    sql = "SELECT * from " + tn + " where " + filter;
-    console.log(sql)
+
+    filter = ""
+    
+    if (filter_list.length == 0) {
+
+      sql = "SELECT * from " + tn
+
+    } else {
+
+      for (var i=0, ix=filter_list.length; i<ix; i++) {
+
+        filter += ( i == 0 ? "" : " OR ")
+        filter += "common_nam='" + filter_list[i] + "'";
+
+      }
+
+      sql = "SELECT * from " + tn + " where " + filter;
+
+    }
+
     sublayer.setSQL(sql);
+
   };
 
   // toggle map layer using toolbox as selector
   toggle_layer = function (t, force) {
+    
+    filter_list = []
+
     var layerUrl, needs_load;
     if (force == null) {
       force = false;
@@ -203,6 +224,8 @@
     // popup cleanup
     $(".cartodb-tooltip").hide()
     $(".cartodb-infowindow").hide()
+    $(".cartodb-popup").remove()
+
 
     // TEMP legend cleanup
     $('.cartodb-legend-stack').remove()
@@ -224,15 +247,11 @@
         active_layers[t.data("key")] = layer;
         addCursorInteraction(layer);
         t.parent().find(".layer_sign").addClass("active_layer_sign");
-        // if ( t.data("hashtag") ) {
-        //   window.location.hash = t.data("hashtag");
-        // }
+
         map.spin(false)
         
       });
 
-      // control.addOverlay(newLayer, t.html())
-      // map.addLayer(newLayer)
       newLayer.addTo(map)
       map._layers[_.keys(map._layers)[0]].bringToBack()
 
@@ -368,6 +387,7 @@
 
     // sub layer filter click
     $(".filter_toggle").click(function() {
+
       $(this).find(".filter_sign").toggleClass("active_layer_sign");
       if ( $(this).find(".filter_sign").hasClass("active_layer_sign") ) {
         // add to filter list
@@ -379,10 +399,6 @@
           filter_list.splice(filter_index, 1);
         }
       }
-
-      // call filter query
-
-      // CLEAR FILTER LIST WHEN NEW LAYER IS SELECTED
 
       toggle_filter($(this));
     });
