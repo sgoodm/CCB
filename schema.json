@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "/",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "categories": {
       "id": "categories",
@@ -9,6 +10,9 @@
       "items": {
         "id": "4",
         "type": "object",
+        "displayProperty": "title",
+        "additionalProperties": false,
+        "required": ["title","layers"],
         "properties": {
           "title": {
             "id": "title",
@@ -20,6 +24,9 @@
             "items": {
               "id": "0",
               "type": "object",
+              "displayProperty": "title",
+              "additionalProperties": false,
+              "required":["title", "group", "type", "key"],
               "properties": {
                 "title": {
                   "id": "title",
@@ -27,7 +34,7 @@
                 },
                 "group": {
                   "id": "group",
-                  "type": "string"
+                  "type": "string"                  
                 },
                 "type": {
                   "id": "type",
@@ -56,7 +63,25 @@
                 "filters": {
                   "id": "filters",
                   "type": "array",
-                  "items": {}
+                  "displayProperty": "title",
+                  "items": {
+            		  "id": "0",
+		              "type": "object",
+		              "displayProperty": "title",
+                  "additionalProperties": false,
+                  "required": ["title", "sql"],
+		              "properties": {
+		                "title": {
+		                  "id": "title",
+		                  "type": "string"
+		                },
+		                "sql": {
+		                  "id": "sql",
+		                  "type": "string"
+		                }
+		              }
+		            }
+
                 }
               }
             }
