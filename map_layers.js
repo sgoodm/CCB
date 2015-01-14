@@ -390,7 +390,7 @@
           html += '<div class="layer_toggle" data-hashtag="'+layer.hashtag+'" data-key="'+layer.key+'" data-group="'+layer.group+'" data-type="'+layer.type+'" data-title="'+layer.title+'">' + layer.title + '</div>';
           html += '<div class="layer_description">' + layer.description + '</div>';
           html += '<div class="layer_info"><a href="'+layer.link+'" target="_blank">More info</a></div>';
-          if (layer.filters) {
+          if (layer.filters && layer.filters.length > 0) {
             for (var k=0, kx=_.size(layer.filters); k<kx; k++) {
               var filter = layer.filters[_.keys(layer.filters)[k]];
               html += '<div class="filter_toggle" data-sql="'+filter.sql+'">' + filter.title +'</div>';

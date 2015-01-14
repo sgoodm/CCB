@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "/",
+  "type": "object",
+  "properties": {
+    "categories": {
+      "id": "categories",
+      "type": "array",
+      "items": {
+        "id": "4",
+        "type": "object",
+        "properties": {
+          "title": {
+            "id": "title",
+            "type": "string"
+          },
+          "layers": {
+            "id": "layers",
+            "type": "array",
+            "items": {
+              "id": "0",
+              "type": "object",
+              "properties": {
+                "title": {
+                  "id": "title",
+                  "type": "string"
+                },
+                "group": {
+                  "id": "group",
+                  "type": "string"
+                },
+                "type": {
+                  "id": "type",
+                  "type": "string"
+                },
+                "hashtag": {
+                  "id": "hashtag",
+                  "type": "string"
+                },
+                "key": {
+                  "id": "key",
+                  "type": "string"
+                },
+                "key_alt": {
+                  "id": "key_alt",
+                  "type": "string"
+                },
+                "description": {
+                  "id": "description",
+                  "type": "string"
+                },
+                "link": {
+                  "id": "link",
+                  "type": "string"
+                },
+                "filters": {
+                  "id": "filters",
+                  "type": "array",
+                  "items": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
