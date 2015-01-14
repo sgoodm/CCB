@@ -2,10 +2,21 @@
 	 
 	var json = {}, treema;
 
+	var message = {
+		"intro":"Welcome to the Mapping Portal Toolbox Editor",
+		"load":"JSON has been successfully loaded",
+		"load_error":"Error loading data or schema json file",
+		"submit":"JSON has been successfully updated",
+		"submit_error":"Error updating JSON"
+
+	}
+
+	$('#message').html(message.intro);
+
 
 	$(function() {
 
-		$.when( $.getJSON("toolbox.json"), $.getJSON("schema.json") ).done( function(data, schema){
+		$.when( $.getJSON("toolboxz.json"), $.getJSON("schema.json") ).done( function(data, schema){
 			
 			json.data = data[0]
 			json.schema = schema[0]
@@ -18,8 +29,10 @@
 				treema.build();
 				console.log(treema.data);
 				console.log("treema built");
+				$('#message').html(message.load);
 			} else {
 				console.log("error loading data or schema json file");
+				$('#message').html(message.load_error);
 			}
 		})
 
@@ -39,6 +52,24 @@
 		
 		// var confirm = confirm("Confirm update")
 		// console.log(confirm)
+
+		$.ajax ({
+      url: "edit.php",
+      data: {json: JSON.stringify(treema.data)},
+      dataType: "json",
+      type: "post",
+      async: false,
+      success: function (result) {
+		    console.log("done");
+				$('#message').html(message.submit);
+			},
+			error: function (result) {
+		    console.log("error");
+		    console.log(result);
+				$('#message').html(message.submit_error);				
+			}
+    })
+	
 
 	})
 
