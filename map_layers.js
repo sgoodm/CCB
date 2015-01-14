@@ -383,9 +383,11 @@
       var html = ''
       for (var i=0, ix=_.size(json.categories); i<ix; i++) {
         var cat = json.categories[_.keys(json.categories)[i]];
+        // CATEGORY + LAYER VALIDATION HERE -- CHECK FIRST LAYER
         html += '<div class="category">' + cat.title;
         for (var j=0, jx=_.size(cat.layers); j< jx; j++) {
           var layer = cat.layers[_.keys(cat.layers)[j]];
+          // LAYER SPECIFIC + FILTER VALIDATION HERE -- IF FILTERS CHECK FIRST FILTER
           html += '<div class="layer">';
           html += '<div class="layer_toggle" data-hashtag="'+layer.hashtag+'" data-key="'+layer.key+'" data-group="'+layer.group+'" data-type="'+layer.type+'" data-title="'+layer.title+'">' + layer.title + '</div>';
           html += '<div class="layer_description">' + layer.description + '</div>';
@@ -393,6 +395,7 @@
           if (layer.filters && layer.filters.length > 0) {
             for (var k=0, kx=_.size(layer.filters); k<kx; k++) {
               var filter = layer.filters[_.keys(layer.filters)[k]];
+              // FILTER SPECIFIC VALIDATION HERE
               html += '<div class="filter_toggle" data-sql="'+filter.sql+'">' + filter.title +'</div>';
             }
           }
