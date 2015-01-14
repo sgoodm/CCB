@@ -13,16 +13,24 @@
 			 		"description":"Most recent data CCB has on bald eagle nest locations in Virginia. Data is largely from two annual aerial flights conducted in winter and spring of all tributaries of the lower Chesapeake Bay and other prominent bodies of water. Reported ground survey data is also included.",
 			 		"link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/virginia-eagles/nest-locator/"
 	 			},
-			    "Eagle Nest Buffers":{    
-		           	"title":"Nest Buffers 330'/660'",
+			    "Eagle Nest Primary Buffers":{    
+		           	"title":"Nest Primary Buffers",
 		           	"group":"Bald Eagle Nests",
 		           	"type":"sublayer",
 		           	"hashtag":"",
-		           	"key":"c73dde6a-7f1a-11e4-84ac-0e018d66dc29",
-		           	"key_alt":"55671856-b698-11e3-bc20-0e73339ffa50",
-		            "description":"The 330' \"primary buffer\" is where human activities are considered to be detrimental to breeding pairs (e.g. residential, commercial, and industrial development, logging, use of toxic chemicals). The 660' \"secondary buffer\" is where human activities are considered to impact the integrity of the \"primary buffer\" (e.g. construction of high-density developments, multi-story buildings, new roadways).",
+		           	"key":"3f4a8ed4-9bff-11e4-96ba-0e9d821ea90d",
+		            "description":"The 330' \"primary buffer\" is where human activities are considered to be detrimental to breeding pairs (e.g. residential, commercial, and industrial development, logging, use of toxic chemicals).",
 		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/virginia-eagles/nest-locator/"
-		        }
+		        },
+			    "Eagle Nest Secondary Buffers":{    
+		           	"title":"Nest Secondary Buffers",
+		           	"group":"Bald Eagle Nests",
+		           	"type":"sublayer",
+		           	"hashtag":"",
+		           	"key":"f3614b2e-9bff-11e4-b17f-0e0c41326911",
+		            "description":"The 660' \"secondary buffer\" is where human activities are considered to impact the integrity of the \"primary buffer\" (e.g. construction of high-density developments, multi-story buildings, new roadways).",
+		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/virginia-eagles/nest-locator/"
+		        }		        
 	 		}
 	 	},
 		"Bald Eagle Roosts":{

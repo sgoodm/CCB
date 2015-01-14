@@ -1,34 +1,34 @@
 (function() {
 
   // init
-  var active_layers, afterPrint, beforePrint, close_toolbox, control, do_open_hashtag, init_map, 
-      layer_colors, map, mediaQueryList, open_hashtag, open_toolbox, refresh_layers, sql, toggle_filter, 
-      toggle_layer, drawnItems;
-
-  var active_hashtag, hash_change = 1, filter_list = [], group = {};
-
-  map = void 0;
+  var active_layers, afterPrint, beforePrint, close_toolbox, control, 
+      do_open_hashtag, drawnItems, filter_list, group, hash_change, 
+      init_map, layer_colors, layer_list, map, mediaQueryList, 
+      open_hashtag, open_toolbox, refresh_layers, sql, toggle_filter, 
+      toggle_layer;
 
   active_layers = {};
-
+  layer_list = [];
+  filter_list = [];
+  group = {};
+  hash_change = 1;
   layer_colors = {};
-
+  map = void 0;
   sql = new cartodb.SQL({
     user: 'sgoodm'
   });
+
 
   // initialize map
   init_map = function (id) {
 
     var OpenStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { 
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'//,
-      // zIndex: 0
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'
     });
     
     var MapQuestOpen_Aerial = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
       attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
-      subdomains: '1234'//,
-      // zIndex: 0
+      subdomains: '1234'
     });
 
     var baseMaps = {
@@ -78,9 +78,8 @@
       function (){
         console.log(active_layers)
         var url_search = {
-                            layer:active_hashtag,
+                            layer:layer_list,
                             filters:filter_list,
-                            // sublayers:sublayer_list,
                             zoom:map.getZoom(), 
                             lat:map.getCenter().lat, 
                             lng:map.getCenter().lng
@@ -88,14 +87,13 @@
         var url_new = URI(document.URL).addSearch(url_search)
         hash_change = 0;
         window.location.hash = url_new.query()
-
+        console.log(url_search);
       },
       'Generate url link to current map view',
       map
     )
 
   };
-
 
   // refresh map by searching toolbox for loaded layer
   refresh_layers = function () {
@@ -162,9 +160,9 @@
 
     var filter, key, sublayer, t, tn;
 
-    $(".cartodb-tooltip").hide()
-    $(".cartodb-infowindow").hide()
-    $(".cartodb-popup").remove()
+    $(".cartodb-tooltip").hide();
+    $(".cartodb-infowindow").hide();
+    $(".cartodb-popup").remove();
 
     t = f.parent().find('.layer_toggle');
 
@@ -175,20 +173,13 @@
     filter = ""
     
     if (filter_list.length == 0) {
-
-      sql = "SELECT * from " + tn
-
+      sql = "SELECT * from " + tn;
     } else {
-
       for (var i=0, ix=filter_list.length; i<ix; i++) {
-
-        filter += ( i == 0 ? "" : " OR ")
+        filter += ( i == 0 ? "" : " OR ");
         filter += "common_nam='" + filter_list[i] + "'";
-
       }
-
       sql = "SELECT * from " + tn + " where " + filter;
-
     }
 
     sublayer.setSQL(sql);
@@ -198,29 +189,30 @@
   // toggle map layer using toolbox as selector
   toggle_layer = function (t, force, callback) {
 
-    var sublayer = ( t.data('type') == "sublayer" )
+    var sublayer = ( t.data('type') == "sublayer" );
 
     group.old = group.new;
     group.new = t.data('group');
-    console.log(group)
+    console.log(group);
     // clear filter list on layer change
-    filter_list = []
+    filter_list = [];
 
     // force when layer is from hashtag link data  
-    force = ( force == null ? false : force)
+    force = ( force == null ? false : force);
 
     // true when opening (from hash or toolbox), false when closing
     var needs_load = force || !t.hasClass("active_layer");
 
     // manage removing layer from current group
     if ( sublayer && t.hasClass("active_layer") ) {
-      var undefined
+      var undefined;
       var layer = active_layers[t.data("key")];
       if (layer != undefined) {
         layer.hide();
         layer.remove();
         delete active_layers[t.data("key")];
       }
+      layer_list.splice( layer_list.indexOf(t.data('title')), 1 );
       t.removeClass("active_layer");
       t.parent().find(".layer_sign").removeClass("active_layer_sign");
       t.parent().find('.layer_description').slideUp();
@@ -234,9 +226,10 @@
     $(".filter_sign").removeClass("active_layer_sign");
 
     if (group.new == "layer" || group.new != group.old) {
+      layer_list = [];
       $(".layer_sign").removeClass("active_layer_sign");
       $(".active_layer").each(function() {
-        var undefined
+        var undefined;
         var layer = active_layers[$(this).data("key")];
         if (layer != undefined) {
           layer.hide();
@@ -248,23 +241,22 @@
         $(this).parent().find('.layer_description').slideUp();
         $(this).parent().find('.layer_info').slideUp();
         $(this).parent().find('.filter_toggle').slideUp();
-        // $(this).parent().find('.sublayer_toggle').slideUp();
         _gaq.push(['_trackEvent', 'Layers', 'Hide', $(this).data("key")]);
       });
 
       // clean up legend for new group
-      $('.cartodb-legend-stack').remove()
-
+      $('.cartodb-legend-stack').remove();
     }
 
     // general map cleanup
-    $(".cartodb-tooltip").hide()
-    $(".cartodb-infowindow").hide()
-    $(".cartodb-popup").remove()
-
+    $(".cartodb-tooltip").hide();
+    $(".cartodb-infowindow").hide();
+    $(".cartodb-popup").remove();
 
     // manage loading a layer
     if (needs_load) {
+
+      layer_list.push( $(t).data('title') );
 
       // update page title for new layer
       window.document.title = t.html();
@@ -273,7 +265,7 @@
 
       // create layer
       var layerUrl = "http://sgoodm.cartodb.com/api/v2/viz/" + t.data("key") + "/viz.json";
-      var newLayer = cartodb.createLayer(map, layerUrl)
+      var newLayer = cartodb.createLayer(map, layerUrl);
 
       newLayer.on("done", function (layer) {
         active_layers[t.data("key")] = layer;
@@ -284,7 +276,7 @@
           active_hashtag = $(t).data('hashtag');
         }
 
-        map.spin(false)
+        map.spin(false);
 
         // callback is for managing filters from hashtag links only 
         if ( callback ) {
@@ -293,8 +285,8 @@
         
       });
 
-      newLayer.addTo(map)
-      map._layers[_.keys(map._layers)[0]].bringToBack()
+      newLayer.addTo(map);
+      map._layers[_.keys(map._layers)[0]].bringToBack();
 
       // update toolbox for new layer
       t.addClass("active_layer");
@@ -310,16 +302,11 @@
   // manage hashtag data links
   do_open_hashtag = function () {
 
-    var url = document.URL.replace("#", "?")
-
-    var url_query = URI(url).query(true)
-
-    console.log(url_query)
-
-    var h;
+    var url = document.URL.replace("#", "?"),
+        url_query = URI(url).query(true),
+        h;
 
     if (url_query.zoom && url_query.lat && url_query.lng) {
-      console.log("new loc #")
       map.setView([url_query.lat, url_query.lng], url_query.zoom);
     }
 
@@ -328,54 +315,42 @@
     } else {
       // old hash filter
       h = window.location.hash.substring(1);
-      console.log(window.location.hash +" "+ h)
+      console.log(window.location.hash +" "+ h);
     }
 
     $(".layer_toggle").each(function() {
       
-      if ($(this).data('hashtag') === h) {
+      if ($(this).data('hashtag') === h || $(this).data('title') === h || h.indexOf( $(this).data('title') ) > -1 ) {
         var $layer = $(this);
 
         // manage layers, filters, sublayers
-        // if ( $(this).data('sublayer') != "sublayer" ) {
-          toggle_layer($layer, true, false, function(){
+        toggle_layer($layer, true, function(){
+          
+          if ( active_layers[$layer.data("key")] && url_query.filters && url_query.filters.length > 0 ) {
+
+            $layer.parent().find('.filter_toggle').each(function(){
+              if ( url_query.filters.indexOf( $(this).data('sql') ) > -1 ) {
+                $(this).click();
+              }
+            });
             
-            if ( active_layers[$layer.data("key")] && url_query.filters && url_query.filters.length > 0 ) {
+          }
 
-              $layer.parent().find('.filter_toggle').each(function(){
-                if ( url_query.filters.indexOf( $(this).data('sql') ) > -1 ) {
-                  $(this).click();
-                }
-              })
-              
-            }
-
-          });
-        // } else {
-          // clear map
-          // toggle_layer(false);
-          // for each sub layer;
-            // if sublayer is in url_query.sublayers;
-              // toggle_layer($layer, true, true);
-        // }
+        });
 
       }
     });
-
 
   };
 
   // check hashtag (called on page load or on hashtag change)
   open_hashtag = function () {
-    console.log(hash_change)
     // check for hash_change variable to avoid reloads when hash change was generate by page
     if (window.location.hash !== '' && hash_change == 1) {
       setTimeout(do_open_hashtag, 200);
     }
-    hash_change = 1
+    hash_change = 1;
   };
-
-
 
   function readJSON(file, callback) {
     $.ajax({
@@ -384,14 +359,13 @@
       url: file,
       async: false,
       success: function (request) {
-        callback(request, "good", 0)
+        callback(request, "good", 0);
       },    
       error: function (request, status, error) {
         callback(request, status, error);
       }
     }) 
   };
-
 
   // on document ready
   $(function() {
@@ -400,39 +374,33 @@
     readJSON("toolbox.json", function (request, status, error){
       var json = request
       if (error) {
-        console.log(status)
-        console.log(error)
-        $('#toolbox .body').append("Error Reading Data")
-        return 1
+        console.log(status);
+        console.log(error);
+        $('#toolbox .body').append("Error Reading Data");
+        return 1;
       }
 
       var html = ''
       for (var i=0, ix=_.size(json.categories); i<ix; i++) {
-        var cat = json.categories[_.keys(json.categories)[i]]
-        html += '<div class="category">' + cat.title
+        var cat = json.categories[_.keys(json.categories)[i]];
+        html += '<div class="category">' + cat.title;
         for (var j=0, jx=_.size(cat.layers); j< jx; j++) {
-          var layer = cat.layers[_.keys(cat.layers)[j]]
-          html += '<div class="layer">' 
-          html += '<div class="layer_toggle" data-hashtag="'+layer.hashtag+'" data-key="'+layer.key+'" data-group="'+layer.group+'" data-type="'+layer.type+'">' + layer.title + '</div>'
-          html += '<div class="layer_description">' + layer.description + '</div>'
-          html += '<div class="layer_info"><a href="'+layer.link+'" target="_blank">More info</a></div>'
+          var layer = cat.layers[_.keys(cat.layers)[j]];
+          html += '<div class="layer">';
+          html += '<div class="layer_toggle" data-hashtag="'+layer.hashtag+'" data-key="'+layer.key+'" data-group="'+layer.group+'" data-type="'+layer.type+'" data-title="'+layer.title+'">' + layer.title + '</div>';
+          html += '<div class="layer_description">' + layer.description + '</div>';
+          html += '<div class="layer_info"><a href="'+layer.link+'" target="_blank">More info</a></div>';
           if (layer.filters) {
             for (var k=0, kx=_.size(layer.filters); k<kx; k++) {
-              var filter = layer.filters[_.keys(layer.filters)[k]]
-              html += '<div class="filter_toggle" data-sql="'+filter.sql+'">' + filter.title +'</div>'
+              var filter = layer.filters[_.keys(layer.filters)[k]];
+              html += '<div class="filter_toggle" data-sql="'+filter.sql+'">' + filter.title +'</div>';
             }
           }
-          // if (layer.sublayers) {
-          //   for (var k=0, kx=_.size(layer.sublayers); k<kx; k++) {
-          //     var sublayer = layer.sublayers[_.keys(layer.sublayers)[k]]
-          //     html += '<div class="sublayer_toggle" data-key="'+sublayer.key+'" data-title="'+sublayer.title+'" data-state="'+sublayer.state+'">' + sublayer.title +'</div>'
-          //   }
-          // }
-          html += '</div>'
+          html += '</div>';
         }
-        html += '</div>'
+        html += '</div>';
       }
-      $('#toolbox .body').append(html)
+      $('#toolbox .body').append(html);
 
     })
 
@@ -445,11 +413,6 @@
     $(".filter_toggle").each(function() {
       $(this).prepend("<div class='filter_sign'></div>");
     });
-
-    // init sublayer signs
-    // $(".sublayer_toggle").each(function() {
-    //   $(this).prepend("<div class='sublayer_sign'></div>");
-    // });
 
     // show / hide toolbox
     $("#toolbox .title").click(function() {
@@ -473,7 +436,7 @@
       $(this).find(".filter_sign").toggleClass("active_layer_sign");
       if ( $(this).find(".filter_sign").hasClass("active_layer_sign") ) {
         // add to filter list
-        filter_list.push($(this).data('sql'))
+        filter_list.push($(this).data('sql'));
       } else {
         // remove from filter list
         var filter_index = filter_list.indexOf( $(this).data('sql') );
@@ -483,21 +446,6 @@
       }
       toggle_filter($(this));
     });
-
-    // $(".sublayer_toggle").click(function(){
-    //   $(this).find(".sublayer_sign").toggleClass("active_layer_sign");
-    //   if ( $(this).find(".sublayer_sign").hasClass("active_layer_sign") ) {
-    //     // add to sublayer list
-    //     sublayer_list.push($(this).data('key'))
-    //   } else {
-    //     // remove from filter list
-    //     var sublayer_index = sublayer_list.indexOf( $(this).data('key') );
-    //     if (sublayer_index > -1) {
-    //       sublayer_list.splice(sublayer_index, 1);
-    //     }
-    //   }
-    //   toggle_layer($(this), false, true);
-    // })
 
     // init toolbox
     $("#toolbox").each(function() {
@@ -540,8 +488,8 @@
         window.marker = new L.marker(position, {draggable:'true'});
 
         window.marker.on('dragend', function(event){
-          $("#search_lat").val(window.marker.getLatLng().lat)
-          $("#search_long").val(window.marker.getLatLng().lng)
+          $("#search_lat").val(window.marker.getLatLng().lat);
+          $("#search_long").val(window.marker.getLatLng().lng);
           $("#search_address").val("");
           
         });
@@ -591,7 +539,7 @@
       $("#search_lat").val("");
       map.setView([37.27, -76.70], 8);
       if (window.marker !== void 0) {
-        map.removeLayer(window.marker)
+        map.removeLayer(window.marker);
       }
       window.marker = void 0;
     });
@@ -602,7 +550,6 @@
 
     $("#search-clear").click();
   });
-
 
   // tracking - print
   afterPrint = function () {
@@ -623,6 +570,5 @@
   }
 
   window.onafterprint = afterPrint;
-
 
 }).call(this);
