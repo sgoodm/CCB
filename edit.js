@@ -16,7 +16,8 @@
 
 	$(function() {
 
-		$.when( $.getJSON("toolboxz.json"), $.getJSON("schema.json") ).done( function(data, schema){
+
+		$.when( $.getJSON("toolbox.json"), $.getJSON("schema.json") ).done( function(data, schema){
 			
 			json.data = data[0]
 			json.schema = schema[0]
@@ -54,21 +55,21 @@
 		// console.log(confirm)
 
 		$.ajax ({
-      url: "edit.php",
-      data: {json: JSON.stringify(treema.data)},
-      dataType: "json",
-      type: "post",
-      async: false,
-      success: function (result) {
-		    console.log("done");
+	      	url: "process.php",
+	      	data: {call: "json", json: JSON.stringify(treema.data)},
+	      	dataType: "json",
+	      	type: "post",
+	      	async: false,
+	      	success: function (result) {
+		    	console.log("done");
 				$('#message').html(message.submit);
 			},
 			error: function (result) {
-		    console.log("error");
-		    console.log(result);
+		    	console.log("error");
+		    	console.log(result);
 				$('#message').html(message.submit_error);				
 			}
-    })
+    	})
 	
 
 	})

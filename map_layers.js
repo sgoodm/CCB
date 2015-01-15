@@ -5,7 +5,7 @@
       do_open_hashtag, drawnItems, filter_list, group, hash_change, 
       init_map, layer_colors, layer_list, map, mediaQueryList, 
       open_hashtag, open_toolbox, refresh_layers, sql, toggle_filter, 
-      toggle_layer;
+      toggle_layer, validate;
 
   active_layers = {};
   layer_list = [];
@@ -17,7 +17,7 @@
   sql = new cartodb.SQL({
     user: 'sgoodm'
   });
-
+  validate = {};
 
   // initialize map
   init_map = function (id) {
@@ -193,7 +193,6 @@
 
     group.old = group.new;
     group.new = t.data('group');
-    console.log(group);
     // clear filter list on layer change
     filter_list = [];
 
@@ -253,8 +252,34 @@
     $(".cartodb-infowindow").hide();
     $(".cartodb-popup").remove();
 
+    var layerUrl = "http://sgoodm.cartodb.com/api/v2/viz/" + t.data("key") + "/viz.json";
+
+    // check link before loading
+    validate.url = 0;
+    $.ajax ({
+      url: "process.php",
+      data: {call: "url", url: layerUrl},
+      dataType: "json",
+      type: "post",
+      async: false,
+      success: function (result) {
+        // console.log("done");
+        // console.log(result);
+        if ( result != null ) {
+          validate.url = 1;
+        } else {
+          console.log("invalid url");    
+        }
+
+      },
+      error: function (result) {
+        console.log("error checking url");
+        // console.log(result);
+      }
+    })
+    
     // manage loading a layer
-    if (needs_load) {
+    if (needs_load && validate.url) {
 
       layer_list.push( $(t).data('title') );
 
@@ -264,7 +289,6 @@
       map.spin(true);
 
       // create layer
-      var layerUrl = "http://sgoodm.cartodb.com/api/v2/viz/" + t.data("key") + "/viz.json";
       var newLayer = cartodb.createLayer(map, layerUrl);
 
       newLayer.on("done", function (layer) {
@@ -367,12 +391,70 @@
     }) 
   };
 
+  validate.json = function(json) {
+    for (var i=0, ix=json.categories.length; i<ix; i++) {
+      var cat = json.categories[i];
+      validate.cat(cat);
+    }
+  }
+
+  validate.cat = function(cat) {
+    // CATEGORY VALIDATION
+    if ( cat == "" || cat.layers.length == 0 ) {
+      return 1;
+    }
+    // CHECK FIRST LAYER
+    var zlayer = cat.layers[0];
+    if ( zlayer.title == "" || zlayer.group == "" || zlayer.type == "" || zlayer.key == "" ) {
+      return 2;
+    }
+
+    validate.html += '<div class="category">' + cat.title;
+    for (var j=0, jx=cat.layers.length; j< jx; j++) {
+      var layer = cat.layers[j];
+      validate.layer(layer);
+    }
+    validate.html += '</div>';
+
+  }
+
+  validate.layer = function(layer) {
+    // LAYER SPECIFIC VALIDATION
+    if (  layer.title == "" || layer.group == "" || layer.type == "" || layer.key == "" ) {
+      return 1
+    }
+
+    validate.html += '<div class="layer">';
+    validate.html += '<div class="layer_toggle" data-hashtag="'+layer.hashtag+'" data-key="'+layer.key+'" data-group="'+layer.group+'" data-type="'+layer.type+'" data-title="'+layer.title+'">' + layer.title + '</div>';
+    validate.html += (layer.description ? '<div class="layer_description">' + layer.description + '</div>' : '');
+    validate.html += (layer.link ? '<div class="layer_info"><a href="'+layer.link+'" target="_blank">More info</a></div>' : '');
+
+    if (layer.filters && layer.filters.length > 0) {
+      for (var k=0, kx=layer.filters.length; k<kx; k++) {
+        var filter = layer.filters[k];
+        validate.filter(filter);
+      }
+    }
+
+    validate.html += '</div>';
+  }
+
+  validate.filter = function(filter) {
+
+    if ( filter.sql == "" || filter.title == "" ) {
+      return 1
+    }
+
+    // FILTER SPECIFIC VALIDATION HERE
+    validate.html += '<div class="filter_toggle" data-sql="'+filter.sql+'">' + filter.title +'</div>';
+  }
+
   // on document ready
   $(function() {
 
     // build toolbox html
     readJSON("toolbox.json", function (request, status, error){
-      var json = request
+      // var json = request
       if (error) {
         console.log(status);
         console.log(error);
@@ -380,30 +462,10 @@
         return 1;
       }
 
-      var html = ''
-      for (var i=0, ix=_.size(json.categories); i<ix; i++) {
-        var cat = json.categories[_.keys(json.categories)[i]];
-        // CATEGORY + LAYER VALIDATION HERE -- CHECK FIRST LAYER
-        html += '<div class="category">' + cat.title;
-        for (var j=0, jx=_.size(cat.layers); j< jx; j++) {
-          var layer = cat.layers[_.keys(cat.layers)[j]];
-          // LAYER SPECIFIC + FILTER VALIDATION HERE -- IF FILTERS CHECK FIRST FILTER
-          html += '<div class="layer">';
-          html += '<div class="layer_toggle" data-hashtag="'+layer.hashtag+'" data-key="'+layer.key+'" data-group="'+layer.group+'" data-type="'+layer.type+'" data-title="'+layer.title+'">' + layer.title + '</div>';
-          html += '<div class="layer_description">' + layer.description + '</div>';
-          html += '<div class="layer_info"><a href="'+layer.link+'" target="_blank">More info</a></div>';
-          if (layer.filters && layer.filters.length > 0) {
-            for (var k=0, kx=_.size(layer.filters); k<kx; k++) {
-              var filter = layer.filters[_.keys(layer.filters)[k]];
-              // FILTER SPECIFIC VALIDATION HERE
-              html += '<div class="filter_toggle" data-sql="'+filter.sql+'">' + filter.title +'</div>';
-            }
-          }
-          html += '</div>';
-        }
-        html += '</div>';
-      }
-      $('#toolbox .body').append(html);
+      validate.html = ''
+      validate.json(request)
+
+      $('#toolbox .body').append(validate.html);
 
     })
 
@@ -523,7 +585,7 @@
           console.log('done result');
         }
       });
-    });
+    }); // end $(function(){})
     
     // update map for lat / long search
     $("#search_lat").on("change", function() {
