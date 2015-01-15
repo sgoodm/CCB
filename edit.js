@@ -28,8 +28,8 @@
 				// var treema = el.treema(options); 
 				treema = TreemaNode.make(el, options);
 				treema.build();
-				console.log(treema.data);
-				console.log("treema built");
+				// console.log(treema.data);
+				// console.log("treema built");
 				$('#message').html(message.load);
 			} else {
 				console.log("error loading data or schema json file");
@@ -43,34 +43,53 @@
 		console.log("click");
 
 		// check json isValid()
-		var valid1= treema.isValid();
-		console.log(valid1)
+		var isValid= treema.isValid();
 
-		var valid2 = tv4.validate(treema.data, json.schema)
-		console.log(valid2)
-
-		console.log(treema.data)
+		// console.log(treema.data)
 		
-		// var confirm = confirm("Confirm update")
-		// console.log(confirm)
+		var confirm = prompt("Confirm update");
 
-		$.ajax ({
-	      	url: "process.php",
-	      	data: {call: "json", json: JSON.stringify(treema.data)},
-	      	dataType: "json",
-	      	type: "post",
-	      	async: false,
-	      	success: function (result) {
-		    	console.log("done");
-				$('#message').html(message.submit);
-			},
-			error: function (result) {
-		    	console.log("error");
-		    	console.log(result);
-				$('#message').html(message.submit_error);				
+
+		if ( confirm != null ) {
+			var pass;
+
+			$.ajax ({
+		      	url: "process.php",
+		      	data: {call: "pass", pass: confirm},
+		      	dataType: "json",
+		      	type: "post",
+		      	async: false,
+		      	success: function (result) {
+			    	console.log("pass check done");
+			    	// console.log(result);
+					pass = result;
+				},
+				error: function (result) {
+			    	console.log("pass check error");
+				}
+	    	})
+
+			if ( pass ) {
+				$.ajax ({
+			      	url: "process.php",
+			      	data: {call: "json", json: JSON.stringify(treema.data)},
+			      	dataType: "json",
+			      	type: "post",
+			      	async: false,
+			      	success: function (result) {
+				    	console.log("toolbox update done");
+						$('#message').html(message.submit);
+					},
+					error: function (result) {
+				    	console.log("toolbox update error");
+				    	// console.log(result);
+						$('#message').html(message.submit_error);				
+					}
+		    	})
+
 			}
-    	})
-	
+		}
+
 
 	})
 

@@ -284,7 +284,7 @@
       layer_list.push( $(t).data('title') );
 
       // update page title for new layer
-      window.document.title = t.html();
+      window.document.title = ( $(t).data('group') != "layer" ? $(t).data('group') : t.html() );
 
       map.spin(true);
 

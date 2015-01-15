@@ -1,464 +1,509 @@
 {
-	"categories":[
-	 	{
-	 		"title":"Bald Eagle Nests",
-	 		"layers":[
-	 			{
-	 				"title":"Nests",
-	 				"group":"Bald Eagle Nests",
-	 				"type":"sublayer",
-	 				"hashtag":"eagles",
-			 		"key":"475234ea-7f19-11e4-bfd5-0e9d821ea90d",
-			 		"key_alt":"d257b844-b697-11e3-b052-0edbca4b5057",
-			 		"description":"Most recent data CCB has on bald eagle nest locations in Virginia. Data is largely from two annual aerial flights conducted in winter and spring of all tributaries of the lower Chesapeake Bay and other prominent bodies of water. Reported ground survey data is also included.",
-			 		"link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/virginia-eagles/nest-locator/",
-		            "filters":[]
-	 			},
-			    {    
-		           	"title":"Nest Primary Buffers",
-		           	"group":"Bald Eagle Nests",
-		           	"type":"sublayer",
-		           	"hashtag":"",
-		           	"key":"3f4a8ed4-9bff-11e4-96ba-0e9d821ea90d",
-		            "description":"The 330' \"primary buffer\" is where human activities are considered to be detrimental to breeding pairs (e.g. residential, commercial, and industrial development, logging, use of toxic chemicals).",
-		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/virginia-eagles/nest-locator/",
-		            "filters":[]
-		        },
-			    {    
-		           	"title":"Nest Secondary Buffers",
-		           	"group":"Bald Eagle Nests",
-		           	"type":"sublayer",
-		           	"hashtag":"",
-		           	"key":"f3614b2e-9bff-11e4-b17f-0e0c41326911",
-		            "description":"The 660' \"secondary buffer\" is where human activities are considered to impact the integrity of the \"primary buffer\" (e.g. construction of high-density developments, multi-story buildings, new roadways).",
-		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/virginia-eagles/nest-locator/",
-		            "filters":[]
-		        }		        
-	 		]
-	 	},
-		{
-	 		"title":"Bald Eagle Roosts",
-	 		"layers":[
-		        {
-		            "title":"Roost Centroids",       
-		            "group":"Bald Eagle Roosts",
-		            "type":"sublayer",
-		           	"hashtag":"eagleroosts",
-		           	"key":"7c5cbf42-7f1a-11e4-9dfa-0e9d821ea90d",
-		            "description":"These points represent the roost polygon centroids.",
-		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/national-eagle-roost-registry/",
-		            "filters":[]
-				},
-				{
-					"title":"Roost Polygons",		
-					"group":"Bald Eagle Roosts",
-					"type":"sublayer",
-					"hashtag":"",
-		           	"key":"8ae955ca-7f1a-11e4-8aa7-0e018d66dc29" ,
-		            "description":"Most recent data CCB has on bald eagle roost locations throughout North America. Data is compiled from tracking studies and direct observation.",
-		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/national-eagle-roost-registry/",
-		            "filters":[]
-				},	 
-		        {
-		           	"title":"Roost Primary Buffers",          
-		           	"group":"Bald Eagle Roosts",
-		           	"type":"sublayer",
-		           	"hashtag":"",
-		           	"key":"32c1fefe-9b50-11e4-b578-0e9d821ea90d",
-		            "description":"The 330' \"primary buffer\" is where human activities are considered to be detrimental (e.g. residential, commercial, and industrial development, logging, use of toxic chemicals).",
-		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/national-eagle-roost-registry/",
-		            "filters":[]
-				},
-		        {
-		           	"title":"Roost Secondary Buffers",
-		           	"group":"Bald Eagle Roosts",
-		           	"type":"sublayer",
-		           	"hashtag":"",
-		           	"key":"cbb63094-9b50-11e4-9bcf-0e0c41326911",
-		            "description":"The 660' \"secondary buffer\" is where human activities are considered to impact the integrity of the \"primary buffer\" (e.g. construction of high-density developments, multi-story buildings, new roadways).",
-		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/national-eagle-roost-registry/",
-		            "filters":[]
-				}
-	 		]
-	 	},
-	    {
-	    	"title":"Waterbirds",
-	    	"layers":[
-				{
-					"title":"Colonial Waterbirds 2013",
-		            "group":"layer",
-					"type":"layer",
-					"hashtag":"waterbirds2013",
-					"key":"fa4f7878-7f19-11e4-a731-0e4fddd5de28",
-					"key_alt":"fb64c9d2-c57b-11e3-b67f-0e10bcd91c2b",
-			        "description":"A systematic aerial and ground survey of colonial waterbirds in coastal Virginia during the 2013 breeding season. Nearly 800 surveys were conducted of 496 colonies and 24 species.",
-					"link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/va-colonial-waterbird-survey/2013-virginia-colonial-waterbird-survey/",
-					"filters":[
-						{
-			           		"sql":"Black Skimmer",
-			            	"title":"Black Skimmer"
-			            },
-			           	{
-			           		"sql":"Black-crowned Night-Heron",
-			            	"title":"Black-crowned Night-Heron"
-			           	},
-			           	{
-			           		"sql":"Brown Pelican",
-			            	"title":"Brown Pelican"
-			           	},
-			           	{
-			           		"sql":"Caspian Tern",
-			            	"title":"Caspian Tern"
-			           	},
-			           	{
-			           		"sql":"Cattle Egret",
-			            	"title":"Cattle Egret"
-			           	},
-			           	{
-			           		"sql":"Common Tern",
-			            	"title":"Common Tern"
-			           	},
-			           	{
-			           		"sql":"Double-crested Cormorant",
-			            	"title":"Double-crested Cormorant"
-			           	},
-			           	{
-			           		"sql":"Forster''s Tern",
-			            	"title":"Forster's Tern"
-			           	},
-			           	{
-			           		"sql":"Glossy Ibis",
-			            	"title":"Glossy Ibis"
-			           	},
-			            {
-			           		"sql":"Great Black-backed Gull",
-			            	"title":"Great Black-backed Gull"
-			           	},
-			           	{
-			           		"sql":"Great Blue Heron",
-			            	"title":"Great Blue Heron"
-			           	},
-			           	{
-			           		"sql":"Great Egret",
-			            	"title":"Great Egret"
-			           	},
-			           	{
-			           		"sql":"Gull-billed Tern",
-			            	"title":"Gull-billed Tern"
-			           	},
-			           	{
-			           		"sql":"Herring Gull",
-			            	"title":"Herring Gull"
-			           	},
-			           	{
-			           		"sql":"Laughing Gull",
-			            	"title":"Laughing Gull"
-			           	},
-			           	{
-			           		"sql":"Least Tern",
-			            	"title":"Least Tern"
-			           	},
-			           	{
-			           		"sql":"Little Blue Heron",
-			            	"title":"Little Blue Heron"
-			           	},
-			           	{
-			           		"sql":"Royal Tern",
-			            	"title":"Royal Tern"
-			           	},
-			           	{
-			           		"sql":"Sandwich Tern",
-			            	"title":"Sandwich Tern"
-			           	},
-			           	{
-			           		"sql":"Snowy Egret",
-			            	"title":"Snowy Egret"
-			           	},
-			           	{
-			           		"sql":"Tricolored Heron",
-			            	"title":"Tricolored Heron"
-			           	},
-			           	{
-			           		"sql":"White Ibis",
-			            	"title":"White Ibis"
-			           	},
-			           	{
-			        	   	"sql":"Yellow-crowned Night-Heron",
-			        	    "title":"Yellow-crowned Night-Heron"
-			        	}
-			        ]
-			    },
-			    {
-		            "title":"Chesapeake Bay Herons 2013",
-		            "group":"layer",
-		            "type":"layer",
-		            "hashtag":"herons2013",
-		            "key":"bc962aea-7f19-11e4-a731-0e4fddd5de28",
-		            "key_alt":"722b419a-466a-11e3-ab62-eb37f76922d1",
-		            "description":"Great Blue Heron and Great Egret nesting pairs surveyed by airplane May-June of 2013.",
-		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/chesapeake-bay-heron-survey-2013/",
-		            "filters":[]
-		        },
-		        {
-		            "title":"Colonial Waterbirds 2008",
-		            "group":"layer",
-		            "type":"layer",
-		            "hashtag":"waterbirds2008", 
-		            "key":"0638a146-7f1a-11e4-9584-0e9d821ea90d",
-		            "key_alt":"bb270912-7e08-11e3-9ddf-7789a429ada9",
-		            "description":"A systematic aerial and ground survey of colonial waterbirds in coastal Virginia during the 2008 breeding season. More than 800 surveys were conducted of 446 colonies and 24 species.",
-		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/va-colonial-waterbird-survey/",
-		            "filters":[
-		            	{ 	
-		            		"sql":"Black Skimmer",
-			              	"title":"Black Skimmer"
-			           	},
-			           	{
-			            	"sql":"Black-crowned Night Heron",
-			              	"title":"Black-crowned Night-Heron"
-			            },
-			            {
-			            	"sql":"Brown Pelican",
-			              	"title":"Brown Pelican"
-			            },
-			            {
-			            	"sql":"Caspian Tern",
-			              	"title":"Caspian Tern"
-			            },
-			            {
-			            	"sql":"Cattle Egret",
-			              	"title":"Cattle Egret"
-			            },
-			            {
-			            	"sql":"Common Tern",
-			              	"title":"Common Tern"
-			            },
-			            {
-			            	"sql":"Double-crested Cormorant",
-			              	"title":"Double-crested Cormorant"
-			            },
-			            {
-			            	"sql":"Forster''s Tern",
-			              	"title":"Forster's Tern"
-			            },
-			            {
-			            	"sql":"Glossy Ibis",
-			              	"title":"Glossy Ibis"
-			            },
-			            {
-			            	"sql":"Great Black-backed Gull",
-			              	"title":"Great Black-backed Gull"
-			            },
-			            {
-			            	"sql":"Great Blue Heron",
-			              	"title":"Great Blue Heron"
-			            },
-			            {
-			            	"sql":"Great Egret",
-			              	"title":"Great Egret"
-			            },
-			            {
-			            	"sql":"Green Heron",
-			              	"title":"Green Heron"
-			            },
-			            {
-			            	"sql":"Gull-billed Tern",
-			              	"title":"Gull-billed Tern"
-			            },
-			            {
-			            	"sql":"Herring Gull",
-			              	"title":"Herring Gull"
-			            },
-			            {
-			            	"sql":"Laughing Gull",
-			              	"title":"Laughing Gull"
-			            },
-			            {
-			            	"sql":"Least Tern",
-			              	"title":"Least Tern"
-			            },
-			            {
-			            	"sql":"Little Blue Heron",
-			              	"title":"Little Blue Heron"
-			            },
-			            {
-			            	"sql":"Mixed Herons",
-			              	"title":"Mixed Herons"
-			            },
-			            {
-			            	"sql":"Royal Tern",
-			              	"title":"Royal Tern"
-			            },
-			            {
-			            	"sql":"Snowy Egret",
-			              	"title":"Snowy Egret"
-			            },
-			            {
-			            	"sql":"Tricolored Heron",
-			              	"title":"Tricolored Heron"
-			            },
-			            {
-			            	"sql":"White Ibis",
-			              	"title":"White Ibis"
-			            },
-			            {
-			            	"sql":"Yellow-crowned Night Heron",
-			              	"title":"Yellow-crowned Night-Heron"
-			            }
-			        ]
-			    },
-			    {    
-			        "title":"Colonial Waterbirds 2003",
-			        "group":"layer",
-			        "type":"layer",
-		            "hashtag":"waterbirds2003" ,
-		            "key":"117c7780-7f1a-11e4-8bbb-0e9d821ea90d",
-		            "key_alt":"851a1a18-7dfd-11e3-92b8-1fcb8db86b9b",
-		            "description":"A systematic aerial and ground survey of colonial waterbirds in coastal Virginia during the 2003 breeding season. Nearly 550 surveys were conducted of 250 colonies and 24 species.",
-		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/va-colonial-waterbird-survey/",
-		            "filters":[
-		            	{
-		            	   	"sql":"Black Skimmer",
-			              	"title":"Black Skimmer"
-			            },
-			            {
-			            	"sql":"Black-crowned Night Heron",
-			              	"title":"Black-crowned Night-Heron"
-			            },
-			            {
-			            	"sql":"Brown Pelican",
-			              	"title":"Brown Pelican"
-			            },
-			            {
-			            	"sql":"Caspian Tern",
-			              	"title":"Caspian Tern"
-			            },
-			            {
-			            	"sql":"Cattle Egret",
-			              	"title":"Cattle Egret"
-			            },
-			            {
-			            	"sql":"Common Tern",
-			              	"title":"Common Tern"
-			            },
-			            {
-			            	"sql":"Double-crested Cormorant",
-			              	"title":"Double-crested Cormorant"
-			            },
-			            {
-			            	"sql":"Forster''s Tern",
-			              	"title":"Forster's Tern"
-			            },
-			            {
-			            	"sql":"Glossy Ibis",
-			              	"title":"Glossy Ibis"
-			            },
-			           {
-			            	"sql":"Great Black-backed Gull",
-			              	"title":"Great Black-backed Gull"
-			            },
-			            {
-			            	"sql":"Great Blue Heron",
-			              	"title":"Great Blue Heron"
-			            },
-			            {
-			            	"sql":"Great Egret",
-			              	"title":"Great Egret"
-			            },
-			            {
-			            	"sql":"Gull-billed Tern",
-			              	"title":"Gull-billed Tern"
-			            },
-			            {
-			            	"sql":"Herring Gull",
-			              	"title":"Herring Gull"
-			            },
-			            {
-			            	"sql":"Laughing Gull",
-			              	"title":"Laughing Gull"
-			            },
-			            {
-			            	"sql":"Least Tern",
-			              	"title":"Least Tern"
-			            },
-			            {
-			            	"sql":"Little Blue Heron",
-			              	"title":"Little Blue Heron"
-			            },
-			            {
-			            	"sql":"Mixed Herons",
-			              	"title":"Mixed Herons"
-			            },
-			            {
-			            	"sql":"Royal Tern",
-			              	"title":"Royal Tern"
-			            },
-			            {
-			            	"sql":"Sandwich Tern",
-			              	"title":"Sandwich Tern"
-			            },
-			            {
-			            	"sql":"Snowy Egret",
-			              	"title":"Snowy Egret"
-			            },
-			            {
-			            	"sql":"Tricolored Heron",
-			              	"title":"Tricolored Heron"
-			            },
-			            {
-			            	"sql":"White Ibis",
-			              	"title":"White Ibis"
-			            },
-			            {
-			            	"sql":"Yellow-crowned Night Heron",
-			              	"title":"Yellow-crowned Night-Heron"
-			            }
-			        ]
-			    }
-		    ]
-	    },
-	  	{
-	  		"title":"Osprey",
-	  		"layers":[
-		  		{
-		 			"title":"OspreyWatch Nests",
-		 			"group":"layer",
-		 			"type":"layer",
-		 			"hashtag":"",
-		  	        "key":"5402c244-7f1a-11e4-a6e3-0e9d821ea90d",
-		  	        "key_alt":"6f59fa70-a0a0-11e3-8647-0e73339ffa50",
-		            "description":"OspreyWatch is a global community of observers focused on breeding osprey. Volunteers provide nest locations and activity reports during the breeding season.", 
-		            "link":"http://www.osprey-watch.org/",
-		            "filters":[]
-		        },
-		        {
-		            "title":"Chesapeake Bay Osprey Nests 1995-1996",
-		            "group":"layer",
-		            "type":"layer",
-		            "hashtag":"",
-		            "key":"6833d6d6-7f1a-11e4-a841-0e853d047bba", 
-		            "key_alt":"c15b18ec-3735-11e3-9635-1502e2765c29",
-		            "description":"Osprey nests were surveyed by boat in the tidal portions of the Chesapeake Bay during the 1995 and 1996 breeding seasons. The Chesapeake Bay supports one of the largest osprey breeding populations in the world.",
-		            "link":"http://www.ccbbirds.org/what-we-do/research/species-of-concern/species-of-concern-projects/chesapeake-osprey-survey-1995/",
-		            "filters":[]
-		        }
-		    ]
-		},
-	    {
-	  		"title":"Other Species",
-	  		"layers":[
-		    	{
-			    	"title":"Nightjar Survey Network Routes",
-			    	"group":"layer",
-			    	"type":"layer",
-			    	"hashtag":"",
-			    	"key":"306c03c2-7f1a-11e4-a841-0e853d047bba",
-			    	"key_alt":"188ae8bc-3737-11e3-8113-d53a9f80042e",
-			    	"description":"The U.S. Nightjar Network is a nationwide program where volunteers monitor the abundance and distribution of declining Nightjar species. On scheduled bright moonlit nights, participants conduct 10 roadside counts along a 9-mile route. At each point, the observer counts all Nightjars seen or heard during a 6-minute period.",
-			    	"link":"http://www.nightjars.org/",
-		            "filters":[]
-			    }
-			]
-	    }
-	]
+    "categories": [
+        {
+            "title": "Bald Eagle Nests",
+            "layers": [
+                {
+                    "title": "Nests",
+                    "group": "Bald Eagle Nests",
+                    "type": "sublayer",
+                    "hashtag": "eagles",
+                    "key": "475234ea-7f19-11e4-bfd5-0e9d821ea90d",
+                    "key_alt": "d257b844-b697-11e3-b052-0edbca4b5057",
+                    "description": "Most recent data CCB has on bald eagle nest locations in Virginia. Data is largely from two annual aerial flights conducted in winter and spring of all tributaries of the lower Chesapeake Bay and other prominent bodies of water. Reported ground survey data is also included.",
+                    "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/virginia-eagles\/nest-locator\/",
+                    "filters": [
+
+                    ]
+                },
+                {
+                    "title": "Nest Primary Buffers",
+                    "group": "Bald Eagle Nests",
+                    "type": "sublayer",
+                    "hashtag": "",
+                    "key": "3f4a8ed4-9bff-11e4-96ba-0e9d821ea90d",
+                    "description": "The 330' \"primary buffer\" is where human activities are considered to be detrimental to breeding pairs (e.g. residential, commercial, and industrial development, logging, use of toxic chemicals).",
+                    "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/virginia-eagles\/nest-locator\/",
+                    "filters": [
+
+                    ]
+                },
+                {
+                    "title": "Nest Secondary Buffers",
+                    "group": "Bald Eagle Nests",
+                    "type": "sublayer",
+                    "hashtag": "",
+                    "key": "f3614b2e-9bff-11e4-b17f-0e0c41326911",
+                    "description": "The 660' \"secondary buffer\" is where human activities are considered to impact the integrity of the \"primary buffer\" (e.g. construction of high-density developments, multi-story buildings, new roadways).",
+                    "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/virginia-eagles\/nest-locator\/",
+                    "filters": [
+
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "Bald Eagle Roosts",
+            "layers": [
+                {
+                    "title": "Roost Centroids",
+                    "group": "Bald Eagle Roosts",
+                    "type": "sublayer",
+                    "hashtag": "eagleroosts",
+                    "key": "7c5cbf42-7f1a-11e4-9dfa-0e9d821ea90d",
+                    "description": "These points represent the roost polygon centroids.",
+                    "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/species-of-concern-projects\/national-eagle-roost-registry\/",
+                    "filters": [
+
+                    ]
+                },
+                {
+                    "title": "Roost Polygons",
+                    "group": "Bald Eagle Roosts",
+                    "type": "sublayer",
+                    "hashtag": "",
+                    "key": "8ae955ca-7f1a-11e4-8aa7-0e018d66dc29",
+                    "description": "Most recent data CCB has on bald eagle roost locations throughout North America. Data is compiled from tracking studies and direct observation.",
+                    "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/species-of-concern-projects\/national-eagle-roost-registry\/",
+                    "filters": [
+
+                    ]
+                },
+                {
+                    "title": "Roost Primary Buffers",
+                    "group": "Bald Eagle Roosts",
+                    "type": "sublayer",
+                    "hashtag": "",
+                    "key": "32c1fefe-9b50-11e4-b578-0e9d821ea90d",
+                    "description": "The 330' \"primary buffer\" is where human activities are considered to be detrimental (e.g. residential, commercial, and industrial development, logging, use of toxic chemicals).",
+                    "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/species-of-concern-projects\/national-eagle-roost-registry\/",
+                    "filters": [
+
+                    ]
+                },
+                {
+                    "title": "Roost Secondary Buffers",
+                    "group": "Bald Eagle Roosts",
+                    "type": "sublayer",
+                    "hashtag": "",
+                    "key": "cbb63094-9b50-11e4-9bcf-0e0c41326911",
+                    "description": "The 660' \"secondary buffer\" is where human activities are considered to impact the integrity of the \"primary buffer\" (e.g. construction of high-density developments, multi-story buildings, new roadways).",
+                    "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/species-of-concern-projects\/national-eagle-roost-registry\/",
+                    "filters": [
+
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "Waterbirds",
+            "layers": [
+                {
+                    "title": "Colonial Waterbirds 2013",
+                    "group": "layer",
+                    "type": "layer",
+                    "hashtag": "waterbirds2013",
+                    "key": "fa4f7878-7f19-11e4-a731-0e4fddd5de28",
+                    "key_alt": "fb64c9d2-c57b-11e3-b67f-0e10bcd91c2b",
+                    "description": "A systematic aerial and ground survey of colonial waterbirds in coastal Virginia during the 2013 breeding season. Nearly 800 surveys were conducted of 496 colonies and 24 species.",
+                    "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/species-of-concern-projects\/va-colonial-waterbird-survey\/2013-virginia-colonial-waterbird-survey\/",
+                    "filters": [
+                        {
+                            "sql": "Black Skimmer",
+                            "title": "Black Skimmer"
+                        },
+                        {
+                            "sql": "Black-crowned Night-Heron",
+                            "title": "Black-crowned Night-Heron"
+                        },
+                        {
+                            "sql": "Brown Pelican",
+                            "title": "Brown Pelican"
+                        },
+                        {
+                            "sql": "Caspian Tern",
+                            "title": "Caspian Tern"
+                        },
+                        {
+                            "sql": "Cattle Egret",
+                            "title": "Cattle Egret"
+                        },
+                        {
+                            "sql": "Common Tern",
+                            "title": "Common Tern"
+                        },
+                        {
+                            "sql": "Double-crested Cormorant",
+                            "title": "Double-crested Cormorant"
+                        },
+                        {
+                            "sql": "Forster''s Tern",
+                            "title": "Forster's Tern"
+                        },
+                        {
+                            "sql": "Glossy Ibis",
+                            "title": "Glossy Ibis"
+                        },
+                        {
+                            "sql": "Great Black-backed Gull",
+                            "title": "Great Black-backed Gull"
+                        },
+                        {
+                            "sql": "Great Blue Heron",
+                            "title": "Great Blue Heron"
+                        },
+                        {
+                            "sql": "Great Egret",
+                            "title": "Great Egret"
+                        },
+                        {
+                            "sql": "Gull-billed Tern",
+                            "title": "Gull-billed Tern"
+                        },
+                        {
+                            "sql": "Herring Gull",
+                            "title": "Herring Gull"
+                        },
+                        {
+                            "sql": "Laughing Gull",
+                            "title": "Laughing Gull"
+                        },
+                        {
+                            "sql": "Least Tern",
+                            "title": "Least Tern"
+                        },
+                        {
+                            "sql": "Little Blue Heron",
+                            "title": "Little Blue Heron"
+                        },
+                        {
+                            "sql": "Royal Tern",
+                            "title": "Royal Tern"
+                        },
+                        {
+                            "sql": "Sandwich Tern",
+                            "title": "Sandwich Tern"
+                        },
+                        {
+                            "sql": "Snowy Egret",
+                            "title": "Snowy Egret"
+                        },
+                        {
+                            "sql": "Tricolored Heron",
+                            "title": "Tricolored Heron"
+                        },
+                        {
+                            "sql": "White Ibis",
+                            "title": "White Ibis"
+                        },
+                        {
+                            "sql": "Yellow-crowned Night-Heron",
+                            "title": "Yellow-crowned Night-Heron"
+                        }
+                    ]
+                },
+                {
+                    "title": "Chesapeake Bay Herons 2013",
+                    "group": "layer",
+                    "type": "layer",
+                    "hashtag": "herons2013",
+                    "key": "bc962aea-7f19-11e4-a731-0e4fddd5de28",
+                    "key_alt": "722b419a-466a-11e3-ab62-eb37f76922d1",
+                    "description": "Great Blue Heron and Great Egret nesting pairs surveyed by airplane May-June of 2013.",
+                    "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/species-of-concern-projects\/chesapeake-bay-heron-survey-2013\/",
+                    "filters": [
+
+                    ]
+                },
+                {
+                    "title": "Colonial Waterbirds 2008",
+                    "group": "layer",
+                    "type": "layer",
+                    "hashtag": "waterbirds2008",
+                    "key": "0638a146-7f1a-11e4-9584-0e9d821ea90d",
+                    "key_alt": "bb270912-7e08-11e3-9ddf-7789a429ada9",
+                    "description": "A systematic aerial and ground survey of colonial waterbirds in coastal Virginia during the 2008 breeding season. More than 800 surveys were conducted of 446 colonies and 24 species.",
+                    "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/species-of-concern-projects\/va-colonial-waterbird-survey\/",
+                    "filters": [
+                        {
+                            "sql": "Black Skimmer",
+                            "title": "Black Skimmer"
+                        },
+                        {
+                            "sql": "Black-crowned Night Heron",
+                            "title": "Black-crowned Night-Heron"
+                        },
+                        {
+                            "sql": "Brown Pelican",
+                            "title": "Brown Pelican"
+                        },
+                        {
+                            "sql": "Caspian Tern",
+                            "title": "Caspian Tern"
+                        },
+                        {
+                            "sql": "Cattle Egret",
+                            "title": "Cattle Egret"
+                        },
+                        {
+                            "sql": "Common Tern",
+                            "title": "Common Tern"
+                        },
+                        {
+                            "sql": "Double-crested Cormorant",
+                            "title": "Double-crested Cormorant"
+                        },
+                        {
+                            "sql": "Forster''s Tern",
+                            "title": "Forster's Tern"
+                        },
+                        {
+                            "sql": "Glossy Ibis",
+                            "title": "Glossy Ibis"
+                        },
+                        {
+                            "sql": "Great Black-backed Gull",
+                            "title": "Great Black-backed Gull"
+                        },
+                        {
+                            "sql": "Great Blue Heron",
+                            "title": "Great Blue Heron"
+                        },
+                        {
+                            "sql": "Great Egret",
+                            "title": "Great Egret"
+                        },
+                        {
+                            "sql": "Green Heron",
+                            "title": "Green Heron"
+                        },
+                        {
+                            "sql": "Gull-billed Tern",
+                            "title": "Gull-billed Tern"
+                        },
+                        {
+                            "sql": "Herring Gull",
+                            "title": "Herring Gull"
+                        },
+                        {
+                            "sql": "Laughing Gull",
+                            "title": "Laughing Gull"
+                        },
+                        {
+                            "sql": "Least Tern",
+                            "title": "Least Tern"
+                        },
+                        {
+                            "sql": "Little Blue Heron",
+                            "title": "Little Blue Heron"
+                        },
+                        {
+                            "sql": "Mixed Herons",
+                            "title": "Mixed Herons"
+                        },
+                        {
+                            "sql": "Royal Tern",
+                            "title": "Royal Tern"
+                        },
+                        {
+                            "sql": "Snowy Egret",
+                            "title": "Snowy Egret"
+                        },
+                        {
+                            "sql": "Tricolored Heron",
+                            "title": "Tricolored Heron"
+                        },
+                        {
+                            "sql": "White Ibis",
+                            "title": "White Ibis"
+                        },
+                        {
+                            "sql": "Yellow-crowned Night Heron",
+                            "title": "Yellow-crowned Night-Heron"
+                        }
+                    ]
+                },
+                {
+                    "title": "Colonial Waterbirds 2003",
+                    "group": "layer",
+                    "type": "layer",
+                    "hashtag": "waterbirds2003",
+                    "key": "117c7780-7f1a-11e4-8bbb-0e9d821ea90d",
+                    "key_alt": "851a1a18-7dfd-11e3-92b8-1fcb8db86b9b",
+                    "description": "A systematic aerial and ground survey of colonial waterbirds in coastal Virginia during the 2003 breeding season. Nearly 550 surveys were conducted of 250 colonies and 24 species.",
+                    "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/species-of-concern-projects\/va-colonial-waterbird-survey\/",
+                    "filters": [
+                        {
+                            "sql": "Black Skimmer",
+                            "title": "Black Skimmer"
+                        },
+                        {
+                            "sql": "Black-crowned Night Heron",
+                            "title": "Black-crowned Night-Heron"
+                        },
+                        {
+                            "sql": "Brown Pelican",
+                            "title": "Brown Pelican"
+                        },
+                        {
+                            "sql": "Caspian Tern",
+                            "title": "Caspian Tern"
+                        },
+                        {
+                            "sql": "Cattle Egret",
+                            "title": "Cattle Egret"
+                        },
+                        {
+                            "sql": "Common Tern",
+                            "title": "Common Tern"
+                        },
+                        {
+                            "sql": "Double-crested Cormorant",
+                            "title": "Double-crested Cormorant"
+                        },
+                        {
+                            "sql": "Forster''s Tern",
+                            "title": "Forster's Tern"
+                        },
+                        {
+                            "sql": "Glossy Ibis",
+                            "title": "Glossy Ibis"
+                        },
+                        {
+                            "sql": "Great Black-backed Gull",
+                            "title": "Great Black-backed Gull"
+                        },
+                        {
+                            "sql": "Great Blue Heron",
+                            "title": "Great Blue Heron"
+                        },
+                        {
+                            "sql": "Great Egret",
+                            "title": "Great Egret"
+                        },
+                        {
+                            "sql": "Gull-billed Tern",
+                            "title": "Gull-billed Tern"
+                        },
+                        {
+                            "sql": "Herring Gull",
+                            "title": "Herring Gull"
+                        },
+                        {
+                            "sql": "Laughing Gull",
+                            "title": "Laughing Gull"
+                        },
+                        {
+                            "sql": "Least Tern",
+                            "title": "Least Tern"
+                        },
+                        {
+                            "sql": "Little Blue Heron",
+                            "title": "Little Blue Heron"
+                        },
+                        {
+                            "sql": "Mixed Herons",
+                            "title": "Mixed Herons"
+                        },
+                        {
+                            "sql": "Royal Tern",
+                            "title": "Royal Tern"
+                        },
+                        {
+                            "sql": "Sandwich Tern",
+                            "title": "Sandwich Tern"
+                        },
+                        {
+                            "sql": "Snowy Egret",
+                            "title": "Snowy Egret"
+                        },
+                        {
+                            "sql": "Tricolored Heron",
+                            "title": "Tricolored Heron"
+                        },
+                        {
+                            "sql": "White Ibis",
+                            "title": "White Ibis"
+                        },
+                        {
+                            "sql": "Yellow-crowned Night Heron",
+                            "title": "Yellow-crowned Night-Heron"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "Osprey",
+            "layers": [
+                {
+                    "title": "OspreyWatch Nests",
+                    "group": "layer",
+                    "type": "layer",
+                    "hashtag": "",
+                    "key": "5402c244-7f1a-11e4-a6e3-0e9d821ea90d",
+                    "key_alt": "6f59fa70-a0a0-11e3-8647-0e73339ffa50",
+                    "description": "OspreyWatch is a global community of observers focused on breeding osprey. Volunteers provide nest locations and activity reports during the breeding season.",
+                    "link": "http:\/\/www.osprey-watch.org\/",
+                    "filters": [
+
+                    ]
+                },
+                {
+                    "title": "Chesapeake Bay Osprey Nests 1995-1996",
+                    "group": "layer",
+                    "type": "layer",
+                    "hashtag": "",
+                    "key": "6833d6d6-7f1a-11e4-a841-0e853d047bba",
+                    "key_alt": "c15b18ec-3735-11e3-9635-1502e2765c29",
+                    "description": "Osprey nests were surveyed by boat in the tidal portions of the Chesapeake Bay during the 1995 and 1996 breeding seasons. The Chesapeake Bay supports one of the largest osprey breeding populations in the world.",
+                    "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/species-of-concern-projects\/chesapeake-osprey-survey-1995\/",
+                    "filters": [
+
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "Other Species",
+            "layers": [
+                {
+                    "title": "Nightjar Survey Network Routes",
+                    "group": "layer",
+                    "type": "layer",
+                    "hashtag": "",
+                    "key": "306c03c2-7f1a-11e4-a841-0e853d047bba",
+                    "key_alt": "188ae8bc-3737-11e3-8113-d53a9f80042e",
+                    "description": "The U.S. Nightjar Network is a nationwide program where volunteers monitor the abundance and distribution of declining Nightjar species. On scheduled bright moonlit nights, participants conduct 10 roadside counts along a 9-mile route. At each point, the observer counts all Nightjars seen or heard during a 6-minute period.",
+                    "link": "http:\/\/www.nightjars.org\/",
+                    "filters": [
+
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "Examples of Summary Methods",
+            "layers": [
+                {
+                    "title": "Cluster",
+                    "group": "Cluster",
+                    "type": "layer",
+                    "key": "bd271562-9cda-11e4-864d-0e853d047bba"
+                },
+                {
+                    "title": "Intensity",
+                    "group": "Intensity",
+                    "type": "layer",
+                    "key": "b28833fc-9cda-11e4-bc7e-0e018d66dc29"
+                },
+                {
+                    "title": "Density",
+                    "group": "Density",
+                    "type": "layer",
+                    "key": "85b64d82-9c35-11e4-abd1-0e4fddd5de28"
+                }
+            ]
+        }
+    ]
 }
