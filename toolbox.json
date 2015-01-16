@@ -109,95 +109,95 @@
                     "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/species-of-concern-projects\/va-colonial-waterbird-survey\/2013-virginia-colonial-waterbird-survey\/",
                     "filters": [
                         {
-                            "sql": "Black Skimmer",
+                            "sql": "common_nam=&#39;Black Skimmer&#39;",
                             "title": "Black Skimmer"
                         },
                         {
-                            "sql": "Black-crowned Night-Heron",
+                            "sql": "common_nam=&#39;Black-crowned Night-Heron&#39;",
                             "title": "Black-crowned Night-Heron"
                         },
                         {
-                            "sql": "Brown Pelican",
+                            "sql": "common_nam=&#39;Brown Pelican&#39;",
                             "title": "Brown Pelican"
                         },
                         {
-                            "sql": "Caspian Tern",
+                            "sql": "common_nam=&#39;Caspian Tern&#39;",
                             "title": "Caspian Tern"
                         },
                         {
-                            "sql": "Cattle Egret",
+                            "sql": "common_nam=&#39;Cattle Egret&#39;",
                             "title": "Cattle Egret"
                         },
                         {
-                            "sql": "Common Tern",
+                            "sql": "common_nam=&#39;Common Tern&#39;",
                             "title": "Common Tern"
                         },
                         {
-                            "sql": "Double-crested Cormorant",
+                            "sql": "common_nam=&#39;Double-crested Cormorant&#39;",
                             "title": "Double-crested Cormorant"
                         },
                         {
-                            "sql": "Forster''s Tern",
+                            "sql": "common_nam=&#39;Forster''s Tern&#39;",
                             "title": "Forster's Tern"
                         },
                         {
-                            "sql": "Glossy Ibis",
+                            "sql": "common_nam=&#39;Glossy Ibis&#39;",
                             "title": "Glossy Ibis"
                         },
                         {
-                            "sql": "Great Black-backed Gull",
+                            "sql": "common_nam=&#39;Great Black-backed Gull&#39;",
                             "title": "Great Black-backed Gull"
                         },
                         {
-                            "sql": "Great Blue Heron",
+                            "sql": "common_nam=&#39;Great Blue Heron&#39;",
                             "title": "Great Blue Heron"
                         },
                         {
-                            "sql": "Great Egret",
+                            "sql": "common_nam=&#39;Great Egret&#39;",
                             "title": "Great Egret"
                         },
                         {
-                            "sql": "Gull-billed Tern",
+                            "sql": "common_nam=&#39;Gull-billed Tern&#39;",
                             "title": "Gull-billed Tern"
                         },
                         {
-                            "sql": "Herring Gull",
+                            "sql": "common_nam=&#39;Herring Gull&#39;",
                             "title": "Herring Gull"
                         },
                         {
-                            "sql": "Laughing Gull",
+                            "sql": "common_nam=&#39;Laughing Gull&#39;",
                             "title": "Laughing Gull"
                         },
                         {
-                            "sql": "Least Tern",
+                            "sql": "common_nam=&#39;Least Tern&#39;",
                             "title": "Least Tern"
                         },
                         {
-                            "sql": "Little Blue Heron",
+                            "sql": "common_nam=&#39;Little Blue Heron&#39;",
                             "title": "Little Blue Heron"
                         },
                         {
-                            "sql": "Royal Tern",
+                            "sql": "common_nam=&#39;Royal Tern&#39;",
                             "title": "Royal Tern"
                         },
                         {
-                            "sql": "Sandwich Tern",
+                            "sql": "common_nam=&#39;Sandwich Tern&#39;",
                             "title": "Sandwich Tern"
                         },
                         {
-                            "sql": "Snowy Egret",
+                            "sql": "common_nam=&#39;Snowy Egret&#39;",
                             "title": "Snowy Egret"
                         },
                         {
-                            "sql": "Tricolored Heron",
+                            "sql": "common_nam=&#39;Tricolored Heron&#39;",
                             "title": "Tricolored Heron"
                         },
                         {
-                            "sql": "White Ibis",
+                            "sql": "common_nam=&#39;White Ibis&#39;",
                             "title": "White Ibis"
                         },
                         {
-                            "sql": "Yellow-crowned Night-Heron",
+                            "sql": "common_nam=&#39;Yellow-crowned Night-Heron&#39;",
                             "title": "Yellow-crowned Night-Heron"
                         }
                     ]
@@ -226,99 +226,99 @@
                     "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/species-of-concern-projects\/va-colonial-waterbird-survey\/",
                     "filters": [
                         {
-                            "sql": "Black Skimmer",
+                            "sql": "common_nam=&#39;Black Skimmer&#39;",
                             "title": "Black Skimmer"
                         },
                         {
-                            "sql": "Black-crowned Night Heron",
+                            "sql": "common_nam=&#39;Black-crowned Night Heron&#39;",
                             "title": "Black-crowned Night-Heron"
                         },
                         {
-                            "sql": "Brown Pelican",
+                            "sql": "common_nam=&#39;Brown Pelican&#39;",
                             "title": "Brown Pelican"
                         },
                         {
-                            "sql": "Caspian Tern",
+                            "sql": "common_nam=&#39;Caspian Tern&#39;",
                             "title": "Caspian Tern"
                         },
                         {
-                            "sql": "Cattle Egret",
+                            "sql": "common_nam=&#39;Cattle Egret&#39;",
                             "title": "Cattle Egret"
                         },
                         {
-                            "sql": "Common Tern",
+                            "sql": "common_nam=&#39;Common Tern&#39;",
                             "title": "Common Tern"
                         },
                         {
-                            "sql": "Double-crested Cormorant",
+                            "sql": "common_nam=&#39;Double-crested Cormorant&#39;",
                             "title": "Double-crested Cormorant"
                         },
                         {
-                            "sql": "Forster''s Tern",
+                            "sql": "common_nam=&#39;Forster''s Tern&#39;",
                             "title": "Forster's Tern"
                         },
                         {
-                            "sql": "Glossy Ibis",
+                            "sql": "common_nam=&#39;Glossy Ibis&#39;",
                             "title": "Glossy Ibis"
                         },
                         {
-                            "sql": "Great Black-backed Gull",
+                            "sql": "common_nam=&#39;Great Black-backed Gull&#39;",
                             "title": "Great Black-backed Gull"
                         },
                         {
-                            "sql": "Great Blue Heron",
+                            "sql": "common_nam=&#39;Great Blue Heron&#39;",
                             "title": "Great Blue Heron"
                         },
                         {
-                            "sql": "Great Egret",
+                            "sql": "common_nam=&#39;Great Egret&#39;",
                             "title": "Great Egret"
                         },
                         {
-                            "sql": "Green Heron",
+                            "sql": "common_nam=&#39;Green Heron&#39;",
                             "title": "Green Heron"
                         },
                         {
-                            "sql": "Gull-billed Tern",
+                            "sql": "common_nam=&#39;Gull-billed Tern&#39;",
                             "title": "Gull-billed Tern"
                         },
                         {
-                            "sql": "Herring Gull",
+                            "sql": "common_nam=&#39;Herring Gull&#39;",
                             "title": "Herring Gull"
                         },
                         {
-                            "sql": "Laughing Gull",
+                            "sql": "common_nam=&#39;Laughing Gull&#39;",
                             "title": "Laughing Gull"
                         },
                         {
-                            "sql": "Least Tern",
+                            "sql": "common_nam=&#39;Least Tern&#39;",
                             "title": "Least Tern"
                         },
                         {
-                            "sql": "Little Blue Heron",
+                            "sql": "common_nam=&#39;Little Blue Heron&#39;",
                             "title": "Little Blue Heron"
                         },
                         {
-                            "sql": "Mixed Herons",
+                            "sql": "common_nam=&#39;Mixed Herons&#39;",
                             "title": "Mixed Herons"
                         },
                         {
-                            "sql": "Royal Tern",
+                            "sql": "common_nam=&#39;Royal Tern&#39;",
                             "title": "Royal Tern"
                         },
                         {
-                            "sql": "Snowy Egret",
+                            "sql": "common_nam=&#39;Snowy Egret&#39;",
                             "title": "Snowy Egret"
                         },
                         {
-                            "sql": "Tricolored Heron",
+                            "sql": "common_nam=&#39;Tricolored Heron&#39;",
                             "title": "Tricolored Heron"
                         },
                         {
-                            "sql": "White Ibis",
+                            "sql": "common_nam=&#39;White Ibis&#39;",
                             "title": "White Ibis"
                         },
                         {
-                            "sql": "Yellow-crowned Night Heron",
+                            "sql": "common_nam=&#39;Yellow-crowned Night Heron&#39;",
                             "title": "Yellow-crowned Night-Heron"
                         }
                     ]
@@ -334,99 +334,99 @@
                     "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/species-of-concern-projects\/va-colonial-waterbird-survey\/",
                     "filters": [
                         {
-                            "sql": "Black Skimmer",
+                            "sql": "common_nam=&#39;Black Skimmer&#39;",
                             "title": "Black Skimmer"
                         },
                         {
-                            "sql": "Black-crowned Night Heron",
+                            "sql": "common_nam=&#39;Black-crowned Night Heron&#39;",
                             "title": "Black-crowned Night-Heron"
                         },
                         {
-                            "sql": "Brown Pelican",
+                            "sql": "common_nam=&#39;Brown Pelican&#39;",
                             "title": "Brown Pelican"
                         },
                         {
-                            "sql": "Caspian Tern",
+                            "sql": "common_nam=&#39;Caspian Tern&#39;",
                             "title": "Caspian Tern"
                         },
                         {
-                            "sql": "Cattle Egret",
+                            "sql": "common_nam=&#39;Cattle Egret&#39;",
                             "title": "Cattle Egret"
                         },
                         {
-                            "sql": "Common Tern",
+                            "sql": "common_nam=&#39;Common Tern&#39;",
                             "title": "Common Tern"
                         },
                         {
-                            "sql": "Double-crested Cormorant",
+                            "sql": "common_nam=&#39;Double-crested Cormorant&#39;",
                             "title": "Double-crested Cormorant"
                         },
                         {
-                            "sql": "Forster''s Tern",
+                            "sql": "common_nam=&#39;Forster''s Tern&#39;",
                             "title": "Forster's Tern"
                         },
                         {
-                            "sql": "Glossy Ibis",
+                            "sql": "common_nam=&#39;Glossy Ibis&#39;",
                             "title": "Glossy Ibis"
                         },
                         {
-                            "sql": "Great Black-backed Gull",
+                            "sql": "common_nam=&#39;Great Black-backed Gull&#39;",
                             "title": "Great Black-backed Gull"
                         },
                         {
-                            "sql": "Great Blue Heron",
+                            "sql": "common_nam=&#39;Great Blue Heron&#39;",
                             "title": "Great Blue Heron"
                         },
                         {
-                            "sql": "Great Egret",
+                            "sql": "common_nam=&#39;Great Egret&#39;",
                             "title": "Great Egret"
                         },
                         {
-                            "sql": "Gull-billed Tern",
+                            "sql": "common_nam=&#39;Gull-billed Tern&#39;",
                             "title": "Gull-billed Tern"
                         },
                         {
-                            "sql": "Herring Gull",
+                            "sql": "common_nam=&#39;Herring Gull&#39;",
                             "title": "Herring Gull"
                         },
                         {
-                            "sql": "Laughing Gull",
+                            "sql": "common_nam=&#39;Laughing Gull&#39;",
                             "title": "Laughing Gull"
                         },
                         {
-                            "sql": "Least Tern",
+                            "sql": "common_nam=&#39;Least Tern&#39;",
                             "title": "Least Tern"
                         },
                         {
-                            "sql": "Little Blue Heron",
+                            "sql": "common_nam=&#39;Little Blue Heron&#39;",
                             "title": "Little Blue Heron"
                         },
                         {
-                            "sql": "Mixed Herons",
+                            "sql": "common_nam=&#39;Mixed Herons&#39;",
                             "title": "Mixed Herons"
                         },
                         {
-                            "sql": "Royal Tern",
+                            "sql": "common_nam=&#39;Royal Tern&#39;",
                             "title": "Royal Tern"
                         },
                         {
-                            "sql": "Sandwich Tern",
+                            "sql": "common_nam=&#39;Sandwich Tern&#39;",
                             "title": "Sandwich Tern"
                         },
                         {
-                            "sql": "Snowy Egret",
+                            "sql": "common_nam=&#39;Snowy Egret&#39;",
                             "title": "Snowy Egret"
                         },
                         {
-                            "sql": "Tricolored Heron",
+                            "sql": "common_nam=&#39;Tricolored Heron&#39;",
                             "title": "Tricolored Heron"
                         },
                         {
-                            "sql": "White Ibis",
+                            "sql": "common_nam=&#39;White Ibis&#39;",
                             "title": "White Ibis"
                         },
                         {
-                            "sql": "Yellow-crowned Night Heron",
+                            "sql": "common_nam=&#39;Yellow-crowned Night Heron&#39;",
                             "title": "Yellow-crowned Night-Heron"
                         }
                     ]

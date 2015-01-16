@@ -177,11 +177,10 @@
     } else {
       for (var i=0, ix=filter_list.length; i<ix; i++) {
         filter += ( i == 0 ? "" : " OR ");
-        filter += "common_nam='" + filter_list[i] + "'";
+        filter += filter_list[i];
       }
       sql = "SELECT * from " + tn + " where " + filter;
     }
-
     sublayer.setSQL(sql);
 
   };
