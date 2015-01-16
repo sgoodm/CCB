@@ -224,7 +224,7 @@
     // manage previously active layer when switching layer groups
     $(".filter_sign").removeClass("active_layer_sign");
 
-    if (group.new == "layer" || group.new != group.old) {
+    if ( !sublayer || group.new != group.old) {
       layer_list = [];
       $(".layer_sign").removeClass("active_layer_sign");
       $(".active_layer").each(function() {
@@ -284,7 +284,8 @@
       layer_list.push( $(t).data('title') );
 
       // update page title for new layer
-      window.document.title = ( $(t).data('group') != "layer" ? $(t).data('group') : t.html() );
+      // window.document.title = ( $(t).data('group') != "layer" ? $(t).data('group') : t.html() );
+      window.document.title = $(t).data('group') ;
 
       map.spin(true);
 

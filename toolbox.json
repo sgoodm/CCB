@@ -100,7 +100,7 @@
             "layers": [
                 {
                     "title": "Colonial Waterbirds 2013",
-                    "group": "layer",
+                    "group": "Colonial Waterbirds 2013",
                     "type": "layer",
                     "hashtag": "waterbirds2013",
                     "key": "fa4f7878-7f19-11e4-a731-0e4fddd5de28",
@@ -204,7 +204,7 @@
                 },
                 {
                     "title": "Chesapeake Bay Herons 2013",
-                    "group": "layer",
+                    "group": "Chesapeake Bay Herons 2013",
                     "type": "layer",
                     "hashtag": "herons2013",
                     "key": "bc962aea-7f19-11e4-a731-0e4fddd5de28",
@@ -217,7 +217,7 @@
                 },
                 {
                     "title": "Colonial Waterbirds 2008",
-                    "group": "layer",
+                    "group": "Colonial Waterbirds 2008",
                     "type": "layer",
                     "hashtag": "waterbirds2008",
                     "key": "0638a146-7f1a-11e4-9584-0e9d821ea90d",
@@ -325,7 +325,7 @@
                 },
                 {
                     "title": "Colonial Waterbirds 2003",
-                    "group": "layer",
+                    "group": "Colonial Waterbirds 2003",
                     "type": "layer",
                     "hashtag": "waterbirds2003",
                     "key": "117c7780-7f1a-11e4-8bbb-0e9d821ea90d",
@@ -438,7 +438,7 @@
             "layers": [
                 {
                     "title": "OspreyWatch Nests",
-                    "group": "layer",
+                    "group": "OspreyWatch Nests",
                     "type": "layer",
                     "hashtag": "",
                     "key": "5402c244-7f1a-11e4-a6e3-0e9d821ea90d",
@@ -451,7 +451,7 @@
                 },
                 {
                     "title": "Chesapeake Bay Osprey Nests 1995-1996",
-                    "group": "layer",
+                    "group": "Chesapeake Bay Osprey Nests 1995-1996",
                     "type": "layer",
                     "hashtag": "",
                     "key": "6833d6d6-7f1a-11e4-a841-0e853d047bba",
@@ -469,7 +469,7 @@
             "layers": [
                 {
                     "title": "Nightjar Survey Network Routes",
-                    "group": "layer",
+                    "group": "Nightjar Survey Network Routes",
                     "type": "layer",
                     "hashtag": "",
                     "key": "306c03c2-7f1a-11e4-a841-0e853d047bba",
