@@ -110,6 +110,8 @@
   // open toolbox up from minimized state
   open_toolbox = function () {
     var mdiv, tb;
+    $('#toolbox_toggle').removeClass('fa-chevron-right')
+    $('#toolbox_toggle').addClass('fa-chevron-left')
     tb = $("#toolbox");
     mdiv = $("#map");
     tb.animate({
@@ -124,6 +126,8 @@
   // minimize toolbox to left of screen
   close_toolbox = function () {
     var mdiv, tb;
+    $('#toolbox_toggle').removeClass('fa-chevron-left')
+    $('#toolbox_toggle').addClass('fa-chevron-right')
     tb = $("#toolbox");
     mdiv = $("#map");
     tb.animate({
@@ -396,6 +400,43 @@
       var cat = json.categories[i];
       validate.cat(cat);
     }
+    for (var i=0, ix=json.animations.length; i<ix; i++) {
+      var ani = json.animations[i];
+      validate.ani(ani);
+    }
+  }
+
+  validate.ani = function(ani) {
+    // CATEGORY VALIDATION
+    if ( ani == "" || ani.layers.length == 0 ) {
+      return 1;
+    }
+    // CHECK FIRST LAYER
+    var zlayer = ani.layers[0];
+    if ( zlayer.title == "" || zlayer.key == "" ) {
+      return 2;
+    }
+
+    validate.ani_html += '<div class="category">' + ani.title;
+    for (var j=0, jx=ani.layers.length; j< jx; j++) {
+      var layer = ani.layers[j];
+      validate.vis(layer);
+    }
+    validate.ani_html += '</div>';    
+  }
+
+  validate.vis = function(layer) {
+    // LAYER SPECIFIC VALIDATION
+    if (  layer.title == "" || layer.key == "" ) {
+      return 1
+    }
+
+    validate.ani_html += '<div class="layer">';
+    validate.ani_html += '<div class="layer_toggle layer_animation" data-key="'+layer.key+'" data-title="'+layer.title+'">' + layer.title + '</div>';
+    validate.ani_html += (layer.description ? '<div class="layer_description">' + layer.description + '</div>' : '');
+    validate.ani_html += (layer.link ? '<div class="layer_info"><a href="'+layer.link+'" target="_blank">More info</a></div>' : '');
+
+    validate.ani_html += '</div>';
   }
 
   validate.cat = function(cat) {
@@ -409,12 +450,12 @@
       return 2;
     }
 
-    validate.html += '<div class="category">' + cat.title;
+    validate.cat_html += '<div class="category">' + cat.title;
     for (var j=0, jx=cat.layers.length; j< jx; j++) {
       var layer = cat.layers[j];
       validate.layer(layer);
     }
-    validate.html += '</div>';
+    validate.cat_html += '</div>';
 
   }
 
@@ -424,10 +465,10 @@
       return 1
     }
 
-    validate.html += '<div class="layer">';
-    validate.html += '<div class="layer_toggle" data-hashtag="'+layer.hashtag+'" data-key="'+layer.key+'" data-group="'+layer.group+'" data-type="'+layer.type+'" data-title="'+layer.title+'">' + layer.title + '</div>';
-    validate.html += (layer.description ? '<div class="layer_description">' + layer.description + '</div>' : '');
-    validate.html += (layer.link ? '<div class="layer_info"><a href="'+layer.link+'" target="_blank">More info</a></div>' : '');
+    validate.cat_html += '<div class="layer">';
+    validate.cat_html += '<div class="layer_toggle" data-hashtag="'+layer.hashtag+'" data-key="'+layer.key+'" data-group="'+layer.group+'" data-type="'+layer.type+'" data-title="'+layer.title+'">' + layer.title + '</div>';
+    validate.cat_html += (layer.description ? '<div class="layer_description">' + layer.description + '</div>' : '');
+    validate.cat_html += (layer.link ? '<div class="layer_info"><a href="'+layer.link+'" target="_blank">More info</a></div>' : '');
 
     if (layer.filters && layer.filters.length > 0) {
       for (var k=0, kx=layer.filters.length; k<kx; k++) {
@@ -436,7 +477,7 @@
       }
     }
 
-    validate.html += '</div>';
+    validate.cat_html += '</div>';
   }
 
   validate.filter = function(filter) {
@@ -446,11 +487,49 @@
     }
 
     // FILTER SPECIFIC VALIDATION HERE
-    validate.html += '<div class="filter_toggle" data-sql="'+filter.sql+'">' + filter.title +'</div>';
+    validate.cat_html += '<div class="filter_toggle" data-sql="'+filter.sql+'">' + filter.title +'</div>';
   }
 
   // on document ready
   $(function() {
+
+    $("#toolbox ul li").click(function(){
+      if ( !$(this).hasClass('active_title')) {
+        $('.active_title').removeClass('active_title');
+        $(this).addClass('active_title');
+        var display = $(this).text().toLowerCase()
+        $('.body').hide()
+        $('#'+display).show()
+        console.log(display)
+        $('#map, #map_animations').toggle();
+        if ( display == "animations" ) {
+          console.log("an")
+          // var torque = cartodb.createVis('map_animations', 'http://sgoodm.cartodb.com/api/v2/viz/03610838-9c01-11e4-a8bf-0e9d821ea90d/viz.json');
+          cartodb.createVis('map_animations', 'http://andrew.cartodb.com/api/v2/viz/b5cece38-4af4-11e3-bfb4-3085a9a9563c/viz.json', {
+              shareable: true,
+              title: true,
+              description: true,
+              search: true,
+              tiles_loader: true,
+              center_lat: 0,
+              center_lon: 0,
+              zoom: 2
+          })
+          .done(function(vis, layers) {
+            var slider = vis.getOverlay('time_slider')
+            slider.formatter(function(d) {
+              return "month:" + d.getUTCMonth();
+            })
+          })
+          .error(function(err) {
+            console.log(err);
+          });
+        } else {
+
+          map.invalidateSize()
+        }
+      }
+    });
 
     // build toolbox html
     readJSON("toolbox.json", function (request, status, error){
@@ -462,10 +541,13 @@
         return 1;
       }
 
-      validate.html = ''
+      validate.cat_html = ''
+      validate.ani_html = ''
       validate.json(request)
 
-      $('#toolbox .body').append(validate.html);
+      $('#layers').append(validate.cat_html);
+      $('#animations').append(validate.ani_html);
+
 
     })
 
@@ -480,7 +562,8 @@
     });
 
     // show / hide toolbox
-    $("#toolbox .title").click(function() {
+    // $("#toolbox .title").click(function() {
+    $('#toolbox_toggle').click(function(){
       var collapsed;
       collapsed = $('#toolbox').data("collapsed");
       if (collapsed) {
@@ -492,7 +575,11 @@
 
     // layer click
     $(".layer_toggle").click(function() {
-      toggle_layer($(this));
+      if ( !$(this).hasClass("layer_animation") ){
+        toggle_layer($(this));
+      } else {
+        // toggle_animation($(this));
+      }
     });
 
     // sub layer filter click

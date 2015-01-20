@@ -88,6 +88,52 @@
           }
         }
       }
+    },
+    "animations": {
+      "id": "animations",
+      "type": "array",
+      "items": {
+        "id": "4",
+        "type": "object",
+        "displayProperty": "title",
+        "additionalProperties": false,
+        "required": ["title","layers"],
+        "properties": {
+          "title": {
+            "id": "title",
+            "type": "string"
+          },
+          "layers": {
+            "id": "layers",
+            "type": "array",
+            "items": {
+              "id": "0",
+              "type": "object",
+              "displayProperty": "title",
+              "additionalProperties": false,
+              "required":["title", "key"],
+              "properties": {
+                "title": {
+                  "id": "title",
+                  "type": "string"
+                },
+                "key": {
+                  "id": "key",
+                  "type": "string"
+                },
+                "description": {
+                  "id": "description",
+                  "type": "string"
+                },
+                "link": {
+                  "id": "link",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
