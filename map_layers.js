@@ -211,7 +211,18 @@
     var sublayer = ( t.data('type') == "sublayer" );
     var animation =  ( t.data('type') == "animation" );
 
-    if ( animation && isFirefox ) {
+    group.old = group.new;
+    group.new = t.data('group');
+    // clear filter list on layer change
+    filter_list = [];
+
+    // force when layer is from hashtag link data  
+    force = ( force == null ? false : force);
+
+    // true when opening (from hash or toolbox), false when closing
+    var needs_load = force || !t.hasClass("active_layer");
+
+    if ( animation && isFirefox && needs_load) {
       map.touchZoom.disable();
       map.doubleClickZoom.disable();
       map.scrollWheelZoom.disable();
@@ -225,20 +236,7 @@
       map.boxZoom.enable();
       map.keyboard.enable();
       $(".leaflet-left").css("visibility", "visible");
-
-      $(".cartodb-timeslider").remove();
     }
-
-    group.old = group.new;
-    group.new = t.data('group');
-    // clear filter list on layer change
-    filter_list = [];
-
-    // force when layer is from hashtag link data  
-    force = ( force == null ? false : force);
-
-    // true when opening (from hash or toolbox), false when closing
-    var needs_load = force || !t.hasClass("active_layer");
 
     // manage removing layer from current group
     if ( sublayer && t.hasClass("active_layer") ) {
@@ -289,6 +287,7 @@
     $(".cartodb-tooltip").hide();
     $(".cartodb-infowindow").hide();
     $(".cartodb-popup").remove();
+    $(".cartodb-timeslider").remove();
 
     var layerUrl = "http://sgoodm.cartodb.com/api/v2/viz/" + t.data("key") + "/viz.json";
 
