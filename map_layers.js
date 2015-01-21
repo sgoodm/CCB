@@ -109,6 +109,8 @@
 
   // open toolbox up from minimized state
   open_toolbox = function () {
+    var pan = map.getCenter();
+
     var mdiv, tb;
     $('#toolbox_toggle').removeClass('fa-chevron-right')
     $('#toolbox_toggle').addClass('fa-chevron-left')
@@ -119,12 +121,17 @@
     });
     mdiv.animate({
       left: 250
+    }, function () {
+      map.invalidateSize();
+      map.panTo(pan, {animate:true, duration:1.0});
     });
     tb.data("collapsed", false);
   };
 
   // minimize toolbox to left of screen
   close_toolbox = function () {
+    var pan = map.getCenter();
+
     var mdiv, tb;
     $('#toolbox_toggle').removeClass('fa-chevron-left')
     $('#toolbox_toggle').addClass('fa-chevron-right')
@@ -135,8 +142,9 @@
     });
     mdiv.animate({
       left: 30
-    }, function() {
-      google.maps.event.trigger(map, 'resize');
+    }, function () {
+      map.invalidateSize();
+      map.panTo(pan, {animate:true, duration:1.0});
     });
     tb.data("collapsed", true);
   };
@@ -193,6 +201,25 @@
   toggle_layer = function (t, force, callback) {
 
     var sublayer = ( t.data('type') == "sublayer" );
+    var animation =  ( t.data('type') == "animation" );
+
+    if ( animation ) {
+      map.touchZoom.disable();
+      map.doubleClickZoom.disable();
+      map.scrollWheelZoom.disable();
+      map.boxZoom.disable();
+      map.keyboard.disable();
+      $(".leaflet-left").css("visibility", "hidden");
+    } else {
+      map.touchZoom.enable();
+      map.doubleClickZoom.enable();
+      map.scrollWheelZoom.enable();
+      map.boxZoom.enable();
+      map.keyboard.enable();
+      $(".leaflet-left").css("visibility", "visible");
+
+      $(".cartodb-timeslider").remove();
+    }
 
     group.old = group.new;
     group.new = t.data('group');
@@ -400,43 +427,6 @@
       var cat = json.categories[i];
       validate.cat(cat);
     }
-    for (var i=0, ix=json.animations.length; i<ix; i++) {
-      var ani = json.animations[i];
-      validate.ani(ani);
-    }
-  }
-
-  validate.ani = function(ani) {
-    // CATEGORY VALIDATION
-    if ( ani == "" || ani.layers.length == 0 ) {
-      return 1;
-    }
-    // CHECK FIRST LAYER
-    var zlayer = ani.layers[0];
-    if ( zlayer.title == "" || zlayer.key == "" ) {
-      return 2;
-    }
-
-    validate.ani_html += '<div class="category">' + ani.title;
-    for (var j=0, jx=ani.layers.length; j< jx; j++) {
-      var layer = ani.layers[j];
-      validate.vis(layer);
-    }
-    validate.ani_html += '</div>';    
-  }
-
-  validate.vis = function(layer) {
-    // LAYER SPECIFIC VALIDATION
-    if (  layer.title == "" || layer.key == "" ) {
-      return 1
-    }
-
-    validate.ani_html += '<div class="layer">';
-    validate.ani_html += '<div class="layer_toggle layer_animation" data-key="'+layer.key+'" data-title="'+layer.title+'">' + layer.title + '</div>';
-    validate.ani_html += (layer.description ? '<div class="layer_description">' + layer.description + '</div>' : '');
-    validate.ani_html += (layer.link ? '<div class="layer_info"><a href="'+layer.link+'" target="_blank">More info</a></div>' : '');
-
-    validate.ani_html += '</div>';
   }
 
   validate.cat = function(cat) {
@@ -493,43 +483,6 @@
   // on document ready
   $(function() {
 
-    $("#toolbox ul li").click(function(){
-      if ( !$(this).hasClass('active_title')) {
-        $('.active_title').removeClass('active_title');
-        $(this).addClass('active_title');
-        var display = $(this).text().toLowerCase()
-        $('.body').hide()
-        $('#'+display).show()
-        console.log(display)
-        $('#map, #map_animations').toggle();
-        if ( display == "animations" ) {
-          console.log("an")
-          // var torque = cartodb.createVis('map_animations', 'http://sgoodm.cartodb.com/api/v2/viz/03610838-9c01-11e4-a8bf-0e9d821ea90d/viz.json');
-          cartodb.createVis('map_animations', 'http://andrew.cartodb.com/api/v2/viz/b5cece38-4af4-11e3-bfb4-3085a9a9563c/viz.json', {
-              shareable: true,
-              title: true,
-              description: true,
-              search: true,
-              tiles_loader: true,
-              center_lat: 0,
-              center_lon: 0,
-              zoom: 2
-          })
-          .done(function(vis, layers) {
-            var slider = vis.getOverlay('time_slider')
-            slider.formatter(function(d) {
-              return "month:" + d.getUTCMonth();
-            })
-          })
-          .error(function(err) {
-            console.log(err);
-          });
-        } else {
-
-          map.invalidateSize()
-        }
-      }
-    });
 
     // build toolbox html
     readJSON("toolbox.json", function (request, status, error){
@@ -542,12 +495,9 @@
       }
 
       validate.cat_html = ''
-      validate.ani_html = ''
       validate.json(request)
 
       $('#layers').append(validate.cat_html);
-      $('#animations').append(validate.ani_html);
-
 
     })
 
@@ -564,13 +514,14 @@
     // show / hide toolbox
     // $("#toolbox .title").click(function() {
     $('#toolbox_toggle').click(function(){
-      var collapsed;
-      collapsed = $('#toolbox').data("collapsed");
+
+      var collapsed = $('#toolbox').data("collapsed");
       if (collapsed) {
         open_toolbox();
       } else {
         close_toolbox();
       }
+
     });
 
     // layer click
