@@ -1,4 +1,4 @@
-(function() {
+$(function() {
 
   // init
   var active_layers, afterPrint, beforePrint, close_toolbox, control, 
@@ -28,103 +28,364 @@
   var isIE = /*@cc_on!@*/false || !!document.documentMode; // At least IE6
 
   // initialize map
-  init_map = function (id) {
 
-    var OpenStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { 
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'
-    });
-    
-    var MapQuestOpen_Aerial = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
-      attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
-      subdomains: '1234'
-    });
+  var OpenStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { 
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'
+  });
+  
+  var MapQuestOpen_Aerial = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
+    attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
+    subdomains: '1234'
+  });
 
-    var baseMaps = {
-      "OpenStreetMap":OpenStreetMap,
-      "MapQuestOpen_Aerial":MapQuestOpen_Aerial
-    };
-
-    var overlayMaps = {};
-
-    map = new L.map('map', {
-      measureControl: true, // measure distance tool
-      center: [37.27, -76.70],
-      zoom: 8,
-      layers: [OpenStreetMap]
-    });
-
-    control = L.control.layers(baseMaps, overlayMaps);
-    control.addTo(map);
-
-    map.on('baselayerchange',function(e){
-      map._layers[_.keys(map._layers)[0]].bringToBack();
-    });
-
-    // handle map drawing tools
-    drawnItems = L.featureGroup().addTo(map);
-
-    map.addControl(new L.Control.Draw({
-      edit: { featureGroup: drawnItems }
-    }));
-
-    map.on('draw:created', function(event) {
-      var layer = event.layer;
-      drawnItems.addLayer(layer);
-    });
-
-    var legend_button = L.easyButton('fa-exchange', 
-      function (){
-        $('.cartodb-legend-stack').each(function(){
-          $(this).toggle();
-        })
-      },
-      'Toggle the legend display',
-      map
-    )
-
-    var url_button = L.easyButton('fa-external-link', 
-      function (){
-        console.log(active_layers)
-        var url_search = {
-                            layer:layer_list,
-                            filters:filter_list,
-                            zoom:map.getZoom(), 
-                            lat:map.getCenter().lat, 
-                            lng:map.getCenter().lng
-                          }
-        var url_new = URI(document.URL).addSearch(url_search)
-        hash_change = 0;
-        window.location.hash = url_new.query()
-        console.log(url_search);
-      },
-      'Generate url link to current map view',
-      map
-    )
-
-
-    var print_button = L.easyButton('fa-print', 
-      function (){
-        window.print()
-      },
-      'Open the print window',
-      map
-    )
+  var baseMaps = {
+    "OpenStreetMap": OpenStreetMap,
+    "MapQuestOpen_Aerial": MapQuestOpen_Aerial
   };
 
-  // refresh map by searching toolbox for loaded layer
-  refresh_layers = function () {
-    $(".layer_toggle").each(function() {
-      var layer, t;
-      t = $(this);
-      if (t.data("loaded")) {
-        layer = active_layers[t.data("key")];
-        layer.invalidate();
+  var overlayMaps = {};
+
+  map = new L.map('map', {
+    measureControl: true, // measure distance tool
+    center: [37.27, -76.70],
+    zoom: 8,
+    layers: [OpenStreetMap]
+  });
+
+  control = L.control.layers(baseMaps, overlayMaps);
+  control.addTo(map);
+
+  map.on('baselayerchange',function(e){
+    map._layers[_.keys(map._layers)[0]].bringToBack();
+  });
+
+  // handle map drawing tools
+  drawnItems = L.featureGroup().addTo(map);
+
+  map.addControl(new L.Control.Draw({
+    edit: { featureGroup: drawnItems }
+  }));
+
+  map.on('draw:created', function(event) {
+    var layer = event.layer;
+    drawnItems.addLayer(layer);
+  });
+
+  var legend_button = L.easyButton('fa-exchange', 
+    function (){
+      $('.cartodb-legend-stack').each(function(){
+        $(this).toggle();
+      })
+    },
+    'Toggle the legend display',
+    map
+  )
+
+  var url_button = L.easyButton('fa-external-link', 
+    function (){
+      // console.log(active_layers)
+
+      var url_search = {
+                          layer: layer_list,
+                          filters: filter_list,
+                          zoom: map.getZoom(), 
+                          lat: map.getCenter().lat, 
+                          lng: map.getCenter().lng
+                        }
+
+      var keys = _.keys(baseMaps);
+      for ( var i=0, ix=keys.length; i<ix; i++ ) {
+        if ( map.hasLayer(baseMaps[ keys[i] ]) ) {
+          url_search.base = keys[i];      
+        }
+      }
+
+      var url_new = URI(document.URL).addSearch(url_search)
+      hash_change = 0;
+      window.location.hash = url_new.query()
+      // console.log(url_search);
+    },
+    'Generate url link to current map view',
+    map
+  );
+
+  // var print_button = L.easyButton('fa-print', 
+  //   function (){
+  //     window.print();
+  //   },
+  //   'Open the print window',
+  //   map
+  // );
+
+  // check hashtag on page load or on change
+  open_hashtag();
+  $(window).on('hashchange', open_hashtag);
+
+  // --------------------------------------------------
+  // toolbox json validation / html builder
+
+  validate.json = function(json) {
+    for (var i=0, ix=json.categories.length; i<ix; i++) {
+      var cat = json.categories[i];
+      validate.cat(cat);
+    }
+  }
+
+  validate.cat = function(cat) {
+    // CATEGORY VALIDATION
+    if ( cat == "" || cat.layers.length == 0 ) {
+      return 1;
+    }
+    // CHECK FIRST LAYER
+    var zlayer = cat.layers[0];
+    if ( zlayer.title == "" || zlayer.group == "" || zlayer.type == "" || zlayer.key == "" ) {
+      return 2;
+    }
+
+    validate.cat_html += '<div class="category">' + cat.title;
+    for (var j=0, jx=cat.layers.length; j< jx; j++) {
+      var layer = cat.layers[j];
+      validate.layer(layer);
+    }
+    validate.cat_html += '</div>';
+  }
+
+  validate.layer = function(layer) {
+    // LAYER SPECIFIC VALIDATION
+    if (  layer.title == "" || layer.group == "" || layer.type == "" || layer.key == "" ) {
+      return 1
+    }
+
+    validate.cat_html += '<div class="layer">';
+
+    validate.cat_html += '<div class="layer_toggle"'
+    validate.cat_html += 'data-hashtag="'+layer.hashtag+'"';
+    validate.cat_html += 'data-key="'+layer.key+'"';
+    validate.cat_html += 'data-group="'+layer.group+'"';
+    validate.cat_html += 'data-type="'+layer.type+'"';
+    validate.cat_html += 'data-title="'+layer.title+'"';
+
+    if (layer.centerlon && layer.centerlat && layer.zoom) {
+      validate.cat_html += 'data-centerlon="'+layer.centerlon+'"';
+      validate.cat_html += 'data-centerlat="'+layer.centerlat+'"' ;
+      validate.cat_html += 'data-zoom="'+layer.zoom+'"';
+    }
+
+    validate.cat_html += '>' + layer.title + '</div>';
+
+    // validate.cat_html += '<div class="layer_content">';
+
+
+    if (layer.centerlon && layer.centerlat && layer.zoom) {
+    
+      validate.cat_html += '<div class="layer_extent">Zoom to Extents</div>';
+
+    }
+
+    validate.cat_html += (layer.description ? '<div class="layer_description">' + layer.description + '</div>' : '');
+    validate.cat_html += (layer.link ? '<div class="layer_info"><a href="'+layer.link+'" target="_blank">More info</a></div>' : '');
+
+    // validate.cat_html += '</div>';
+
+    if (layer.filters && layer.filters.length > 0) {
+      for (var k=0, kx=layer.filters.length; k<kx; k++) {
+        var filter = layer.filters[k];
+        validate.filter(filter);
+      }
+    }
+
+    validate.cat_html += '</div>';
+  }
+
+  validate.filter = function(filter) {
+
+    if ( filter.sql == "" || filter.title == "" ) {
+      return 1
+    }
+
+    // FILTER SPECIFIC VALIDATION HERE
+    validate.cat_html += '<div class="filter_toggle" data-sql="'+filter.sql+'">' + filter.title +'</div>';
+  }
+
+  // build toolbox html
+  readJSON("toolbox.json", function (request, status, error){
+    // var json = request
+    if (error) {
+      console.log(status);
+      console.log(error);
+      $('#toolbox .body').append("Error Reading Data");
+      return 1;
+    }
+
+    validate.cat_html = ''
+    validate.json(request)
+
+    $('#layers').append(validate.cat_html);
+  })
+
+  // --------------------------------------------------
+  // search box
+
+  // marker for search result (lat / long or address)
+  var geocode_result;
+
+  // manage search box display
+  $("#search-box").hide();
+
+  $("#search-link").on("click", function() {
+    $("#search-box").toggle();
+  });
+
+  // update map for search address
+  $("#search_address").on("change", function() {
+    var geocoder, v;
+    geocoder = new google.maps.Geocoder();
+    v = $("#search_address").val();
+    console.log("geocode " + v);
+    geocoder.geocode({
+      'address': v
+    }, function(results, status) {
+      if (status === google.maps.GeocoderStatus.OK) {
+        console.log('got result');
+        $("#search_lat").val(results[0].geometry.location.lat());
+        $("#search_long").val(results[0].geometry.location.lng());
+        console.log('sending result');
+        geocode_result(results[0].geometry.location);
+        console.log('done result');
       }
     });
+  }); 
+
+  // update map for lat / long search
+  $("#search_lat").on("change", function() {
+    $("#search_address").val("");
+    geocode_result(new google.maps.LatLng($("#search_lat").val(), $("#search_long").val()));
+  });
+  $("#search_long").on("change", function() {
+    $("#search_address").val("");
+    geocode_result(new google.maps.LatLng($("#search_lat").val(), $("#search_long").val()));
+  });
+
+  // clear search box
+  $("#search-clear").on("click", function() {
+    $("#search_address").val("");
+    $("#search_long").val("");
+    $("#search_lat").val("");
+    map.setView([37.27, -76.70], 8);
+    if (window.marker !== void 0) {
+      map.removeLayer(window.marker);
+    }
+    window.marker = void 0;
+  });
+
+  $("#search-clear").click();
+
+  function geocode_result(position) {
+    var position = _.values(position);
+
+    if (window.marker === void 0) {
+
+      window.marker = new L.marker(position, {draggable:'true'});
+
+      window.marker.on('dragend', function(event){
+        $("#search_lat").val(window.marker.getLatLng().lat);
+        $("#search_long").val(window.marker.getLatLng().lng);
+        $("#search_address").val("");
+        
+      });
+
+      map.addLayer(window.marker);
+
+    }
+
+    window.marker.setLatLng(position);
+    map.setView(position, 8);
   };
 
+  // --------------------------------------------------
+  // manage toolbox interactions
+
+  // init layer signs
+  $(".layer").each(function() {
+    $(this).prepend("<div class='layer_sign'></div>");
+  });
+
+  // init toolbox
+  $("#toolbox").each(function () {
+    var pos, tb;
+    tb = $(this);
+    if (tb.data('layers') === 'active') {
+      $(".layer_toggle").each(function () {
+        toggle_layer($(this));
+      });
+    }
+    if (tb.data('snap')) {
+      $("#toolbox").css('position', 'absolute');
+      pos = $("#map").position();
+      $("#toolbox").css('left', pos.left + 10);
+      $("#toolbox").css('top', pos.top + 10);
+      $("#toolbox").css('height', $("#map").height() / 2);
+      close_toolbox();
+    }
+  });
+
+  // init filter signs
+  $(".filter_toggle").each(function() {
+    $(this).prepend("<div class='filter_sign'></div>");
+  });
+
+  // show / hide toolbox
+  // $("#toolbox .title").click(function() {
+  $('#toolbox_toggle').click(function(){
+
+    var collapsed = $('#toolbox').data("collapsed");
+    if (collapsed) {
+      open_toolbox();
+    } else {
+      close_toolbox();
+    }
+
+  });
+
+  // layer click
+  $(".layer_toggle").click(function() {
+    if ( !$(this).hasClass("layer_animation") ){
+      toggle_layer($(this));
+    } else {
+      // toggle_animation($(this));
+    }
+  });
+
+  // sub layer filter click
+  $(".filter_toggle").click(function() {
+
+    $(this).find(".filter_sign").toggleClass("active_layer_sign");
+    if ( $(this).find(".filter_sign").hasClass("active_layer_sign") ) {
+      // add to filter list
+      filter_list.push($(this).data('sql'));
+    } else {
+      // remove from filter list
+      var filter_index = filter_list.indexOf( $(this).data('sql') );
+      if (filter_index > -1) {
+        filter_list.splice(filter_index, 1);
+      }
+    }
+    toggle_filter($(this));
+  });
+
+  $('.layer_extent').click( function () {
+    var new_lat = $(this).parent().prev().data('centerlat'),
+        new_lon = $(this).parent().prev().data('centerlon'),
+        new_zoom = $(this).parent().prev().data('zoom');
+
+    if ( new_lat && new_lon && new_zoom ) {
+      map.setView([new_lat, new_lon], new_zoom);
+    }
+
+  })
+
   // open toolbox up from minimized state
-  open_toolbox = function () {
+  function open_toolbox() {
     var pan = map.getCenter();
 
     var mdiv, tb;
@@ -145,7 +406,7 @@
   };
 
   // minimize toolbox to left of screen
-  close_toolbox = function () {
+  function close_toolbox() {
     var pan = map.getCenter();
 
     var mdiv, tb;
@@ -165,26 +426,9 @@
     tb.data("collapsed", true);
   };
 
-  function addCursorInteraction(layer) {
-    var hovers = [];
-
-    layer.bind('featureOver', function (e, latlon, pxPos, data, layer) {
-      hovers[layer] = 1;
-      if(_.any(hovers)) {
-        $('#map').css('cursor', 'pointer');
-      }
-    });
-
-    layer.bind('featureOut', function (m, layer) {
-      hovers[layer] = 0;
-      if(!_.any(hovers)) {
-        $('#map').css('cursor', 'auto');
-      }
-    });
-  }
 
   // filter layer using toolbox (sub list) as selector
-  toggle_filter = function (f) {
+  function toggle_filter(f) {
 
     var filter, key, sublayer, t, tn;
 
@@ -214,7 +458,7 @@
   };
 
   // toggle map layer using toolbox as selector
-  toggle_layer = function (t, force, callback) {
+  function toggle_layer(t, force, callback) {
 
     var sublayer = ( t.data('type') == "sublayer" );
     var animation =  ( t.data('type') == "animation" );
@@ -258,9 +502,10 @@
       layer_list.splice( layer_list.indexOf(t.data('title')), 1 );
       t.removeClass("active_layer");
       t.parent().find(".layer_sign").removeClass("active_layer_sign");
-      t.parent().find('.layer_contents').slideUp();
-      // t.parent().find('.layer_description').slideUp();
-      // t.parent().find('.layer_info').slideUp();
+      // t.parent().find('.layer_content').slideUp();
+      t.parent().find('.layer_extent').slideUp();
+      t.parent().find('.layer_description').slideUp();
+      t.parent().find('.layer_info').slideUp();
       t.parent().find('.filter_toggle').slideUp();
       _gaq.push(['_trackEvent', 'Layers', 'Hide', $(this).data("key")]);
     }
@@ -282,6 +527,8 @@
         }
         active_hashtag = undefined;
         $(this).removeClass("active_layer");
+        // t.parent().find('.layer_content').slideUp();
+        $(this).parent().find('.layer_extent').slideUp();
         $(this).parent().find('.layer_description').slideUp();
         $(this).parent().find('.layer_info').slideUp();
         $(this).parent().find('.filter_toggle').slideUp();
@@ -362,9 +609,10 @@
 
       // update toolbox for new layer
       t.addClass("active_layer");
-      t.parent().find('.layer_contents').slideDown();
-      // t.parent().find('.layer_description').slideDown();
-      // t.parent().find('.layer_info').slideDown();
+      // t.parent().find('.layer_content').slideDown();
+      t.parent().find('.layer_extent').slideDown();
+      t.parent().find('.layer_description').slideDown();
+      t.parent().find('.layer_info').slideDown();
       t.parent().find('.filter_toggle').slideDown();
       _gaq.push(['_trackEvent', 'Layers', 'Show', t.data("key")]);
 
@@ -372,12 +620,56 @@
 
   };
 
+  function addCursorInteraction(layer) {
+    var hovers = [];
+
+    layer.bind('featureOver', function (e, latlon, pxPos, data, layer) {
+      hovers[layer] = 1;
+      if(_.any(hovers)) {
+        $('#map').css('cursor', 'pointer');
+      }
+    });
+
+    layer.bind('featureOut', function (m, layer) {
+      hovers[layer] = 0;
+      if(!_.any(hovers)) {
+        $('#map').css('cursor', 'auto');
+      }
+    });
+  }
+
+  // refresh map by searching toolbox for loaded layer
+  function refresh_layers() {
+    $(".layer_toggle").each(function() {
+      var layer, t;
+      t = $(this);
+      if (t.data("loaded")) {
+        layer = active_layers[t.data("key")];
+        layer.invalidate();
+      }
+    });
+  };
+
+  // --------------------------------------------------
   // manage hashtag data links
-  do_open_hashtag = function () {
+
+  function do_open_hashtag() {
 
     var url = document.URL.replace("#", "?"),
         url_query = URI(url).query(true),
         h;
+
+    if (url_query.base) {
+      console.log(url_query.base)
+      console.log(baseMaps)
+      var keys = _.keys(baseMaps);
+      for ( var i=0, ix=keys.length; i<ix; i++ ) {
+        if ( map.hasLayer(baseMaps[ keys[i] ]) ) {
+          map.removeLayer( baseMaps[ keys[i] ] );      
+        }
+      }
+      map.addLayer( baseMaps[url_query.base] )
+    }
 
     if (url_query.layer){
       h = url_query.layer;
@@ -423,16 +715,21 @@
 
       }
     });
+
+
   };
 
   // check hashtag (called on page load or on hashtag change)
-  open_hashtag = function () {
+  function open_hashtag() {
     // check for hash_change variable to avoid reloads when hash change was generate by page
     if (window.location.hash !== '' && hash_change == 1) {
       setTimeout(do_open_hashtag, 200);
     }
     hash_change = 1;
   };
+
+  // --------------------------------------------------
+  // general functions  
 
   function readJSON(file, callback) {
     $.ajax({
@@ -449,279 +746,14 @@
     }) 
   };
 
-  validate.json = function(json) {
-    for (var i=0, ix=json.categories.length; i<ix; i++) {
-      var cat = json.categories[i];
-      validate.cat(cat);
-    }
-  }
-
-  validate.cat = function(cat) {
-    // CATEGORY VALIDATION
-    if ( cat == "" || cat.layers.length == 0 ) {
-      return 1;
-    }
-    // CHECK FIRST LAYER
-    var zlayer = cat.layers[0];
-    if ( zlayer.title == "" || zlayer.group == "" || zlayer.type == "" || zlayer.key == "" ) {
-      return 2;
-    }
-
-    validate.cat_html += '<div class="category">' + cat.title;
-    for (var j=0, jx=cat.layers.length; j< jx; j++) {
-      var layer = cat.layers[j];
-      validate.layer(layer);
-    }
-    validate.cat_html += '</div>';
-
-  }
-
-  validate.layer = function(layer) {
-    // LAYER SPECIFIC VALIDATION
-    if (  layer.title == "" || layer.group == "" || layer.type == "" || layer.key == "" ) {
-      return 1
-    }
-
-    validate.cat_html += '<div class="layer">';
-
-    validate.cat_html += '<div class="layer_toggle"'
-    validate.cat_html += 'data-hashtag="'+layer.hashtag+'"';
-    validate.cat_html += 'data-key="'+layer.key+'"';
-    validate.cat_html += 'data-group="'+layer.group+'"';
-    validate.cat_html += 'data-type="'+layer.type+'"';
-    validate.cat_html += 'data-title="'+layer.title+'"';
-
-    if (layer.centerlon && layer.centerlat && layer.zoom) {
-      validate.cat_html += 'data-centerlon="'+layer.centerlon+'"';
-      validate.cat_html += 'data-centerlat="'+layer.centerlat+'"' ;
-      validate.cat_html += 'data-zoom="'+layer.zoom+'"';
-    }
-
-    validate.cat_html += '>' + layer.title + '</div>';
-
-    validate.cat_html += '<div class="layer_contents">';
-
-
-    if (layer.centerlon && layer.centerlat && layer.zoom) {
-    
-      validate.cat_html += '<span class="layer_extent">Zoom to Extents</span>';
-
-    }
-
-    validate.cat_html += (layer.description ? '<div class="layer_description">' + layer.description + '</div>' : '');
-    validate.cat_html += (layer.link ? '<div class="layer_info"><a href="'+layer.link+'" target="_blank">More info</a></div>' : '');
-
-    validate.cat_html += '</div>';
-
-    if (layer.filters && layer.filters.length > 0) {
-      for (var k=0, kx=layer.filters.length; k<kx; k++) {
-        var filter = layer.filters[k];
-        validate.filter(filter);
-      }
-    }
-
-    validate.cat_html += '</div>';
-  }
-
-  validate.filter = function(filter) {
-
-    if ( filter.sql == "" || filter.title == "" ) {
-      return 1
-    }
-
-    // FILTER SPECIFIC VALIDATION HERE
-    validate.cat_html += '<div class="filter_toggle" data-sql="'+filter.sql+'">' + filter.title +'</div>';
-  }
-
-  // on document ready
-  $(function() {
-
-    // build toolbox html
-    readJSON("toolbox.json", function (request, status, error){
-      // var json = request
-      if (error) {
-        console.log(status);
-        console.log(error);
-        $('#toolbox .body').append("Error Reading Data");
-        return 1;
-      }
-
-      validate.cat_html = ''
-      validate.json(request)
-
-      $('#layers').append(validate.cat_html);
-    })
-
-    // init layer signs
-    $(".layer").each(function() {
-      $(this).prepend("<div class='layer_sign'></div>");
-    });
-
-    // init filter signs
-    $(".filter_toggle").each(function() {
-      $(this).prepend("<div class='filter_sign'></div>");
-    });
-
-    // show / hide toolbox
-    // $("#toolbox .title").click(function() {
-    $('#toolbox_toggle').click(function(){
-
-      var collapsed = $('#toolbox').data("collapsed");
-      if (collapsed) {
-        open_toolbox();
-      } else {
-        close_toolbox();
-      }
-
-    });
-
-    // layer click
-    $(".layer_toggle").click(function() {
-      if ( !$(this).hasClass("layer_animation") ){
-        toggle_layer($(this));
-      } else {
-        // toggle_animation($(this));
-      }
-    });
-
-    // sub layer filter click
-    $(".filter_toggle").click(function() {
-
-      $(this).find(".filter_sign").toggleClass("active_layer_sign");
-      if ( $(this).find(".filter_sign").hasClass("active_layer_sign") ) {
-        // add to filter list
-        filter_list.push($(this).data('sql'));
-      } else {
-        // remove from filter list
-        var filter_index = filter_list.indexOf( $(this).data('sql') );
-        if (filter_index > -1) {
-          filter_list.splice(filter_index, 1);
-        }
-      }
-      toggle_filter($(this));
-    });
-
-    $('.layer_extent').click( function () {
-      var new_lat = $(this).parent().prev().data('centerlat'),
-          new_lon = $(this).parent().prev().data('centerlon'),
-          new_zoom = $(this).parent().prev().data('zoom');
-
-      if ( new_lat && new_lon && new_zoom ) {
-        map.setView([new_lat, new_lon], new_zoom);
-      }
-
-    })
-
-    // init toolbox
-    $("#toolbox").each(function () {
-      var pos, tb;
-      tb = $(this);
-      if (tb.data('layers') === 'active') {
-        $(".layer_toggle").each(function () {
-          toggle_layer($(this));
-        });
-      }
-      if (tb.data('snap')) {
-        $("#toolbox").css('position', 'absolute');
-        pos = $("#map").position();
-        $("#toolbox").css('left', pos.left + 10);
-        $("#toolbox").css('top', pos.top + 10);
-        $("#toolbox").css('height', $("#map").height() / 2);
-        close_toolbox();
-      }
-    });
-
-    // init map
-    $("#map").each(function() {
-      init_map($(this).attr('id'));
-    });
-
-    // manage search box display
-    $("#search-box").hide();
-    $("#search-link").on("click", function() {
-      $("#search-box").toggle();
-    });
-
-    // marker for search result (lat / long or address)
-    var geocode_result;
-
-    geocode_result = function (position) {
-      var position = _.values(position);
-
-      if (window.marker === void 0) {
-
-        window.marker = new L.marker(position, {draggable:'true'});
-
-        window.marker.on('dragend', function(event){
-          $("#search_lat").val(window.marker.getLatLng().lat);
-          $("#search_long").val(window.marker.getLatLng().lng);
-          $("#search_address").val("");
-          
-        });
-
-        map.addLayer(window.marker);
-
-      }
-
-      window.marker.setLatLng(position);
-      map.setView(position, 8);
-    };
-
-    // update map for search address
-    $("#search_address").on("change", function() {
-      var geocoder, v;
-      geocoder = new google.maps.Geocoder();
-      v = $("#search_address").val();
-      console.log("geocode " + v);
-      geocoder.geocode({
-        'address': v
-      }, function(results, status) {
-        if (status === google.maps.GeocoderStatus.OK) {
-          console.log('got result');
-          $("#search_lat").val(results[0].geometry.location.lat());
-          $("#search_long").val(results[0].geometry.location.lng());
-          console.log('sending result');
-          geocode_result(results[0].geometry.location);
-          console.log('done result');
-        }
-      });
-    }); // end $(function(){})
-    
-    // update map for lat / long search
-    $("#search_lat").on("change", function() {
-      $("#search_address").val("");
-      geocode_result(new google.maps.LatLng($("#search_lat").val(), $("#search_long").val()));
-    });
-    $("#search_long").on("change", function() {
-      $("#search_address").val("");
-      geocode_result(new google.maps.LatLng($("#search_lat").val(), $("#search_long").val()));
-    });
-
-    // clear search box
-    $("#search-clear").on("click", function() {
-      $("#search_address").val("");
-      $("#search_long").val("");
-      $("#search_lat").val("");
-      map.setView([37.27, -76.70], 8);
-      if (window.marker !== void 0) {
-        map.removeLayer(window.marker);
-      }
-      window.marker = void 0;
-    });
-
-    // check hashtag on page load or on change
-    open_hashtag();
-    $(window).on('hashchange', open_hashtag);
-
-    $("#search-clear").click();
-  }); // END DOCUMENT READY
-
-  // tracking - print
-  afterPrint = function () {
+  // --------------------------------------------------
+  // printing
+  
+  function afterPrint() {
     _gaq.push(['_trackEvent', 'Layers', 'Print']);
   };
 
-  beforePrint = function () {};
+  function beforePrint() {};
 
   if (window.matchMedia) {
     mediaQueryList = window.matchMedia('print');
@@ -736,4 +768,4 @@
 
   window.onafterprint = afterPrint;
 
-}).call(this);
+})
