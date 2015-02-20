@@ -40,6 +40,24 @@
                   "id": "type",
                   "type": "string"
                 },
+                "centerlon": {
+                  "id": "centerlon",
+                  "type": "number",
+                  "minimum": "-180",
+                  "maximum": "180"
+                },
+                "centerlat": {
+                  "id": "centerlat",
+                  "type": "number",
+                  "minimum": "-90",
+                  "maximum": "90"
+                },
+                "zoom": {
+                  "id": "zoom",
+                  "type": "integer",
+                  "minimum": "1",
+                  "maximum": "20"
+                },
                 "hashtag": {
                   "id": "hashtag",
                   "type": "string"

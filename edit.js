@@ -6,6 +6,7 @@
 		"intro":"Welcome to the Mapping Portal Toolbox Editor",
 		"load":"JSON has been successfully loaded",
 		"load_error":"Error loading data or schema json file",
+		"not_valid":"A data entry is not valid",
 		"submit":"JSON has been successfully updated",
 		"submit_error":"Error updating JSON"
 
@@ -43,14 +44,21 @@
 		console.log("click");
 
 		// check json isValid()
-		var isValid= treema.isValid();
+		var isValid = treema.isValid();
 
-		// console.log(treema.data)
+		console.log(isValid)
 		
+		if ( !isValid ) {
+			console.log('Not Valid');
+			$('#message').html(message.not_valid);
+			alert('A data entry is not valid')
+			return;
+		}
+
+
 		var confirm = prompt("Confirm update");
 
-
-		if ( confirm != null ) {
+		if ( confirm != null && isValid ) {
 			var pass;
 
 			$.ajax ({

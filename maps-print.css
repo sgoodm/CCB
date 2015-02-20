@@ -40,6 +40,7 @@ img {
 .cartodb-infowindow,
 .cartodb-logo,
 .leaflet-control-container,
+.leaflet-left,
 div.cartodb-popup-tip-container {
   visibility: hidden !important;
 }

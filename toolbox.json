@@ -14,7 +14,10 @@
                     "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/virginia-eagles\/nest-locator\/",
                     "filters": [
 
-                    ]
+                    ],
+                    "zoom": 7,
+                    "centerlat": 37.27,
+                    "centerlon": -76.7
                 },
                 {
                     "title": "Nest Primary Buffers",
@@ -41,14 +44,24 @@
                     ]
                 },
                 {
-                    "title": "Change Over Time",
-                    "group": "Change",
+                    "title": "Change Over Time Animation (old)",
+                    "group": "Change-old",
                     "type": "animation",
                     "key": "03610838-9c01-11e4-a8bf-0e9d821ea90d",
                     "description": "Change in Bald Eagle Nests over time. Animations are a new feature and may have display problems in some browsers.",
                     "filters": [
 
-                    ]                 
+                    ]
+                },
+                {
+                    "title": "Change Over Time Animation (new)",
+                    "group": "Change-new",
+                    "type": "animation",
+                    "key": "d146d0a2-b91b-11e4-a018-0e0c41326911",
+                    "description": "Change in Bald Eagle Nests over time. Animations are a new feature and may have display problems in some browsers.",
+                    "filters": [
+
+                    ]
                 }
             ]
         },
@@ -109,7 +122,18 @@
             "title": "Waterbirds",
             "layers": [
                 {
-                    "title": "Colonial Waterbirds Change Over Time",
+                    "title": "Waterbirds Animation (new)",
+                    "group": "Waterbirds Animation",
+                    "type": "animation",
+                    "key": "4f5db60c-b91e-11e4-8d61-0e018d66dc29",
+                    "description": "Animation of Colonial Waterbird data from 1976-2005.",
+                    "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/species-of-concern-projects\/chesapeake-bay-heron-survey-2013\/",
+                    "filters": [
+
+                    ]
+                },
+                {
+                    "title": "Colonial Waterbirds Change Over Time (old)",
                     "group": "Colonial Waterbirds Change Over Time",
                     "type": "animation",
                     "key": "39a1a556-a19c-11e4-bccd-0e0c41326911",

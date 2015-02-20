@@ -101,6 +101,14 @@
       map
     )
 
+
+    var print_button = L.easyButton('fa-print', 
+      function (){
+        window.print()
+      },
+      'Open the print window',
+      map
+    )
   };
 
   // refresh map by searching toolbox for loaded layer
@@ -250,8 +258,9 @@
       layer_list.splice( layer_list.indexOf(t.data('title')), 1 );
       t.removeClass("active_layer");
       t.parent().find(".layer_sign").removeClass("active_layer_sign");
-      t.parent().find('.layer_description').slideUp();
-      t.parent().find('.layer_info').slideUp();
+      t.parent().find('.layer_contents').slideUp();
+      // t.parent().find('.layer_description').slideUp();
+      // t.parent().find('.layer_info').slideUp();
       t.parent().find('.filter_toggle').slideUp();
       _gaq.push(['_trackEvent', 'Layers', 'Hide', $(this).data("key")]);
     }
@@ -317,6 +326,7 @@
     
     // manage loading a layer
     if (needs_load && validate.url) {
+      t.parent().find(".layer_sign").addClass("active_layer_sign");
 
       layer_list.push( $(t).data('title') );
 
@@ -332,7 +342,7 @@
       newLayer.on("done", function (layer) {
         active_layers[t.data("key")] = layer;
         addCursorInteraction(layer);
-        t.parent().find(".layer_sign").addClass("active_layer_sign");
+
 
         if ( $(t).data('hashtag') ) {
           active_hashtag = $(t).data('hashtag');
@@ -341,7 +351,7 @@
         map.spin(false);
 
         // callback is for managing filters from hashtag links only 
-        if ( callback ) {
+        if (callback) {
           callback();
         }
         
@@ -352,8 +362,9 @@
 
       // update toolbox for new layer
       t.addClass("active_layer");
-      t.parent().find('.layer_description').slideDown();
-      t.parent().find('.layer_info').slideDown();
+      t.parent().find('.layer_contents').slideDown();
+      // t.parent().find('.layer_description').slideDown();
+      // t.parent().find('.layer_info').slideDown();
       t.parent().find('.filter_toggle').slideDown();
       _gaq.push(['_trackEvent', 'Layers', 'Show', t.data("key")]);
 
@@ -368,41 +379,50 @@
         url_query = URI(url).query(true),
         h;
 
-    if (url_query.zoom && url_query.lat && url_query.lng) {
-      map.setView([url_query.lat, url_query.lng], url_query.zoom);
-    }
-
     if (url_query.layer){
       h = url_query.layer;
     } else {
       // old hash filter
       h = window.location.hash.substring(1);
-      console.log(window.location.hash +" "+ h);
     }
+
+    var hash_layer_info = {
+      layer: false
+    };
 
     $(".layer_toggle").each(function() {
       
       if ($(this).data('hashtag') === h || $(this).data('title') === h || h.indexOf( $(this).data('title') ) > -1 ) {
         var $layer = $(this);
 
+        if ( $(this).data('hashtag') === h && $(this).data('centerlon') && $(this).data('centerlat') && $(this).data('zoom') ) {
+          hash_layer_info.layer = true;
+          hash_layer_info.centerlat = $(this).data('centerlat');
+          hash_layer_info.centerlon = $(this).data('centerlon');
+          hash_layer_info.zoom = $(this).data('zoom');
+        } 
+
         // manage layers, filters, sublayers
         toggle_layer($layer, true, function(){
           
           if ( active_layers[$layer.data("key")] && url_query.filters && url_query.filters.length > 0 ) {
 
-            $layer.parent().find('.filter_toggle').each(function(){
+            $layer.parent().find('.filter_toggle').each(function () {
               if ( url_query.filters.indexOf( $(this).data('sql') ) > -1 ) {
                 $(this).click();
               }
             });
-            
           }
-
         });
+
+        if ( hash_layer_info.layer ) {
+          map.setView([ hash_layer_info.centerlat,  hash_layer_info.centerlon],  hash_layer_info.zoom);
+        } else if (url_query.zoom && url_query.lat && url_query.lng) {
+          map.setView([url_query.lat, url_query.lng], url_query.zoom);
+        }
 
       }
     });
-
   };
 
   // check hashtag (called on page load or on hashtag change)
@@ -463,9 +483,35 @@
     }
 
     validate.cat_html += '<div class="layer">';
-    validate.cat_html += '<div class="layer_toggle" data-hashtag="'+layer.hashtag+'" data-key="'+layer.key+'" data-group="'+layer.group+'" data-type="'+layer.type+'" data-title="'+layer.title+'">' + layer.title + '</div>';
+
+    validate.cat_html += '<div class="layer_toggle"'
+    validate.cat_html += 'data-hashtag="'+layer.hashtag+'"';
+    validate.cat_html += 'data-key="'+layer.key+'"';
+    validate.cat_html += 'data-group="'+layer.group+'"';
+    validate.cat_html += 'data-type="'+layer.type+'"';
+    validate.cat_html += 'data-title="'+layer.title+'"';
+
+    if (layer.centerlon && layer.centerlat && layer.zoom) {
+      validate.cat_html += 'data-centerlon="'+layer.centerlon+'"';
+      validate.cat_html += 'data-centerlat="'+layer.centerlat+'"' ;
+      validate.cat_html += 'data-zoom="'+layer.zoom+'"';
+    }
+
+    validate.cat_html += '>' + layer.title + '</div>';
+
+    validate.cat_html += '<div class="layer_contents">';
+
+
+    if (layer.centerlon && layer.centerlat && layer.zoom) {
+    
+      validate.cat_html += '<span class="layer_extent">Zoom to Extents</span>';
+
+    }
+
     validate.cat_html += (layer.description ? '<div class="layer_description">' + layer.description + '</div>' : '');
     validate.cat_html += (layer.link ? '<div class="layer_info"><a href="'+layer.link+'" target="_blank">More info</a></div>' : '');
+
+    validate.cat_html += '</div>';
 
     if (layer.filters && layer.filters.length > 0) {
       for (var k=0, kx=layer.filters.length; k<kx; k++) {
@@ -490,7 +536,6 @@
   // on document ready
   $(function() {
 
-
     // build toolbox html
     readJSON("toolbox.json", function (request, status, error){
       // var json = request
@@ -505,7 +550,6 @@
       validate.json(request)
 
       $('#layers').append(validate.cat_html);
-
     })
 
     // init layer signs
@@ -557,12 +601,23 @@
       toggle_filter($(this));
     });
 
+    $('.layer_extent').click( function () {
+      var new_lat = $(this).parent().prev().data('centerlat'),
+          new_lon = $(this).parent().prev().data('centerlon'),
+          new_zoom = $(this).parent().prev().data('zoom');
+
+      if ( new_lat && new_lon && new_zoom ) {
+        map.setView([new_lat, new_lon], new_zoom);
+      }
+
+    })
+
     // init toolbox
-    $("#toolbox").each(function() {
+    $("#toolbox").each(function () {
       var pos, tb;
       tb = $(this);
       if (tb.data('layers') === 'active') {
-        $(".layer_toggle").each(function() {
+        $(".layer_toggle").each(function () {
           toggle_layer($(this));
         });
       }
@@ -659,7 +714,7 @@
     $(window).on('hashchange', open_hashtag);
 
     $("#search-clear").click();
-  });
+  }); // END DOCUMENT READY
 
   // tracking - print
   afterPrint = function () {
