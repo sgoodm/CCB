@@ -1,13 +1,3 @@
-.leaflet-top,
-.leaflet-bottom {
-  position: absolute;
-  z-index: 499;
-}
-
-#print-header {
-  display: none;
-}
-
 #toolbox {
   z-index: 100;
   display: block;
@@ -128,13 +118,15 @@
       /*display: none;*/
     }
 
-#map, #map_animations {
+#map {
   position: absolute;
   border-top: 5px solid #aaa;
   top: 130px;
-  bottom: 0px;
   left: 250px;
+  bottom: 0px;
   right: 0px;
+  /*width:500px;*/
+  /*height:500px;*/
 }
   h4{
     padding: 0;
@@ -149,11 +141,16 @@
     right: 10px;
     float:right;
   }
+  .leaflet-top,
+  .leaflet-bottom {
+    position: absolute;
+    z-index: 499;
+  }
 
 #search-link {
   position: fixed;
-  top: 200px;
-  right: 5px;
+  top: 145px;
+  right: 205px;
   width: 70px;
   text-align: center;
   z-index: 1000;
@@ -174,8 +171,8 @@
 
 #search-box {
   position: fixed;
-  top: 190px;
-  right: 0px;
+  top: 140px;
+  right: 200px;
   width: 325px;
   text-align: right;
   z-index: 999;
@@ -211,10 +208,6 @@
     padding-top:3px;
   }
 
-#map_animations {
-  width:800px;
-  height: 800px;
+#print-info {
   display: none;
-  background: rgb(200,200,200);
-  z-index:9999;
 }

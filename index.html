@@ -9,7 +9,9 @@
     
     <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"> -->
     
-    <link href="index.css?nocache"      media="screen, projection" rel="stylesheet" type="text/css" />
+    <!-- <link href="index.css?nocache"      rel="stylesheet" type="text/css" /> -->
+    <!-- <link href="maps-style.css?nocache" rel="stylesheet" type="text/css" /> -->
+    <link href="index.css?nocache"      media="screen, projection, print" rel="stylesheet" type="text/css" />
     <link href="maps-style.css?nocache" media="screen, projection" rel="stylesheet" type="text/css" />
     <link href="maps-print.css?nocache" media="print"              rel="stylesheet" type="text/css" />
 
@@ -28,6 +30,7 @@
 
     <div id="web-header">
       <a href="http://www.ccbbirds.org" id="identity"><img alt="Home" src="http://www.ccbbirds.org/wp-content/uploads/2012/09/ccb-logo-vertical-shadow.png" /></a>
+      
       <ul id="pseudo-nav">
         <li>
           <a href="http://www.ccbbirds.org/about-us">About Us</a>
@@ -45,43 +48,53 @@
           <a class="highlight" href="http://www.ccbbirds.org/give-to-ccb">Give to CCB</a>
         </li>
       </ul>
+
       <div id="page-title">
         <a class="hf" href="http://www.ccbbirds.org/resources/mapping-portal-information-and-faq/" target="_blank">Help / FAQ </a>Mapping Portal
       </div>
 
-      <div id="search-link">
-        Search
-      </div>
-
-      <div id="search-box">
-        <div>
-          LAT <input id="search_lat" type="text" />&#160; / &#160; LONG <input id="search_long" type="text" />
-          (decimal degrees)       
-        </div>
-        <div>
-          ADDRESS (street, county, park name, etc.) <input id="search_address" type="text" />
-        </div>
-        <div id="search-clear">
-          Clear
-        </div>
-      </div>
     </div>
-
-    <div id="print-header">
-      <img id="print-identity" src="http://www.ccbbirds.org/maps/print-logo.jpg" />
-      <div id="print-notice">
-        CCB encourages the use of CCB data sets in wildlife conservation and management applications. This data is protected by intellectual property laws. All users are reminded to view the data use agreement on ccbbirds.org to ensure compliance with our data use policies. Metadata can be found on the data portal on <a href="http://ccbbirds.org">ccbbirds.org</a><br />Direct questions to <a href="mailto:info@ccbbirds.org">info@ccbbirds.org</a> or 757-221-1645. 
-      </div>
-    </div>
-
-    <div id="map"></div>
 
     <div id="toolbox">
       <span id="toolbox_toggle" class="fa fa-chevron-left" title="toggle toolbox display"></span>      
       <div class="title">Layers</div>
       <div id="layers" class="body"></div>
     </div>
+    
+    <div id="map"></div>
 
+
+    <div id="search-link">
+      Search
+    </div>
+
+    <div id="search-box">
+      <div>
+        LAT <input id="search_lat" type="text" />&#160; / &#160; LONG <input id="search_long" type="text" />
+        (decimal degrees)       
+      </div>
+      <div>
+        ADDRESS (street, county, park name, etc.) <input id="search_address" type="text" />
+      </div>
+      <div id="search-clear">
+        Clear
+      </div>
+    </div>
+
+
+    <div id="print-info">
+      
+      <!-- <img id="print-identity" src="http://www.ccbbirds.org/maps/print-logo.jpg" /> -->
+      
+      <div id="print_layers"></div>
+      <div id="print_extent"></div>
+      <div id="print_link"></div>
+
+      <div id="print-notice">
+        CCB encourages the use of CCB data sets in wildlife conservation and management applications. This data is protected by intellectual property laws. All users are reminded to view the data use agreement on ccbbirds.org to ensure compliance with our data use policies. Metadata can be found on the data portal on <a href="http://ccbbirds.org">ccbbirds.org</a><br />Direct questions to <a href="mailto:info@ccbbirds.org">info@ccbbirds.org</a> or 757-221-1645. 
+      </div>
+    
+    </div>
 
     <script type="text/javascript">
       var _gaq = _gaq || [];

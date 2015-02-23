@@ -29,18 +29,33 @@ $(function() {
 
   // initialize map
 
-  var OpenStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { 
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'
-  });
+  // var OpenStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { 
+  //   attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'
+  // });
   
-  var MapQuestOpen_Aerial = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
-    attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
-    subdomains: '1234'
-  });
+  // var MapQuestOpen_Aerial = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
+  //   attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
+  //   subdomains: '1234'
+  // });
 
   var baseMaps = {
-    "OpenStreetMap": OpenStreetMap,
-    "MapQuestOpen_Aerial": MapQuestOpen_Aerial
+    "OpenStreetMap":        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { 
+                              attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'
+                            }),
+    "MapQuest_OpenAerial":  L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
+                              attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
+                              subdomains: '1234'
+                            }),
+    "MapQuest_OSM":         L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg', {
+                              attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
+                              subdomains: '1234'
+                            }),
+    "Hiking":               L.tileLayer("http://toolserver.org/tiles/hikebike/{z}/{x}/{y}.png")
+    // "Other":                L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
+    //                           key: '007b9471b4c74da4a6ec7ff43552b16f',
+    //                           styleId: 999,
+    //                           subdomains: 'abc',
+    //                         })
   };
 
   var overlayMaps = {};
@@ -49,7 +64,7 @@ $(function() {
     measureControl: true, // measure distance tool
     center: [37.27, -76.70],
     zoom: 8,
-    layers: [OpenStreetMap]
+    layers: [baseMaps["OpenStreetMap"]]
   });
 
   control = L.control.layers(baseMaps, overlayMaps);
@@ -109,13 +124,20 @@ $(function() {
     map
   );
 
-  // var print_button = L.easyButton('fa-print', 
-  //   function (){
-  //     window.print();
-  //   },
-  //   'Open the print window',
-  //   map
-  // );
+  // var print_state = false;
+  var print_button = L.easyButton('fa-print', 
+    function (){
+      var html = '';
+      html += 'Print Instructions: \n\n';
+      html += ' - Use your browser\'s print feature \n';
+      html += ' - The "Print background colors" options in your browser\'s print options must be selected in order to print legends. \n';
+      html += ' - Set the print layout to "Landscape" \n'
+      alert(html);
+      // print_state = !print_state;
+    },
+    'Open the print window',
+    map
+  );
 
   // check hashtag on page load or on change
   open_hashtag();
@@ -490,6 +512,9 @@ $(function() {
       $(".leaflet-left").css("visibility", "visible");
     }
 
+    // clean up legend for new layer
+    $('.cartodb-legend-stack').remove();
+
     // manage removing layer from current group
     if ( sublayer && t.hasClass("active_layer") ) {
       var undefined;
@@ -535,9 +560,9 @@ $(function() {
         _gaq.push(['_trackEvent', 'Layers', 'Hide', $(this).data("key")]);
       });
 
-      // clean up legend for new group
-      $('.cartodb-legend-stack').remove();
     }
+
+
 
     // general map cleanup
     $(".cartodb-tooltip").hide();
