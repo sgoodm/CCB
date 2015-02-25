@@ -124,16 +124,70 @@ $(function() {
     map
   );
 
-  // var print_state = false;
   var print_button = L.easyButton('fa-print', 
     function (){
-      var html = '';
-      html += 'Print Instructions: \n\n';
-      html += ' - Use your browser\'s print feature \n';
-      html += ' - The "Print background colors" options in your browser\'s print options must be selected in order to print legends. \n';
-      html += ' - Set the print layout to "Landscape" \n'
-      alert(html);
-      // print_state = !print_state;
+      console.log(map)
+      return
+      console.log("running printer")
+      alert("Generating report. This may take a moment...");
+
+      // generate tile data
+
+      // go through all layers, and collect a list of objects
+      // each object is a tile's URL and the tile's pixel location relative to the viewport
+      var offsetX = parseInt(map._container.offsetLeft);
+      var offsetY = parseInt(map._container.offsetTop);
+      var size  = map.getSize();
+      var tiles = [];
+      for (layername in map.options.layers) {
+          // if the layer isn't visible at this range, or is turned off, skip it
+          var layer = map.options.layers[layername];
+          if (!layer.getVisibility()) continue;
+          if (!layer.calculateInRange()) continue;
+          // iterate through their grid's tiles, collecting each tile's extent and pixel location at this moment
+          for (tilerow in layer.grid) {
+              for (tilei in layer.grid[tilerow]) {
+                  var tile     = layer.grid[tilerow][tilei]
+                  var url      = layer.getURL(tile.bounds);
+                  var position = tile.position;
+                  var tilexpos = position.x + offsetX;
+                  var tileypos = position.y + offsetY;
+                  var opacity  = layer.opacity ? parseInt(100*layer.opacity) : 100;
+                  tiles[tiles.length] = {url:url, x:tilexpos, y:tileypos, opacity:opacity};
+              }
+          }
+      }
+
+      // hand off the list to our server-side script, which will do the heavy lifting
+      var tiles_json = JSON.stringify(tiles);
+
+      var tileData = { call: "tiles", width: size.w, height: size.h, tiles: tiles_json };
+      console.log(tileData);  
+
+      // // pass tile data to php
+      // $.ajax ({
+      //   url: "process.php",
+      //   data: tileData,
+      //   dataType: "json",
+      //   type: "post",
+      //   async: false,
+      //   success: function (result) {
+      //     console.log("Tiles Done");
+      //     console.log(result);
+
+      //     // give user report download link
+      //     // window.open(result);
+
+      //   },
+      //   error: function (result) {
+      //     console.log("error checking url");
+      //     console.log("Tiles Error");
+      //   }
+      // })
+
+
+
+
     },
     'Open the print window',
     map
