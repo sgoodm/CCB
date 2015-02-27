@@ -450,10 +450,11 @@ $(function() {
   });
 
   $('.layer_extent').click( function () {
-    var new_lat = $(this).parent().prev().data('centerlat'),
-        new_lon = $(this).parent().prev().data('centerlon'),
-        new_zoom = $(this).parent().prev().data('zoom');
+    var new_lat = $(this).prev().data('centerlat'),
+        new_lon = $(this).prev().data('centerlon'),
+        new_zoom = $(this).prev().data('zoom');
 
+    console.log( new_lat, new_lon, new_zoom)
     if ( new_lat && new_lon && new_zoom ) {
       map.setView([new_lat, new_lon], new_zoom);
     }
