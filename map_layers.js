@@ -3,9 +3,11 @@ $(function() {
   // init
   var active_layers, afterPrint, beforePrint, close_toolbox, control, 
       do_open_hashtag, drawnItems, filter_list, group, hash_change, 
-      init_map, layer_colors, layer_list, map, mediaQueryList, 
+      init_map, layer_colors, layer_list, map, map_defaultzoommax, mediaQueryList, 
       open_hashtag, open_toolbox, refresh_layers, sql, toggle_filter, 
-      toggle_layer, validate;
+      toggle_layer, validate, zoom_limit;
+
+  var temp_key, temp_title;
 
   active_layers = {};
   layer_list = [];
@@ -18,6 +20,7 @@ $(function() {
     user: 'sgoodm'
   });
   validate = {};
+  zoom_limit = {};
 
   var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
   // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
@@ -28,15 +31,6 @@ $(function() {
   var isIE = /*@cc_on!@*/false || !!document.documentMode; // At least IE6
 
   // initialize map
-
-  // var OpenStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { 
-  //   attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'
-  // });
-  
-  // var MapQuestOpen_Aerial = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
-  //   attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
-  //   subdomains: '1234'
-  // });
 
   var baseMaps = {
     "OpenStreetMap":        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { 
@@ -51,11 +45,7 @@ $(function() {
                               subdomains: '1234'
                             }),
     "Hiking":               L.tileLayer("http://toolserver.org/tiles/hikebike/{z}/{x}/{y}.png")
-    // "Other":                L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
-    //                           key: '007b9471b4c74da4a6ec7ff43552b16f',
-    //                           styleId: 999,
-    //                           subdomains: 'abc',
-    //                         })
+
   };
 
   var overlayMaps = {};
@@ -66,6 +56,11 @@ $(function() {
     zoom: 8,
     layers: [baseMaps["OpenStreetMap"]]
   });
+
+  map.options.minZoom = 3;
+  map_defaultzoommax = 20;
+
+  $('.leaflet-control-attribution').hide();
 
   control = L.control.layers(baseMaps, overlayMaps);
   control.addTo(map);
@@ -86,112 +81,221 @@ $(function() {
     drawnItems.addLayer(layer);
   });
 
-  var legend_button = L.easyButton('fa-exchange', 
-    function (){
-      $('.cartodb-legend-stack').each(function(){
-        $(this).toggle();
-      })
-    },
-    'Toggle the legend display',
-    map
-  )
+  var mb_html = 
+  mb_html += '<div id="map_buttons">';
+  mb_html += '<div id="mb_link" class="map_button">Generate Link</div>';
+  mb_html += '<div id="mb_print" class="map_button">Print Report</div>';
+  mb_html += '<div id="mb_tools" class="map_button">Toggle Map Tools</div>';
+  mb_html += '</div>';
+  $('#map').append(mb_html);
 
-  var url_button = L.easyButton('fa-external-link', 
-    function (){
-      // console.log(active_layers)
+  // var legend_button = L.easyButton('fa-exchange', 
+  //   function (){
+  //     $('.cartodb-legend-stack').each(function(){
+  //       $(this).toggle();
+  //     })
+  //   },
+  //   'Toggle the legend display',
+  //   map
+  // )
 
-      var url_search = {
-                          layer: layer_list,
-                          filters: filter_list,
-                          zoom: map.getZoom(), 
-                          lat: map.getCenter().lat, 
-                          lng: map.getCenter().lng
-                        }
+  // var url_button = L.easyButton('fa-external-link', 
+  //   function (){
+  //     // console.log(active_layers)
 
-      var keys = _.keys(baseMaps);
-      for ( var i=0, ix=keys.length; i<ix; i++ ) {
-        if ( map.hasLayer(baseMaps[ keys[i] ]) ) {
-          url_search.base = keys[i];      
+  //     var url_search = {
+  //                         layer: layer_list,
+  //                         filters: filter_list,
+  //                         zoom: map.getZoom(), 
+  //                         lat: map.getCenter().lat, 
+  //                         lng: map.getCenter().lng
+  //                       }
+
+  //     var keys = _.keys(baseMaps);
+  //     for ( var i=0, ix=keys.length; i<ix; i++ ) {
+  //       if ( map.hasLayer(baseMaps[ keys[i] ]) ) {
+  //         url_search.base = keys[i];      
+  //       }
+  //     }
+
+  //     var url_new = URI(document.URL).addSearch(url_search)
+  //     hash_change = 0;
+  //     window.location.hash = url_new.query()
+  //     // console.log(url_search);
+  //   },
+  //   'Generate url link to current map view',
+  //   map
+  // );
+
+  // var print_button = L.easyButton('fa-print', 
+  //   function (){
+  //     console.log(map)
+  //     return
+  //     console.log("running printer")
+  //     alert("Generating report. This may take a moment...");
+
+  //     // generate tile data
+
+  //     // go through all layers, and collect a list of objects
+  //     // each object is a tile's URL and the tile's pixel location relative to the viewport
+  //     var offsetX = parseInt(map._container.offsetLeft);
+  //     var offsetY = parseInt(map._container.offsetTop);
+  //     var size  = map.getSize();
+  //     var tiles = [];
+  //     for (layername in map.options.layers) {
+  //         // if the layer isn't visible at this range, or is turned off, skip it
+  //         var layer = map.options.layers[layername];
+  //         if (!layer.getVisibility()) continue;
+  //         if (!layer.calculateInRange()) continue;
+  //         // iterate through their grid's tiles, collecting each tile's extent and pixel location at this moment
+  //         for (tilerow in layer.grid) {
+  //             for (tilei in layer.grid[tilerow]) {
+  //                 var tile     = layer.grid[tilerow][tilei]
+  //                 var url      = layer.getURL(tile.bounds);
+  //                 var position = tile.position;
+  //                 var tilexpos = position.x + offsetX;
+  //                 var tileypos = position.y + offsetY;
+  //                 var opacity  = layer.opacity ? parseInt(100*layer.opacity) : 100;
+  //                 tiles[tiles.length] = {url:url, x:tilexpos, y:tileypos, opacity:opacity};
+  //             }
+  //         }
+  //     }
+
+  //     // hand off the list to our server-side script, which will do the heavy lifting
+  //     var tiles_json = JSON.stringify(tiles);
+
+  //     var tileData = { call: "tiles", width: size.w, height: size.h, tiles: tiles_json };
+  //     console.log(tileData);  
+
+  //     // // pass tile data to php
+  //     // $.ajax ({
+  //     //   url: "process.php",
+  //     //   data: tileData,
+  //     //   dataType: "json",
+  //     //   type: "post",
+  //     //   async: false,
+  //     //   success: function (result) {
+  //     //     console.log("Tiles Done");
+  //     //     console.log(result);
+
+  //     //     // give user report download link
+  //     //     // window.open(result);
+
+  //     //   },
+  //     //   error: function (result) {
+  //     //     console.log("error checking url");
+  //     //     console.log("Tiles Error");
+  //     //   }
+  //     // })
+
+
+
+
+  //   },
+  //   'Open the print window',
+  //   map
+  // );
+
+
+  // --------------------------------------------------
+  // map buttons
+
+  $('#mb_link').on('click', function () {
+    var url_search = {
+                        layer: layer_list,
+                        filters: filter_list,
+                        zoom: map.getZoom(), 
+                        lat: map.getCenter().lat, 
+                        lng: map.getCenter().lng
+                      }
+
+    var keys = _.keys(baseMaps);
+    for ( var i=0, ix=keys.length; i<ix; i++ ) {
+      if ( map.hasLayer(baseMaps[ keys[i] ]) ) {
+        url_search.base = keys[i];      
+      }
+    }
+
+    var url_new = URI(document.URL).addSearch(url_search)
+    hash_change = 0;
+    window.location.hash = url_new.query()
+    
+  })
+
+  $('#mb_print').on('click', function () {
+    console.log("print")
+    // console.log(map)
+    return
+    console.log("running printer")
+    alert("Generating report. This may take a moment...");
+
+    // generate tile data
+
+    // go through all layers, and collect a list of objects
+    // each object is a tile's URL and the tile's pixel location relative to the viewport
+    var offsetX = parseInt(map._container.offsetLeft);
+    var offsetY = parseInt(map._container.offsetTop);
+    var size  = map.getSize();
+    var tiles = [];
+    for (layername in map.options.layers) {
+        // if the layer isn't visible at this range, or is turned off, skip it
+        var layer = map.options.layers[layername];
+        if (!layer.getVisibility()) continue;
+        if (!layer.calculateInRange()) continue;
+        // iterate through their grid's tiles, collecting each tile's extent and pixel location at this moment
+        for (tilerow in layer.grid) {
+            for (tilei in layer.grid[tilerow]) {
+                var tile     = layer.grid[tilerow][tilei]
+                var url      = layer.getURL(tile.bounds);
+                var position = tile.position;
+                var tilexpos = position.x + offsetX;
+                var tileypos = position.y + offsetY;
+                var opacity  = layer.opacity ? parseInt(100*layer.opacity) : 100;
+                tiles[tiles.length] = {url:url, x:tilexpos, y:tileypos, opacity:opacity};
+            }
         }
-      }
+    }
 
-      var url_new = URI(document.URL).addSearch(url_search)
-      hash_change = 0;
-      window.location.hash = url_new.query()
-      // console.log(url_search);
-    },
-    'Generate url link to current map view',
-    map
-  );
+    // hand off the list to our server-side script, which will do the heavy lifting
+    var tiles_json = JSON.stringify(tiles);
 
-  var print_button = L.easyButton('fa-print', 
-    function (){
-      console.log(map)
-      return
-      console.log("running printer")
-      alert("Generating report. This may take a moment...");
+    var tileData = { call: "tiles", width: size.w, height: size.h, tiles: tiles_json };
+    console.log(tileData);  
 
-      // generate tile data
+    // // pass tile data to php
+    // $.ajax ({
+    //   url: "process.php",
+    //   data: tileData,
+    //   dataType: "json",
+    //   type: "post",
+    //   async: false,
+    //   success: function (result) {
+    //     console.log("Tiles Done");
+    //     console.log(result);
 
-      // go through all layers, and collect a list of objects
-      // each object is a tile's URL and the tile's pixel location relative to the viewport
-      var offsetX = parseInt(map._container.offsetLeft);
-      var offsetY = parseInt(map._container.offsetTop);
-      var size  = map.getSize();
-      var tiles = [];
-      for (layername in map.options.layers) {
-          // if the layer isn't visible at this range, or is turned off, skip it
-          var layer = map.options.layers[layername];
-          if (!layer.getVisibility()) continue;
-          if (!layer.calculateInRange()) continue;
-          // iterate through their grid's tiles, collecting each tile's extent and pixel location at this moment
-          for (tilerow in layer.grid) {
-              for (tilei in layer.grid[tilerow]) {
-                  var tile     = layer.grid[tilerow][tilei]
-                  var url      = layer.getURL(tile.bounds);
-                  var position = tile.position;
-                  var tilexpos = position.x + offsetX;
-                  var tileypos = position.y + offsetY;
-                  var opacity  = layer.opacity ? parseInt(100*layer.opacity) : 100;
-                  tiles[tiles.length] = {url:url, x:tilexpos, y:tileypos, opacity:opacity};
-              }
-          }
-      }
+    //     // give user report download link
+    //     // window.open(result);
 
-      // hand off the list to our server-side script, which will do the heavy lifting
-      var tiles_json = JSON.stringify(tiles);
+    //   },
+    //   error: function (result) {
+    //     console.log("error checking url");
+    //     console.log("Tiles Error");
+    //   }
+    // })
+   
+  })
 
-      var tileData = { call: "tiles", width: size.w, height: size.h, tiles: tiles_json };
-      console.log(tileData);  
+  $('#mb_tools').on('click', function () {
 
-      // // pass tile data to php
-      // $.ajax ({
-      //   url: "process.php",
-      //   data: tileData,
-      //   dataType: "json",
-      //   type: "post",
-      //   async: false,
-      //   success: function (result) {
-      //     console.log("Tiles Done");
-      //     console.log(result);
+    $('.leaflet-draw').each( function () {
+      $(this).toggle()
+    })
 
-      //     // give user report download link
-      //     // window.open(result);
+    $('.leaflet-control-measure').each( function () {
+      $(this).toggle()
+    })
 
-      //   },
-      //   error: function (result) {
-      //     console.log("error checking url");
-      //     console.log("Tiles Error");
-      //   }
-      // })
-
-
-
-
-    },
-    'Open the print window',
-    map
-  );
+  })
 
   // check hashtag on page load or on change
   open_hashtag();
@@ -247,6 +351,12 @@ $(function() {
       validate.cat_html += 'data-zoom="'+layer.zoom+'"';
     }
 
+    if (layer.maxzoom) {
+      validate.cat_html += 'data-maxzoom="'+layer.maxzoom+'"';
+    } else {
+      validate.cat_html += 'data-maxzoom="'+map_defaultzoommax+'"';
+    }
+
     validate.cat_html += '>' + layer.title + '</div>';
 
     // validate.cat_html += '<div class="layer_content">';
@@ -298,6 +408,7 @@ $(function() {
 
     $('#layers').append(validate.cat_html);
   })
+
 
   // --------------------------------------------------
   // search box
@@ -461,6 +572,32 @@ $(function() {
 
   })
 
+
+  $('#legend_tabs').on('click', '.legend_tab', function () {
+
+    $('.cartodb-legend-stack').each(function(){
+      $(this).hide();
+    });
+
+    $('#'+$(this).attr('id').replace('tab_', '')).show();
+      
+    $('.legend_tab').each(function(){
+      $(this).removeClass('legend_tab_active');
+    });
+
+    $(this).addClass('legend_tab_active');
+  })
+
+  $('#map').on('DOMNodeInserted', function(e) {
+      if ( $(e.target).is('.cartodb-legend-stack') && temp_key && $(e.target)[0].style.display != 'none') {
+        // console.log($(e.target)[0].style.display)
+        // console.log($(e.target)[0])
+        $(e.target)[0].id = 'legend_'+temp_key 
+        $('#legend_tabs').prepend('<div id="legend_tab_'+ temp_key +'" class="legend_tab" title="'+ temp_title +'">'+ temp_title +'</div>')
+        $('#legend_tab_'+ temp_key).click();
+      }
+  });
+
   // open toolbox up from minimized state
   function open_toolbox() {
     var pan = map.getCenter();
@@ -540,6 +677,11 @@ $(function() {
     var sublayer = ( t.data('type') == "sublayer" );
     var animation =  ( t.data('type') == "animation" );
 
+    temp_key = t.data("key");
+    temp_title = t.data("title");
+
+    zoom_limit[t.data("key")] = map_defaultzoommax;
+
     group.old = group.new;
     group.new = t.data('group');
     // clear filter list on layer change
@@ -551,13 +693,15 @@ $(function() {
     // true when opening (from hash or toolbox), false when closing
     var needs_load = force || !t.hasClass("active_layer");
 
-    if ( animation && isFirefox && needs_load) {
+    if ( animation && needs_load) {
       map.touchZoom.disable();
       map.doubleClickZoom.disable();
       map.scrollWheelZoom.disable();
       map.boxZoom.disable();
       map.keyboard.disable();
       $(".leaflet-left").css("visibility", "hidden");
+      $('.cartodb-legend-stack').remove();
+
     } else {
       map.touchZoom.enable();
       map.doubleClickZoom.enable();
@@ -567,8 +711,17 @@ $(function() {
       $(".leaflet-left").css("visibility", "visible");
     }
 
-    // clean up legend for new layer
-    $('.cartodb-legend-stack').remove();
+
+    // remove layer legend and tab (manually close layer)
+    if ( $('#legend_'+t.data("key")).length > 0 ) {
+      $('#legend_'+t.data("key")).remove();
+      $('#legend_tab_'+t.data("key")).remove();
+    }
+
+    // $('.cartodb-legend-stack').each(function(){
+    //   $(this).hide();
+    // });
+    
 
     // manage removing layer from current group
     if ( sublayer && t.hasClass("active_layer") ) {
@@ -595,6 +748,7 @@ $(function() {
     $(".filter_sign").removeClass("active_layer_sign");
 
     if ( !sublayer || group.new != group.old) {
+      $('#legend_tabs').empty();
       layer_list = [];
       $(".layer_sign").removeClass("active_layer_sign");
       $(".active_layer").each(function() {
@@ -616,8 +770,6 @@ $(function() {
       });
 
     }
-
-
 
     // general map cleanup
     $(".cartodb-tooltip").hide();
@@ -653,6 +805,9 @@ $(function() {
     
     // manage loading a layer
     if (needs_load && validate.url) {
+
+      zoom_limit[t.data("key")] = t.data("maxzoom");
+
       t.parent().find(".layer_sign").addClass("active_layer_sign");
 
       layer_list.push( $(t).data('title') );
@@ -670,7 +825,6 @@ $(function() {
         active_layers[t.data("key")] = layer;
         addCursorInteraction(layer);
 
-
         if ( $(t).data('hashtag') ) {
           active_hashtag = $(t).data('hashtag');
         }
@@ -681,7 +835,6 @@ $(function() {
         if (callback) {
           callback();
         }
-        
       });
 
       newLayer.addTo(map);
@@ -697,6 +850,9 @@ $(function() {
       _gaq.push(['_trackEvent', 'Layers', 'Show', t.data("key")]);
 
     }
+
+    map.options.maxZoom = Math.min.apply(Math, _.values(zoom_limit));
+    map.setZoom(map.getZoom());
 
   };
 

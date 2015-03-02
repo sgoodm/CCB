@@ -10,14 +10,15 @@
                     "hashtag": "eagles",
                     "key": "475234ea-7f19-11e4-bfd5-0e9d821ea90d",
                     "key_alt": "d257b844-b697-11e3-b052-0edbca4b5057",
-                    "description": "Most recent data CCB has on bald eagle nest locations in Virginia. Data is largely from two annual aerial flights conducted in winter and spring of all tributaries of the lower Chesapeake Bay and other prominent bodies of water. Reported ground survey data is also included.",
+                    "description": "Most <span style=\"color:red;\">recent<\/span> data CCB has on bald eagle nest locations in Virginia. Data is largely from two annual aerial flights conducted in winter and spring of all tributaries of the lower Chesapeake Bay and other prominent bodies of water. Reported ground survey data is also included.",
                     "link": "http:\/\/www.ccbbirds.org\/what-we-do\/research\/species-of-concern\/virginia-eagles\/nest-locator\/",
                     "filters": [
 
                     ],
                     "zoom": 7,
                     "centerlat": 37.27,
-                    "centerlon": -76.7
+                    "centerlon": -76.7,
+                    "maxzoom": 15
                 },
                 {
                     "title": "Nest Primary Buffers",

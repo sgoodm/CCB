@@ -55,7 +55,13 @@
                 "zoom": {
                   "id": "zoom",
                   "type": "integer",
-                  "minimum": "1",
+                  "minimum": "3",
+                  "maximum": "20"
+                },
+                "maxzoom": {
+                  "id": "maxzoom",
+                  "type": "integer",
+                  "minimum": "3",
                   "maximum": "20"
                 },
                 "hashtag": {
@@ -83,23 +89,22 @@
                   "type": "array",
                   "displayProperty": "title",
                   "items": {
-            		  "id": "0",
-		              "type": "object",
-		              "displayProperty": "title",
-                  "additionalProperties": false,
-                  "required": ["title", "sql"],
-		              "properties": {
-		                "title": {
-		                  "id": "title",
-		                  "type": "string"
-		                },
-		                "sql": {
-		                  "id": "sql",
-		                  "type": "string"
-		                }
-		              }
-		            }
-
+              		  "id": "0",
+  		              "type": "object",
+  		              "displayProperty": "title",
+                    "additionalProperties": false,
+                    "required": ["title", "sql"],
+  		              "properties": {
+  		                "title": {
+  		                  "id": "title",
+  		                  "type": "string"
+  		                },
+  		                "sql": {
+  		                  "id": "sql",
+  		                  "type": "string"
+  		                }
+  		              }
+  		            }
                 }
               }
             }
