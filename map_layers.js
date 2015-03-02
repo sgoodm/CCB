@@ -1,6 +1,19 @@
 $(function() {
 
-  // init
+  // --------------------------------------------------  
+  // browser check
+
+  var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+  // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
+  var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
+  var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+  // At least Safari 3+: "[object HTMLElementConstructor]"
+  var isChrome = !!window.chrome && !isOpera;              // Chrome 1+
+  var isIE = /*@cc_on!@*/false || !!document.documentMode; // At least IE6
+
+  // --------------------------------------------------
+  // var init
+  
   var active_layers, afterPrint, beforePrint, close_toolbox, control, 
       do_open_hashtag, drawnItems, filter_list, group, hash_change, 
       init_map, layer_colors, layer_list, map, map_defaultzoommax, mediaQueryList, 
@@ -22,14 +35,7 @@ $(function() {
   validate = {};
   zoom_limit = {};
 
-  var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
-  // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
-  var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
-  var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
-  // At least Safari 3+: "[object HTMLElementConstructor]"
-  var isChrome = !!window.chrome && !isOpera;              // Chrome 1+
-  var isIE = /*@cc_on!@*/false || !!document.documentMode; // At least IE6
-
+  // --------------------------------------------------
   // initialize map
 
   var baseMaps = {
@@ -81,6 +87,9 @@ $(function() {
     drawnItems.addLayer(layer);
   });
 
+  // --------------------------------------------------
+  // map buttons
+
   var mb_html = 
   mb_html += '<div id="map_buttons">';
   mb_html += '<div id="mb_link" class="map_button">Generate Link</div>';
@@ -89,116 +98,6 @@ $(function() {
   mb_html += '</div>';
   $('#map').append(mb_html);
 
-  // var legend_button = L.easyButton('fa-exchange', 
-  //   function (){
-  //     $('.cartodb-legend-stack').each(function(){
-  //       $(this).toggle();
-  //     })
-  //   },
-  //   'Toggle the legend display',
-  //   map
-  // )
-
-  // var url_button = L.easyButton('fa-external-link', 
-  //   function (){
-  //     // console.log(active_layers)
-
-  //     var url_search = {
-  //                         layer: layer_list,
-  //                         filters: filter_list,
-  //                         zoom: map.getZoom(), 
-  //                         lat: map.getCenter().lat, 
-  //                         lng: map.getCenter().lng
-  //                       }
-
-  //     var keys = _.keys(baseMaps);
-  //     for ( var i=0, ix=keys.length; i<ix; i++ ) {
-  //       if ( map.hasLayer(baseMaps[ keys[i] ]) ) {
-  //         url_search.base = keys[i];      
-  //       }
-  //     }
-
-  //     var url_new = URI(document.URL).addSearch(url_search)
-  //     hash_change = 0;
-  //     window.location.hash = url_new.query()
-  //     // console.log(url_search);
-  //   },
-  //   'Generate url link to current map view',
-  //   map
-  // );
-
-  // var print_button = L.easyButton('fa-print', 
-  //   function (){
-  //     console.log(map)
-  //     return
-  //     console.log("running printer")
-  //     alert("Generating report. This may take a moment...");
-
-  //     // generate tile data
-
-  //     // go through all layers, and collect a list of objects
-  //     // each object is a tile's URL and the tile's pixel location relative to the viewport
-  //     var offsetX = parseInt(map._container.offsetLeft);
-  //     var offsetY = parseInt(map._container.offsetTop);
-  //     var size  = map.getSize();
-  //     var tiles = [];
-  //     for (layername in map.options.layers) {
-  //         // if the layer isn't visible at this range, or is turned off, skip it
-  //         var layer = map.options.layers[layername];
-  //         if (!layer.getVisibility()) continue;
-  //         if (!layer.calculateInRange()) continue;
-  //         // iterate through their grid's tiles, collecting each tile's extent and pixel location at this moment
-  //         for (tilerow in layer.grid) {
-  //             for (tilei in layer.grid[tilerow]) {
-  //                 var tile     = layer.grid[tilerow][tilei]
-  //                 var url      = layer.getURL(tile.bounds);
-  //                 var position = tile.position;
-  //                 var tilexpos = position.x + offsetX;
-  //                 var tileypos = position.y + offsetY;
-  //                 var opacity  = layer.opacity ? parseInt(100*layer.opacity) : 100;
-  //                 tiles[tiles.length] = {url:url, x:tilexpos, y:tileypos, opacity:opacity};
-  //             }
-  //         }
-  //     }
-
-  //     // hand off the list to our server-side script, which will do the heavy lifting
-  //     var tiles_json = JSON.stringify(tiles);
-
-  //     var tileData = { call: "tiles", width: size.w, height: size.h, tiles: tiles_json };
-  //     console.log(tileData);  
-
-  //     // // pass tile data to php
-  //     // $.ajax ({
-  //     //   url: "process.php",
-  //     //   data: tileData,
-  //     //   dataType: "json",
-  //     //   type: "post",
-  //     //   async: false,
-  //     //   success: function (result) {
-  //     //     console.log("Tiles Done");
-  //     //     console.log(result);
-
-  //     //     // give user report download link
-  //     //     // window.open(result);
-
-  //     //   },
-  //     //   error: function (result) {
-  //     //     console.log("error checking url");
-  //     //     console.log("Tiles Error");
-  //     //   }
-  //     // })
-
-
-
-
-  //   },
-  //   'Open the print window',
-  //   map
-  // );
-
-
-  // --------------------------------------------------
-  // map buttons
 
   $('#mb_link').on('click', function () {
     var url_search = {
@@ -224,64 +123,142 @@ $(function() {
 
   $('#mb_print').on('click', function () {
     console.log("print")
+
+    // return
+
+    // console.log("running printer")
     // console.log(map)
-    return
-    console.log("running printer")
+
     alert("Generating report. This may take a moment...");
 
     // generate tile data
 
     // go through all layers, and collect a list of objects
-    // each object is a tile's URL and the tile's pixel location relative to the viewport
+
     var offsetX = parseInt(map._container.offsetLeft);
     var offsetY = parseInt(map._container.offsetTop);
+
     var size  = map.getSize();
     var tiles = [];
-    for (layername in map.options.layers) {
-        // if the layer isn't visible at this range, or is turned off, skip it
-        var layer = map.options.layers[layername];
-        if (!layer.getVisibility()) continue;
-        if (!layer.calculateInRange()) continue;
-        // iterate through their grid's tiles, collecting each tile's extent and pixel location at this moment
-        for (tilerow in layer.grid) {
-            for (tilei in layer.grid[tilerow]) {
-                var tile     = layer.grid[tilerow][tilei]
-                var url      = layer.getURL(tile.bounds);
-                var position = tile.position;
-                var tilexpos = position.x + offsetX;
-                var tileypos = position.y + offsetY;
-                var opacity  = layer.opacity ? parseInt(100*layer.opacity) : 100;
-                tiles[tiles.length] = {url:url, x:tilexpos, y:tileypos, opacity:opacity};
+
+    var te = {
+      x: {
+        min:null,
+        max:null
+      }, 
+      y: {
+        min:null,
+        max:null
+      },
+      diff: {
+        x: null,
+        y: null
+      },
+      min: {
+        x: null,
+        y: null
+      }
+    };
+
+    $('.leaflet-layer').each ( function () {
+
+      var tile_layer = false; 
+
+      var tmp_tiles = [];
+
+      var t0 = 1;
+
+      $(this).find('.leaflet-tile-container').each( function () {
+        
+        if ( $(this).children().length > 0 && tile_layer == false ) {
+          
+          tile_layer = true;
+
+          $(this).find('img').each( function () {
+
+            var tileposraw = $(this)[0].style.transform.replace(/translate|\)|\(| |px/g,'').split(',');
+
+            if ( t0 == 1 && parseInt(tileposraw[0]) -256 && parseInt(tileposraw[1]) > -256 ) {
+
+              var ti = [null,null,null]
+              ti[2] = $(this)[0].src.lastIndexOf('.');
+              ti[1] = $(this)[0].src.lastIndexOf('/');
+
+              ti[0] = $(this)[0].src.lastIndexOf('/', ti[1]-1);
+
+              var tx = parseInt($(this)[0].src.substr( ti[0]+1, ti[1]-ti[0]-1 ));
+              var ty = parseInt($(this)[0].src.substr( ti[1]+1, ti[2]-ti[1]-1 ));
+
+              te.x.min = tx < te.x.min || te.x.min == null ? tx : te.x.min;
+              te.x.max = tx > te.x.max || te.x.max == null ? tx : te.x.max;
+              te.y.min = ty < te.y.min || te.y.min == null ? ty : te.y.min;
+              te.y.max = ty > te.y.max || te.y.max == null ? ty : te.y.max;
+
+              te.min.x = tileposraw[0] < te.min.x || te.min.x == null ? tileposraw[0] : te.min.x;
+              te.min.y = tileposraw[1] < te.min.y || te.min.y == null ? tileposraw[1] : te.min.y;
+
             }
+
+          })
+
+          $(this).find('img').each( function () {
+
+            var tileposraw = $(this)[0].style.transform.replace(/translate|\)|\(| |px/g,'').split(',');
+
+            if ( parseInt(tileposraw[0]) > -256 && parseInt(tileposraw[1]) > -256) {
+              tmp_tiles.push({
+                url: $(this)[0].src,
+                x: parseInt(tileposraw[0]) - te.min.x,
+                y: parseInt(tileposraw[1]) - te.min.y
+              })
+            }
+
+          })
+
+          if ( t0 == 1 ) {
+            te.diff.x = te.x.max - te.x.min + 1;
+            te.diff.y = te.y.max - te.y.min + 1
+          }
+          t0 = 0;
+
+          tiles.push(tmp_tiles)
+          console.log(te)
+
         }
-    }
+      })
+    })
+
+    // console.log( tiles )
+
 
     // hand off the list to our server-side script, which will do the heavy lifting
     var tiles_json = JSON.stringify(tiles);
 
-    var tileData = { call: "tiles", width: size.w, height: size.h, tiles: tiles_json };
+    // var tileData = { call: "tiles", width: size.x, height: size.y, tiles: tiles_json };
+    var tileData = { call: "tiles", width: te.diff.x * 256, height: te.diff.y * 256, tiles: tiles_json };
+
     console.log(tileData);  
 
-    // // pass tile data to php
-    // $.ajax ({
-    //   url: "process.php",
-    //   data: tileData,
-    //   dataType: "json",
-    //   type: "post",
-    //   async: false,
-    //   success: function (result) {
-    //     console.log("Tiles Done");
-    //     console.log(result);
+    // pass tile data to php
+    $.ajax ({
+      url: "process.php",
+      data: tileData,
+      type: "post",
+      async: false,
+      success: function (result) {
+        console.log("Tiles Done");
+        console.log(result);
 
-    //     // give user report download link
-    //     // window.open(result);
+        // give user report download link
+        // window.open(result);
 
-    //   },
-    //   error: function (result) {
-    //     console.log("error checking url");
-    //     console.log("Tiles Error");
-    //   }
-    // })
+      },
+      error: function (request, status, error) {
+        console.log("Tiles Error");
+        console.log(error);
+
+      }
+    })
    
   })
 
@@ -296,6 +273,9 @@ $(function() {
     })
 
   })
+
+  // --------------------------------------------------
+  // hash change
 
   // check hashtag on page load or on change
   open_hashtag();
@@ -701,6 +681,7 @@ $(function() {
       map.keyboard.disable();
       $(".leaflet-left").css("visibility", "hidden");
       $('.cartodb-legend-stack').remove();
+      $('#map_buttons').hide();
 
     } else {
       map.touchZoom.enable();
@@ -709,6 +690,8 @@ $(function() {
       map.boxZoom.enable();
       map.keyboard.enable();
       $(".leaflet-left").css("visibility", "visible");
+      $('#map_buttons').show();
+
     }
 
 
@@ -896,8 +879,8 @@ $(function() {
         h;
 
     if (url_query.base) {
-      console.log(url_query.base)
-      console.log(baseMaps)
+      // console.log(url_query.base)
+      // console.log(baseMaps)
       var keys = _.keys(baseMaps);
       for ( var i=0, ix=keys.length; i<ix; i++ ) {
         if ( map.hasLayer(baseMaps[ keys[i] ]) ) {
