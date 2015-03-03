@@ -52,7 +52,25 @@ switch ($_POST['call']) {
 		foreach ($tiles as $layer) {
 			foreach ($layer as $tile) {
 
-			   	$tileimage = imagecreatefrompng($tile->url);
+				list($tilewidth,$tileheight,$tileformat) = @getimagesize($tile->url);
+
+			    if (!$tileformat) continue;
+
+			    // load the tempfile's image, and blit it onto the canvas
+			    switch ($tileformat) {
+			        case IMAGETYPE_GIF:
+			           $tileimage = imagecreatefromgif($tile->url);
+			           break;
+			        case IMAGETYPE_JPEG:
+			           $tileimage = imagecreatefromjpeg($tile->url);
+			           break;
+			        case IMAGETYPE_PNG:
+			           $tileimage = imagecreatefrompng($tile->url);
+			           break;
+			    }
+
+
+			   	// $tileimage = imagecreatefrompng($tile->url);
 				imagecopy($image, $tileimage, $tile->x, $tile->y, 0, 0, 256, 256);
 
 			}
