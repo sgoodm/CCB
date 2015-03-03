@@ -223,6 +223,9 @@ switch ($_POST['call']) {
 		$mpdf->WriteHTML($html);
 		$mpdf->Output($TEMP_DIR.'/'.$TEMP_URL.'.pdf', "F");
 
+		// delete temp jpg of map
+		unlink($TEMP_DIR.'/'.$TEMP_URL.'.jpg');
+
 		print $TEMP_URL.'.pdf';
 
 		break;
