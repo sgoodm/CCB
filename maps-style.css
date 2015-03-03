@@ -12,7 +12,6 @@
   border-top: 5px solid rgb(170,170,170);
   border-right: 2.5px solid rgba(170,170,170,1);
   overflow: hidden;
-
 }
   #toolbox_toggle {
     float: right;
@@ -24,7 +23,6 @@
     border: 1px solid rgba(100,100,100,0.5);
     cursor:pointer;
   }
-
   #toolbox .title {
     background-color: #fff;
     margin-top: -10px;
@@ -37,7 +35,6 @@
     width: 300px;
     border-bottom: 1px solid #ccc;
   }
-
   #toolbox .body {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -61,6 +58,11 @@
     padding-bottom: 2px;
     position: relative;
   }
+  .layer_toggle {
+    color: #c50;
+    cursor: pointer;
+    margin-left: 15px;
+  }
   .filter_toggle {
     display: none;
     padding-top: 3px;
@@ -69,27 +71,33 @@
     cursor: pointer;
     margin-left: 30px;
   }
-  .layer_toggle {
-    color: #c50;
-    cursor: pointer;
-    margin-left: 15px;
-  }
   .layer_sign, .filter_sign {
-    position: absolute;
-    color: #777;
-    font-weight: bold;
 
     width:3px;
     height:3px;
-    position: absolute;
-    top: 7.5px;
-    left:2px;
+    float:left;
+    position: relative;
+    top: 5px;
     background: transparent;
     border: 1px solid transparent;
     border-radius: 3px;
+
+    color: #777;
+    font-weight: bold;
   }
+
+  .layer_sign {
+    left: 5px;
+  }
+
+  .filter_sign {
+    left: -5px;
+  }
+
   .filter_toggle .active_layer_sign{
-    margin-left: -15px;
+    /*margin-left: -15px;*/
+    background: black;
+    border: 1px solid black;
   }
 
 /*  .active_layer_sign:before {
@@ -99,6 +107,7 @@
     background: black;
     border: 1px solid black;
   }
+
     .layer_extent, .layer_info, .layer_description {
       margin-left: 15px;
       display: none;
@@ -143,15 +152,12 @@
   left: 250px;
   bottom: 0px;
   right: 0px;
-  /*width:500px;*/
-  /*height:500px;*/
 }
   h4{
     padding: 0;
     margin: 0;
   }
   .legend_min{
-    /*float:left;*/
     width:25px;
     height: 25px;
     position:relative;
@@ -164,10 +170,14 @@
     position: absolute;
     z-index: 499;
   }
-
   .leaflet-left {
     position: relative;
-    top: 25px; 
+    top: 60px; 
+  }
+  .leaflet-control-scale {
+    position: absolute;
+    left:5px;
+    top:-30px;
   }
 
 #map_buttons {
@@ -179,9 +189,11 @@
     cursor: pointer;
     display: inline-block;
     width: 125px;
-    padding: 1px 10px;
+    height: 20px;
+    padding: 0px 10px;
     background: rgb(100,100,100);
     color: white;
+    line-height: 20px;
     font-size: 12px;
     text-align: center;
     border-right: 1px solid rgb(200,200,200);
@@ -195,6 +207,17 @@
         -moz-box-shadow: inset 0 0 5px rgba(0,0,0,0.85), 0 1px 0 rgba(255,255,255,0.75);
             box-shadow: inset 0 0 5px rgba(0,0,0,0.85), 0 1px 0 rgba(255,255,255,0.75);
   }
+
+  #mb_report a {
+    width: 100%;
+    height: 100%;
+    display: block;
+    padding: 0px 10px;
+    position: relative;
+    left: -10px;
+    color: white;
+  }
+
 
 #legend_tabs {
   margin: 0;

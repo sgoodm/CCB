@@ -68,6 +68,8 @@ $(function() {
 
   $('.leaflet-control-attribution').hide();
 
+  L.control.scale().addTo(map);
+
   control = L.control.layers(baseMaps, overlayMaps);
   control.addTo(map);
 
@@ -92,9 +94,9 @@ $(function() {
 
   var mb_html = 
   mb_html += '<div id="map_buttons">';
+  mb_html += '<div id="mb_tools" class="map_button">Toggle Map Tools</div>';
   mb_html += '<div id="mb_link" class="map_button">Generate Link</div>';
   mb_html += '<div id="mb_print" class="map_button">Print Report</div>';
-  mb_html += '<div id="mb_tools" class="map_button">Toggle Map Tools</div>';
   mb_html += '</div>';
   $('#map').append(mb_html);
 
@@ -124,21 +126,30 @@ $(function() {
   $('#mb_print').on('click', function () {
     console.log("print")
 
-    // return
+    var build_report = confirm("Generating your report may take a minute. \n\nPlease be sure all visible map tiles have loaded before printing. \n\nContinue?");
 
-    // console.log("running printer")
-    // console.log(map)
+    if (!build_report) {
+      return;
+    }
+    map.spin(true);
 
-    alert("Generating report. This may take a moment...");
+    console.log("generating report")
+
+    if ( $('#mb_report').length > 0 ) {
+      $('#mb_report').remove();
+    }
+
+    // update link
+    $('#mb_link').click();
 
     // generate tile data
 
-    // go through all layers, and collect a list of objects
-
     var offsetX = parseInt(map._container.offsetLeft);
     var offsetY = parseInt(map._container.offsetTop);
-
     var size  = map.getSize();
+
+    // console.log('sizex: '+size.x+'  sizey: '+size.y+'  ox: '+offsetX+'  oy: '+offsetY)
+
     var tiles = [];
 
     var te = {
@@ -160,12 +171,11 @@ $(function() {
       }
     };
 
+    // go through all layers, and collect a list of objects
     $('.leaflet-layer').each ( function () {
 
       var tile_layer = false; 
-
       var tmp_tiles = [];
-
       var t0 = 1;
 
       $(this).find('.leaflet-tile-container').each( function () {
@@ -176,9 +186,15 @@ $(function() {
 
           $(this).find('img').each( function () {
 
-            var tileposraw = $(this)[0].style.transform.replace(/translate|\)|\(| |px/g,'').split(',');
+            // var tileposraw = $(this)[0].style.transform.replace(/translate|\)|\(| |px/g,'').split(',');
+            var tileposraw = [$(this).offset().left, $(this).offset().top];
 
-            if ( t0 == 1 && parseInt(tileposraw[0]) -256 && parseInt(tileposraw[1]) > -256 ) {
+            // get the number of tiles at least partially in view
+            //  - used to determine size of canvas
+            //  - only needs to be done for 1 layer
+            // get x and y min values based on viewport
+            //  - used to set "origin" tile to (0,0)
+            if ( t0 == 1 && parseInt(tileposraw[0]) > offsetX-256 && parseInt(tileposraw[1]) > offsetY-256 && parseInt(tileposraw[0]) < offsetX+size.x+256 && parseInt(tileposraw[1]) < offsetY+size.y+256 ) {
 
               var ti = [null,null,null]
               ti[2] = $(this)[0].src.lastIndexOf('.');
@@ -203,9 +219,10 @@ $(function() {
 
           $(this).find('img').each( function () {
 
-            var tileposraw = $(this)[0].style.transform.replace(/translate|\)|\(| |px/g,'').split(',');
+            // var tileposraw = $(this)[0].style.transform.replace(/translate|\)|\(| |px/g,'').split(',');
+            var tileposraw = [$(this).offset().left, $(this).offset().top];
 
-            if ( parseInt(tileposraw[0]) > -256 && parseInt(tileposraw[1]) > -256) {
+            if ( parseInt(tileposraw[0]) > offsetX-256 && parseInt(tileposraw[1]) > offsetY-256 && parseInt(tileposraw[0]) < offsetX+size.x+256 && parseInt(tileposraw[1]) < offsetY+size.y+256 ) {
               tmp_tiles.push({
                 url: $(this)[0].src,
                 x: parseInt(tileposraw[0]) - te.min.x,
@@ -218,26 +235,59 @@ $(function() {
           if ( t0 == 1 ) {
             te.diff.x = te.x.max - te.x.min + 1;
             te.diff.y = te.y.max - te.y.min + 1
+            t0 = 0;
           }
-          t0 = 0;
 
           tiles.push(tmp_tiles)
-          console.log(te)
+          // console.log(te)
 
         }
       })
     })
-
     // console.log( tiles )
-
 
     // hand off the list to our server-side script, which will do the heavy lifting
     var tiles_json = JSON.stringify(tiles);
 
-    // var tileData = { call: "tiles", width: size.x, height: size.y, tiles: tiles_json };
-    var tileData = { call: "tiles", width: te.diff.x * 256, height: te.diff.y * 256, tiles: tiles_json };
+    // get active legend html if a legend is active
+    var legend_info = [];
+    var active_legend_name = '';
+    $('.cartodb-legend-stack').each(function () {
+      if ( $(this).css('display') == 'block' ) {
 
-    console.log(tileData);  
+        active_legend_name = $(this).data('layer');
+
+        $(this).find('li').each( function () {
+
+          var item_name = $(this)[0].innerHTML.substr( $(this)[0].innerHTML.lastIndexOf('</div>') + 6 );
+          var item_color;
+
+          $(this).find('div').each( function () {
+            item_color = $(this)[0].style['background-color'];
+          })
+
+          legend_info.push([item_name, item_color]);
+        })
+
+
+      }
+    });
+
+
+    // var tileData = { call: "tiles", width: size.x, height: size.y, tiles: tiles_json };
+    var tileData = { 
+      call: "tiles", 
+      width: te.diff.x * 256, 
+      height: te.diff.y * 256, 
+      tiles: tiles_json, 
+      legend: legend_info,
+      active: active_legend_name,
+      layers: layer_list,
+      centerlat: map.getCenter().lat, 
+      centerlng: map.getCenter().lng,
+      link: document.URL
+    };
+    // console.log(tileData);  
 
     // pass tile data to php
     $.ajax ({
@@ -248,18 +298,24 @@ $(function() {
       success: function (result) {
         console.log("Tiles Done");
         console.log(result);
-
+        var link = '/aiddata/tmp/'+result;
         // give user report download link
-        // window.open(result);
+        window.open(link);
+
+        $('#map_buttons').append('<div id="mb_report" class="map_button"><a href="'+link+'">Link to Report</a></div>');
+        map.spin(false);
 
       },
       error: function (request, status, error) {
         console.log("Tiles Error");
         console.log(error);
+        map.spin(false);
 
       }
     })
-   
+    
+    map.spin(false);
+
   })
 
   $('#mb_tools').on('click', function () {
@@ -472,10 +528,6 @@ $(function() {
   // --------------------------------------------------
   // manage toolbox interactions
 
-  // init layer signs
-  $(".layer").each(function() {
-    $(this).prepend("<div class='layer_sign'></div>");
-  });
 
   // init toolbox
   $("#toolbox").each(function () {
@@ -494,6 +546,12 @@ $(function() {
       $("#toolbox").css('height', $("#map").height() / 2);
       close_toolbox();
     }
+  });
+
+
+  // init layer signs
+  $(".layer").each(function() {
+    $(this).prepend("<div class='layer_sign'></div>");
   });
 
   // init filter signs
@@ -571,8 +629,10 @@ $(function() {
   $('#map').on('DOMNodeInserted', function(e) {
       if ( $(e.target).is('.cartodb-legend-stack') && temp_key && $(e.target)[0].style.display != 'none') {
         // console.log($(e.target)[0].style.display)
-        // console.log($(e.target)[0])
         $(e.target)[0].id = 'legend_'+temp_key 
+        
+        $('#legend_'+temp_key ).data('layer', temp_title);
+        
         $('#legend_tabs').prepend('<div id="legend_tab_'+ temp_key +'" class="legend_tab" title="'+ temp_title +'">'+ temp_title +'</div>')
         $('#legend_tab_'+ temp_key).click();
       }
