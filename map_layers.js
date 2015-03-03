@@ -1,5 +1,7 @@
 $(function() {
 
+  var CARTO_USER = 'sgoodm';
+  
   // --------------------------------------------------  
   // browser check
 
@@ -30,7 +32,7 @@ $(function() {
   layer_colors = {};
   map = void 0;
   sql = new cartodb.SQL({
-    user: 'sgoodm'
+    user: CARTO_USER
   });
   validate = {};
   zoom_limit = {};
@@ -298,7 +300,7 @@ $(function() {
       success: function (result) {
         console.log("Tiles Done");
         console.log(result);
-        var link = '/aiddata/tmp/'+result;
+        var link = 'tmp/'+result;
         // give user report download link
         window.open(link);
 
@@ -820,7 +822,7 @@ $(function() {
     $(".cartodb-popup").remove();
     $(".cartodb-timeslider").remove();
 
-    var layerUrl = "http://sgoodm.cartodb.com/api/v2/viz/" + t.data("key") + "/viz.json";
+    var layerUrl = "http://"+CARTO_USER+".cartodb.com/api/v2/viz/" + t.data("key") + "/viz.json";
 
     // check link before loading
     validate.url = 0;

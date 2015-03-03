@@ -32,7 +32,13 @@ switch ($_POST['call']) {
 
 		$random = md5(microtime().mt_rand());
 
-		$TEMP_DIR = '/var/www/html/aiddata/tmp';
+		$TEMP_DIR = dirname(__FILE__) .'/tmp';
+
+		if (!file_exists($TEMP_DIR) && !is_dir($TEMP_DIR)) {
+			$old_mask = umask(0);
+			mkdir($TEMP_DIR, 0775, true);
+		}
+
 		$TEMP_URL = sprintf("tmp_%s", $random );
 
 		$image_url = sprintf("%s/tmp_%s.jpg", $TEMP_DIR, $random );
@@ -201,7 +207,7 @@ switch ($_POST['call']) {
 
 		
 		// convert markdownextra to html
-		require_once '/var/www/html/aiddata/libs/Michelf/MarkdownExtra.inc.php';
+		require_once dirname(__FILE__).'/libs/Michelf/MarkdownExtra.inc.php';
 
 		// use \Michelf\MarkdownExtra;
 		// $parser = new MarkdownExtra();
@@ -209,10 +215,10 @@ switch ($_POST['call']) {
 
 		$html = \Michelf\MarkdownExtra::defaultTransform($raw);
 
-		file_put_contents("/var/www/html/aiddata/tmp/report.html", $html);
+		// file_put_contents($TEMP_DIR.'/'.$TEMP_URL.'.html', $html);
 
 		// convert html to pdf
-		include '/var/www/html/aiddata/libs/mpdf/mpdf.php';
+		include dirname(__FILE__).'/libs/mpdf/mpdf.php';
 		$mpdf = new mPDF();
 		$mpdf->WriteHTML($html);
 		$mpdf->Output($TEMP_DIR.'/'.$TEMP_URL.'.pdf', "F");
