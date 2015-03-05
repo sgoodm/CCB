@@ -82,9 +82,19 @@ $(function() {
   // handle map drawing tools
   drawnItems = L.featureGroup().addTo(map);
 
-  map.addControl(new L.Control.Draw({
-    edit: { featureGroup: drawnItems }
-  }));
+  var drawControl = new L.Control.Draw({
+        draw: {
+          polygon: false,
+          circle: false,
+          rectangle: false,
+          polyline: false
+        },
+        edit: {
+          featureGroup: drawnItems
+      }
+  });
+
+  map.addControl(drawControl);
 
   map.on('draw:created', function(event) {
     var layer = event.layer;
