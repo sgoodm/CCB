@@ -3,7 +3,7 @@
   display: block;
   position: fixed;
   left: 0px;
-  top: 130px;
+  top: 113px;
   width: 230px;
   bottom: 0px;
   padding: 10px;
@@ -148,7 +148,7 @@
 #map {
   position: absolute;
   border-top: 5px solid #aaa;
-  top: 130px;
+  top: 113px;
   left: 250px;
   bottom: 0px;
   right: 0px;

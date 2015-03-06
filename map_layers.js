@@ -83,12 +83,6 @@ $(function() {
   drawnItems = L.featureGroup().addTo(map);
 
   var drawControl = new L.Control.Draw({
-        draw: {
-          polygon: false,
-          circle: false,
-          rectangle: false,
-          polyline: false
-        },
         edit: {
           featureGroup: drawnItems
       }
@@ -625,17 +619,26 @@ $(function() {
 
   $('#legend_tabs').on('click', '.legend_tab', function () {
 
+
     $('.cartodb-legend-stack').each(function(){
       $(this).hide();
     });
 
     $('#'+$(this).attr('id').replace('tab_', '')).show();
+
+    var hide = false
+    if ( $(this).hasClass("legend_tab_active") ) {
+      hide = true;
+      $('#'+$(this).attr('id').replace('tab_', '')).hide();
+    }
       
     $('.legend_tab').each(function(){
       $(this).removeClass('legend_tab_active');
     });
 
-    $(this).addClass('legend_tab_active');
+    if (hide != true) {
+      $(this).addClass('legend_tab_active');
+    }
   })
 
   $('#map').on('DOMNodeInserted', function(e) {
@@ -732,8 +735,6 @@ $(function() {
     temp_key = t.data("key");
     temp_title = t.data("title");
 
-    zoom_limit[t.data("key")] = map_defaultzoommax;
-
     group.old = group.new;
     group.new = t.data('group');
     // clear filter list on layer change
@@ -804,6 +805,11 @@ $(function() {
 
     if ( !sublayer || group.new != group.old) {
       $('#legend_tabs').empty();
+      $('.cartodb-legend-stack').each(function(){
+        $(this).hide();
+      });
+
+      zoom_limit = {};
       layer_list = [];
       $(".layer_sign").removeClass("active_layer_sign");
       $(".active_layer").each(function() {
@@ -858,6 +864,8 @@ $(function() {
       }
     })
     
+    zoom_limit[t.data("key")] = map_defaultzoommax;
+
     // manage loading a layer
     if (needs_load && validate.url) {
 
