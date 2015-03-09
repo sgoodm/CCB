@@ -41,19 +41,20 @@ $(function() {
   // initialize map
 
   var baseMaps = {
-    "OpenStreetMap":        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { 
-                              attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'
-                            }),
-    "MapQuest_OpenAerial":  L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
-                              attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
-                              subdomains: '1234'
-                            }),
-    "MapQuest_OSM":         L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg', {
-                              attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
-                              subdomains: '1234'
-                            }),
-    "Hiking":               L.tileLayer("http://toolserver.org/tiles/hikebike/{z}/{x}/{y}.png")
-
+    "Street Map (OSM)":           L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { 
+                                    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'
+                                  }),
+    "Aerial Imagery (MapQuest)":  L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
+                                    attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
+                                    subdomains: '1234'
+                                  }),
+    "Street Map (MapQuest)":      L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg', {
+                                    attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
+                                    subdomains: '1234'
+                                  }),
+    "Grayscale (Stamen)":         L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png', {
+                                    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.'
+                                  })
   };
 
   var overlayMaps = {};
@@ -62,13 +63,15 @@ $(function() {
     measureControl: true, // measure distance tool
     center: [37.27, -76.70],
     zoom: 8,
-    layers: [baseMaps["OpenStreetMap"]]
+    layers: [baseMaps["Street Map (OSM)"]],
+    attributionControl: false
   });
 
   map.options.minZoom = 3;
   map_defaultzoommax = 20;
 
-  $('.leaflet-control-attribution').hide();
+  // $('.leaflet-control-attribution').hide();
+  L.control.attribution({position: 'topright'}).addTo(map);
 
   L.control.scale().addTo(map);
 
@@ -103,6 +106,7 @@ $(function() {
   mb_html += '<div id="mb_tools" class="map_button">Toggle Map Tools</div>';
   mb_html += '<div id="mb_link" class="map_button">Generate Link</div>';
   mb_html += '<div id="mb_print" class="map_button">Print Report</div>';
+  mb_html += '<div id="search-link" class="map_button">Search</div>';
   mb_html += '</div>';
   $('#map').append(mb_html);
 
@@ -308,7 +312,7 @@ $(function() {
         // give user report download link
         window.open(link);
 
-        $('#map_buttons').append('<div id="mb_report" class="map_button"><a href="'+link+'">Link to Report</a></div>');
+        // $('#map_buttons').append('<div id="mb_report" class="map_button"><a href="'+link+'">Link to Report</a></div>');
         map.spin(false);
 
       },

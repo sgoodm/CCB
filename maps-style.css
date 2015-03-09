@@ -179,6 +179,20 @@
     left:5px;
     top:-30px;
   }
+  .cartodb-legend-stack {
+    position: relative;
+    bottom: 50px;
+  }
+
+  @media (max-width: 1500px){
+
+    .leaflet-control-attribution {
+      display: none;
+      /*position: absolute;*/
+      /*bottom: 0;*/
+      /*left: 100px;*/
+    }
+  }
 
 #map_buttons {
   position: absolute;
@@ -244,9 +258,9 @@
     background: rgb(150,150,150);
   }
 
-#search-link {
+/*#search-link {
   position: fixed;
-  top: 145px;
+  top: 165px;
   right: 205px;
   width: 70px;
   text-align: center;
@@ -265,11 +279,11 @@
   border-width:3px;
   border-color:#8000FF;
 }
-
+*/
 #search-box {
-  position: fixed;
-  top: 140px;
-  right: 200px;
+  position: absolute;
+  top: 160px;
+  left: 400px;
   width: 325px;
   text-align: right;
   z-index: 999;
