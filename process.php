@@ -102,31 +102,35 @@ switch ($_POST['call']) {
 		// build raw string
 		$raw = '';
 		$raw .= '<style> 
-					#header {
-						width: 100%;
-						border-bottom: 1px solid black;
-						margin-bottom: 20px;
-					}
 					#header_logo {
-						position: fixed;
-						top: 0px;
-						left: 5px;
-					}
-					#header_title {
-						width:100%;
-						text-align: center;
-						font-size: 30px;
-					}
-					#map {
-						margin-bottom: 20px;
+						position:fixed;
+						top:10px;
+						left:10px;
+						width:50px;
+						height:50px;
 					}
 
+					#header_title {
+						position:fixed;
+						top:0;
+						left:0;
+						width:100%;
+						height:70px;
+						border-bottom: 1px solid black;
+						text-align: center;
+						font-size: 30px;
+						line-height: 70px;
+					}
+
+					#map {
+						margin-top: 70px;
+						margin-bottom: 20px;
+					}
 
 					#layers {
 						font-size: 10px;
 						display:inline;
 					}
-
 
 					#legend {
 						font-size: 10px;
@@ -151,10 +155,8 @@ switch ($_POST['call']) {
 				</style>';
 
 		// add header
-		$raw .= '<div id="header">
-					<div id="header_logo"></div>
-					<div id="header_title">CCB Mapping Portal</div>
-				</div>';
+		$raw .= '<div id="header_logo"><img src="ccblogo_square_notext.jpg"></div>';
+		$raw .= '<div id="header_title">CCB Mapping Portal</div>';
 
 		// add map image
 		$raw .= '<div id="map"><img src="'.$TEMP_DIR.'/'.$TEMP_URL.'.jpg'.'"/></div>';
