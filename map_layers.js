@@ -652,8 +652,10 @@ $(function() {
         
         $('#legend_'+temp_key ).data('layer', temp_title);
         
-        $('#legend_tabs').prepend('<div id="legend_tab_'+ temp_key +'" class="legend_tab" title="'+ temp_title +'">'+ temp_title +'</div>')
+        $('#legend_tabs').append('<div id="legend_tab_'+ temp_key +'" class="legend_tab" title="'+ temp_title +'">'+ temp_title +'</div>')
         $('#legend_tab_'+ temp_key).click();
+
+        $('#legend_label').html('Toggle Legends')
       }
   });
 
@@ -772,10 +774,15 @@ $(function() {
     }
 
 
-    // remove layer legend and tab (manually close layer)
+    // remove layer legend and tab (when manually closing a layer)
     if ( $('#legend_'+t.data("key")).length > 0 ) {
       $('#legend_'+t.data("key")).remove();
       $('#legend_tab_'+t.data("key")).remove();
+
+      // remove legend tabs label if no tabs exist
+      if ( ! $('.legend_tab')[0] ) {
+        $('#legend_label').empty()
+      }
     }
 
     // $('.cartodb-legend-stack').each(function(){
@@ -808,7 +815,10 @@ $(function() {
     $(".filter_sign").removeClass("active_layer_sign");
 
     if ( !sublayer || group.new != group.old) {
-      $('#legend_tabs').empty();
+      $('#legend_label').empty();
+      $('.legend_tab').each( function () {
+        $(this).remove();
+      });
       $('.cartodb-legend-stack').each(function(){
         $(this).hide();
       });
