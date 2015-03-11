@@ -155,7 +155,7 @@ switch ($_POST['call']) {
 				</style>';
 
 		// add header
-		$raw .= '<div id="header_logo"><img src="ccblogo_square_notext.jpg"></div>';
+		$raw .= '<div id="header_logo"><img src="imgs/ccblogo_square_notext.jpg"></div>';
 		$raw .= '<div id="header_title">CCB Mapping Portal</div>';
 
 		// add map image
