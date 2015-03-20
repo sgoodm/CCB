@@ -496,6 +496,18 @@
                     ]
                 },
                 {
+                    "title": "OspreyWatch Nests Live",
+                    "group": "OspreyWatch Nests Live",
+                    "type": "layer",
+                    "hashtag": "",
+                    "key": "6f59fa70-a0a0-11e3-8647-0e73339ffa50",
+                    "description": "OspreyWatch is a global community of observers focused on breeding osprey. Volunteers provide nest locations and activity reports during the breeding season.",
+                    "link": "http:\/\/www.osprey-watch.org\/",
+                    "filters": [
+
+                    ]
+                },
+                {
                     "title": "Chesapeake Bay Osprey Nests 1995-1996",
                     "group": "Chesapeake Bay Osprey Nests 1995-1996",
                     "type": "layer",
@@ -520,6 +532,18 @@
                     "hashtag": "",
                     "key": "306c03c2-7f1a-11e4-a841-0e853d047bba",
                     "key_alt": "188ae8bc-3737-11e3-8113-d53a9f80042e",
+                    "description": "The U.S. Nightjar Network is a nationwide program where volunteers monitor the abundance and distribution of declining Nightjar species. On scheduled bright moonlit nights, participants conduct 10 roadside counts along a 9-mile route. At each point, the observer counts all Nightjars seen or heard during a 6-minute period.",
+                    "link": "http:\/\/www.nightjars.org\/",
+                    "filters": [
+
+                    ]
+                },
+                {
+                    "title": "Nightjar Survey Network Routes Live",
+                    "group": "Nightjar Survey Network Routes Live",
+                    "type": "layer",
+                    "hashtag": "",
+                    "key": "df55e596-cd8b-11e4-adf3-0e9d821ea90d",
                     "description": "The U.S. Nightjar Network is a nationwide program where volunteers monitor the abundance and distribution of declining Nightjar species. On scheduled bright moonlit nights, participants conduct 10 roadside counts along a 9-mile route. At each point, the observer counts all Nightjars seen or heard during a 6-minute period.",
                     "link": "http:\/\/www.nightjars.org\/",
                     "filters": [
