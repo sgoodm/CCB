@@ -283,6 +283,16 @@ $(function() {
       }
     });
 
+    // var scale_info = [];
+    // $('.leaflet-control-scale-line').each( function () {
+
+    //   var scale = $(this).html().split(" ")[0];
+    //   var unit = $(this).html().split(" ")[1];
+    //   var size = $(this).css('width').replace("px","");
+
+    //   scale_info.push( [unit, scale, size] );
+
+    // })
 
     // var tileData = { call: "tiles", width: size.x, height: size.y, tiles: tiles_json };
     var tileData = { 
@@ -291,6 +301,7 @@ $(function() {
       height: te.diff.y * 256, 
       tiles: tiles_json, 
       legend: legend_info,
+      // scale: scale_info,
       active: active_legend_name,
       layers: layer_list,
       centerlat: map.getCenter().lat, 

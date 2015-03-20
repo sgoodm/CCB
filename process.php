@@ -132,6 +132,13 @@ switch ($_POST['call']) {
 						display:inline;
 					}
 
+					#scale {}
+
+					.scale_item {
+						border-left: 1px solid black;
+						border-right: 1px solid black;
+					}
+
 					#legend {
 						font-size: 10px;
 					}
@@ -162,6 +169,13 @@ switch ($_POST['call']) {
 		$raw .= '<div id="map"><img src="'.$TEMP_DIR.'/'.$TEMP_URL.'.jpg'.'"/></div>';
 
 
+		// $raw .= '<div id="scale">';
+		// foreach ($_POST['scale'] as $scale) {
+
+		// 	$raw .= '<div class="scale_item" style="width:'.$scale[2].'">'.$scale[1].' '.$scale[0].'</div';
+
+		// }
+		// $raw .= '</div>';
 
 
 		// add legend if it exists
