@@ -991,16 +991,19 @@ $(function() {
       h = window.location.hash.substring(1);
     }
 
+    h = [].concat(h)
+
     var hash_layer_info = {
       layer: false
     };
 
     $(".layer_toggle").each(function() {
       
-      if ($(this).data('hashtag') === h || $(this).data('title') === h || h.indexOf( $(this).data('title') ) > -1 ) {
+      if ( h.indexOf( $(this).data('hashtag') ) > -1 || h.indexOf( $(this).data('title') ) > -1 ) {
         var $layer = $(this);
 
-        if ( $(this).data('hashtag') === h && $(this).data('centerlon') && $(this).data('centerlat') && $(this).data('zoom') ) {
+        // autozoom to extents for hashtag layers (when extent data is available)
+        if ( h.indexOf( $(this).data('hashtag') ) > -1 && $(this).data('centerlon') && $(this).data('centerlat') && $(this).data('zoom') ) {
           hash_layer_info.layer = true;
           hash_layer_info.centerlat = $(this).data('centerlat');
           hash_layer_info.centerlon = $(this).data('centerlon');
