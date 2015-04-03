@@ -9,11 +9,11 @@ copy contents of main folder to the directory you want them to exist in on serve
 
 ##Dependencies##
 	
-__Libraries__
+__Libraries__  
 *Most libraries used by the CCB Mapping Portal (and editor) are stored locally in the “libs” directory
 *Some libraries (CartoDB and Google Maps) use a CDN (content delivery network) to download the library when the page loads
 
-__PHP__
+__PHP__  
 *PHP must be installed on your server
 *The “gd” PHP module must be installed on your server (details on how to install this below)
 
