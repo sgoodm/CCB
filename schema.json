@@ -27,6 +27,10 @@
               "displayProperty": "title",
               "additionalProperties": false,
               "required":["title", "group", "type", "key"],
+              "default":{
+                "description":"",
+                "link":""
+              },
               "properties": {
                 "title": {
                   "id": "title",
