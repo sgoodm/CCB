@@ -8,7 +8,8 @@
 		"load_error":"Error loading data or schema json file",
 		"not_valid":"A data entry is not valid",
 		"submit":"JSON has been successfully updated",
-		"submit_error":"Error updating JSON"
+		"submit_error":"Error updating JSON",
+		"bad_pass":"Incorrect password."
 
 	}
 
@@ -94,6 +95,11 @@
 						$('#message').html(message.submit_error);				
 					}
 		    	})
+
+			} else {
+				console.log(message.bad_pass);
+
+				$('#message').html(message.bad_pass);				
 
 			}
 		}

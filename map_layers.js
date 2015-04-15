@@ -103,7 +103,7 @@ $(function() {
 
   var mb_html = 
   mb_html += '<div id="map_buttons">';
-  mb_html += '<div id="mb_tools" class="map_button">Toggle Map Tools</div>';
+  mb_html += '<div id="mb_tools" class="map_button">Toggle Draw Tools</div>';
   mb_html += '<div id="mb_link" class="map_button">Generate Link</div>';
   mb_html += '<div id="mb_print" class="map_button">Print Report</div>';
   mb_html += '<div id="search-link" class="map_button">Search</div>';
