@@ -60,13 +60,20 @@ $(function() {
   var overlayMaps = {};
 
   map = new L.map('map', {
-    measureControl: true, // measure distance tool
+    // measureControl: true, // measure distance tool
     center: [37.27, -76.70],
     zoom: 8,
     layers: [baseMaps["Street Map (OSM)"]],
     attributionControl: false
   });
 
+  var measureControl = L.control.measure({
+    position:'topleft',
+    activeColor: '#FF0066',
+    completedColor: '#FF0000'
+  });
+  measureControl.addTo(map);
+  
   map.options.minZoom = 3;
   map_defaultzoommax = 20;
 
