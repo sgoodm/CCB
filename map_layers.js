@@ -66,13 +66,6 @@ $(function() {
     layers: [baseMaps["Street Map (OSM)"]],
     attributionControl: false
   });
-
-  var measureControl = L.control.measure({
-    position:'topleft',
-    activeColor: '#FF0066',
-    completedColor: '#FF0000'
-  });
-  measureControl.addTo(map);
   
   map.options.minZoom = 3;
   map_defaultzoommax = 20;
@@ -88,6 +81,14 @@ $(function() {
   map.on('baselayerchange',function(e){
     map._layers[_.keys(map._layers)[0]].bringToBack();
   });
+
+  // measure tool
+  // this MUST be after the baselayerchange function above
+  L.control.measure({
+    position:'topleft',
+    activeColor: '#FF0066',
+    completedColor: '#FF0000'
+  }).addTo(map);
 
   // handle map drawing tools
   drawnItems = L.featureGroup().addTo(map);
