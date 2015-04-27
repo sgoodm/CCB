@@ -323,7 +323,7 @@ $(function() {
       url: "process.php",
       data: tileData,
       type: "post",
-      async: false,
+      async: true,
       success: function (result) {
         console.log("Tiles Done");
         console.log(result);
