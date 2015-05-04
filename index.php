@@ -2,8 +2,8 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Mapping Portal - The Center for Conservation Biology</title>
-    <link rel="icon" type="image/png" href="http://www.ccbbirds.org/wp-content/uploads/2012/10/favicon.png">
+    <title></title>
+    <link rel="icon" type="image/png" href="">
 
     <link href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" rel="stylesheet" />
     <!--[if lte IE 8]><link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.ie.css" /><![endif]-->
@@ -14,45 +14,19 @@
 
     <!-- <link href="libs/leaflet.measure/leaflet.measure.css" rel="stylesheet" /> -->
     <link href="libs/leaflet-measure-master/dist/leaflet-measure.css" rel="stylesheet" />
-    
-    <link href="index.css?nocache"      media="screen, projection, print" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
+
+    <!-- <link href="index.css?nocache"      media="screen, projection, print" rel="stylesheet" type="text/css" /> -->
     <link href="maps-style.css?nocache" media="screen, projection" rel="stylesheet" type="text/css" />
-    <link href="maps-print.css?nocache" media="print"              rel="stylesheet" type="text/css" />
+    <!-- <link href="maps-print.css?nocache" media="print"              rel="stylesheet" type="text/css" /> -->
 
   </head>
 
   <body>
 
-    <div id="web-header">
-      <a href="http://www.ccbbirds.org" id="identity"><img alt="Home" src="http://www.ccbbirds.org/wp-content/uploads/2012/09/ccb-logo-vertical-shadow.png" /></a>
-      
-      <ul id="pseudo-nav">
-        <li>
-          <a href="http://www.ccbbirds.org/about-us">About Us</a>
-        </li>
-        <li>
-          <a href="http://www.ccbbirds.org/what-we-do">What We Do</a>
-        </li>
-        <li>
-          <a href="http://www.ccbbirds.org/resources">Resources</a>
-        </li>
-        <li>
-          <a href="http://www.ccbbirds.org/news-room">News Room</a>
-        </li>
-        <li>
-          <a class="highlight" href="http://www.ccbbirds.org/give-to-ccb">Give to CCB</a>
-        </li>
-      </ul>
-
-      <div id="page-help">
-        <a class="hf" href="http://www.ccbbirds.org/resources/mapping-portal-information-and-faq/" target="_blank">Help / FAQ </a>
-      </div>
-
-      <div id="page-title">
-       Mapping Portal
-      </div>
-
-    </div>
+    <?php include("nav.php"); ?>  
 
     <div id="toolbox">
       <span id="toolbox_toggle" class="fa fa-chevron-left" title="toggle toolbox display"></span>      
@@ -67,9 +41,6 @@
       <div id="legend_label"></div>
     </div>
 
-<!--     <div id="search-link">
-      Search
-    </div> -->
 
     <div id="search-box">
       <div>
@@ -86,18 +57,22 @@
 
 
     <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-35437390-1']);
-      _gaq.push(['_trackPageview']);
+    //   var _gaq = _gaq || [];
+    //   _gaq.push(['_setAccount', 'UA-35437390-1']);
+    //   _gaq.push(['_trackPageview']);
       
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+    //   (function() {
+    //     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    //     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    //     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    //   })();
     </script>
 
 
+    <script src="libs/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <!-- // <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script> -->
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
 

@@ -1,4 +1,11 @@
 {
+    "config": {
+        "user": "aiddata",
+        "title": "CCB Mapping Portal",
+        "start_lat": 37.27,
+        "start_zoom": 8,
+        "start_lon": -76.7
+    },
     "categories": [
         {
             "title": "Bald Eagle Nests",
@@ -120,7 +127,7 @@
             ]
         },
         {
-            "title": "Waterbirds",
+            "title": "Waterbirdsx",
             "layers": [
                 {
                     "title": "Waterbirds Animation (new)",

@@ -1,7 +1,6 @@
 $(function() {
 
-  var CARTO_USER = 'sgoodm';
-  
+
   // --------------------------------------------------  
   // browser check
 
@@ -24,6 +23,63 @@ $(function() {
 
   var temp_key, temp_title;
 
+  var CARTO_USER, mc, mz;
+
+  readJSON("toolbox.json", function (request, status, error){
+    // var json = request
+    if (error) {
+      console.log(status);
+      console.log(error);
+      $('#toolbox .body').append("Error Reading Data");
+      return 1;
+    }
+
+    // custom setup
+    // move all this to a json file 
+    // add title, icon, page header info (background image, link names/hrefs, etc.), report text, etc.
+
+    $('#title-link').html( ( request.config ? request.config.title : "Mapping Portal") );
+
+    if (request.config.pagename) {
+      document.title = request.config.pagename;
+    } else if (request.config.title) { 
+      document.title = request.config.title;
+    } else {
+      document.title = "Mapping Portal"
+    }
+
+    // body_css = {};
+
+    // if (request.config.background_image) {
+    //   body_css["background-image"] = "url('"+request.config.background_image+"')";
+    // }
+
+    // body_css["background-color"] = "rgb("+
+    //       (request.config.background_color_red ? request.config.background_color_red : 100) +
+    //       ","+ (request.config.background_color_blue ? request.config.background_color_blue : 100) +
+    //       ","+ (request.config.background_color_green ? request.config.background_color_green : 100) +
+    //       ")";
+    
+
+    // $(document.body).css(body_css);
+    
+    // if (request.config.logo && request.config.logo_link) {
+    //   $('#identity').attr('href', request.config.logo_link);
+    //   $('#identity img').attr('src', request.config.logo);
+    // }
+
+    // carto user account id
+    CARTO_USER = request.config.user;
+    sql = new cartodb.SQL({
+      user: CARTO_USER
+    });
+    // map center [lat, lng]
+    mc = [request.config.start_lat, request.config.start_lon];
+    // map zoom level
+    mz = request.config.start_zoom;
+
+  })
+
   active_layers = {};
   layer_list = [];
   filter_list = [];
@@ -31,9 +87,7 @@ $(function() {
   hash_change = 1;
   layer_colors = {};
   map = void 0;
-  sql = new cartodb.SQL({
-    user: CARTO_USER
-  });
+ 
   validate = {};
   zoom_limit = {};
 
@@ -61,16 +115,15 @@ $(function() {
 
   map = new L.map('map', {
     // measureControl: true, // measure distance tool
-    center: [37.27, -76.70],
-    zoom: 8,
-    layers: [baseMaps["Street Map (OSM)"]],
+    center: mc,
+    zoom: mz,
+    layers: [baseMaps["Street Map (MapQuest)"]],
     attributionControl: false
   });
   
   map.options.minZoom = 3;
-  map_defaultzoommax = 20;
+  map_defaultzoommax = 18;
 
-  // $('.leaflet-control-attribution').hide();
   L.control.attribution({position: 'topright'}).addTo(map);
 
   L.control.scale().addTo(map);
@@ -120,6 +173,8 @@ $(function() {
 
 
   $('#mb_link').on('click', function () {
+
+
     var url_search = {
                         layer: layer_list,
                         filters: filter_list,
@@ -127,6 +182,26 @@ $(function() {
                         lat: map.getCenter().lat, 
                         lng: map.getCenter().lng
                       }
+
+    if ( $('.legend_tab_active').length == 1 ) {
+      url_search.legend = $('.legend_tab_active').attr('id')
+    }
+
+    $(".active_layer").each(function() {
+      var title = $(this).data('title')
+      var sel = $(this).parent().find('.field_select')
+      if ( sel.length == 1) {
+
+        // add fields array to url_search if it does not exist
+        if (_.keys(url_search).indexOf("fields") == -1) {
+          url_search.fields = [];
+        }
+
+        url_search.fields.push(title +"_||_"+ sel.val());
+        // console.log(title+" : "+sel.val())
+
+      }
+    });
 
     var keys = _.keys(baseMaps);
     for ( var i=0, ix=keys.length; i<ix; i++ ) {
@@ -142,9 +217,9 @@ $(function() {
   })
 
   $('#mb_print').on('click', function () {
-    console.log("print")
+    // console.log("print")
 
-    var build_report = confirm("Generating your report may take a minute. \n\nPlease be sure all visible map tiles have loaded before printing. \n\nContinue?");
+    var build_report = confirm("Generating your report may take a minute. \n\nPlease be sure all visible map tiles have loaded before printing. \n\nYou may need to disable popups for this site to access the report. \n\nContinue?");
 
     if (!build_report) {
       return;
@@ -343,7 +418,7 @@ $(function() {
       }
     })
     
-    map.spin(false);
+    // map.spin(false);
 
   })
 
@@ -409,6 +484,7 @@ $(function() {
     validate.cat_html += 'data-group="'+layer.group+'"';
     validate.cat_html += 'data-type="'+layer.type+'"';
     validate.cat_html += 'data-title="'+layer.title+'"';
+    validate.cat_html += 'data-sql="' + (layer.sql == undefined ? "" : layer.sql) + '"';
 
     if (layer.centerlon && layer.centerlat && layer.zoom) {
       validate.cat_html += 'data-centerlon="'+layer.centerlon+'"';
@@ -438,6 +514,10 @@ $(function() {
 
     // validate.cat_html += '</div>';
 
+    if (layer.fields && layer.fields.length > 0) {
+      validate.fields(layer.fields);
+    }
+
     if (layer.filters && layer.filters.length > 0) {
       for (var k=0, kx=layer.filters.length; k<kx; k++) {
         var filter = layer.filters[k];
@@ -446,6 +526,23 @@ $(function() {
     }
 
     validate.cat_html += '</div>';
+  }
+
+  validate.fields = function(fields) {
+    
+    validate.cat_html += '<select class="field_select">';
+
+    for (var k=0, kx=fields.length; k<kx; k++) {
+      var field = fields[k];
+
+      if ( field != "" ) {
+        validate.cat_html += '<option class="field_item" value="' + field + '">' + field +'</option>';
+      }
+
+    }
+
+    validate.cat_html += '</select>';
+
   }
 
   validate.filter = function(filter) {
@@ -457,6 +554,7 @@ $(function() {
     // FILTER SPECIFIC VALIDATION HERE
     validate.cat_html += '<div class="filter_toggle" data-sql="'+filter.sql+'">' + filter.title +'</div>';
   }
+
 
   // build toolbox html
   readJSON("toolbox.json", function (request, status, error){
@@ -523,7 +621,7 @@ $(function() {
     $("#search_address").val("");
     $("#search_long").val("");
     $("#search_lat").val("");
-    map.setView([37.27, -76.70], 8);
+    map.setView(mc, mz);
     if (window.marker !== void 0) {
       map.removeLayer(window.marker);
     }
@@ -603,23 +701,28 @@ $(function() {
 
   // layer click
   $(".layer_toggle").click(function() {
-    if ( !$(this).hasClass("layer_animation") ){
-      toggle_layer($(this));
-    } else {
+    toggle_layer($(this));
+    // if ( !$(this).hasClass("layer_animation") ){
+    //   toggle_layer($(this));
+    // } else {
       // toggle_animation($(this));
-    }
+    //}
   });
 
-  // sub layer filter click
-  $(".filter_toggle").click(function() {
+  $(".field_select").on("change", function () {
+    toggle_field($(this))
+  })
 
-    $(this).find(".filter_sign").toggleClass("active_layer_sign");
-    if ( $(this).find(".filter_sign").hasClass("active_layer_sign") ) {
+  // sub layer filter click
+  $(".filter_toggle").click(function () {
+    var layer_name = $(this).parent().find('.layer_toggle').data('title');
+    $(this).find(".filter_sign").toggleClass("active_filter_sign");
+    if ( $(this).find(".filter_sign").hasClass("active_filter_sign") ) {
       // add to filter list
-      filter_list.push($(this).data('sql'));
+      filter_list.push(layer_name+"_||_"+$(this).data('sql'));
     } else {
       // remove from filter list
-      var filter_index = filter_list.indexOf( $(this).data('sql') );
+      var filter_index = filter_list.indexOf(layer_name+"_||_"+$(this).data('sql'));
       if (filter_index > -1) {
         filter_list.splice(filter_index, 1);
       }
@@ -632,7 +735,7 @@ $(function() {
         new_lon = $(this).prev().data('centerlon'),
         new_zoom = $(this).prev().data('zoom');
 
-    console.log( new_lat, new_lon, new_zoom)
+    // console.log( new_lat, new_lon, new_zoom)
     if ( new_lat && new_lon && new_zoom ) {
       map.setView([new_lat, new_lon], new_zoom);
     }
@@ -642,8 +745,7 @@ $(function() {
 
   $('#legend_tabs').on('click', '.legend_tab', function () {
 
-
-    $('.cartodb-legend-stack').each(function(){
+    $('.cartodb-legend-stack').each(function (){
       $(this).hide();
     });
 
@@ -675,6 +777,8 @@ $(function() {
         $('#legend_tab_'+ temp_key).click();
 
         $('#legend_label').html('Toggle Legends')
+
+        // console.log(temp_title)
       }
   });
 
@@ -682,44 +786,106 @@ $(function() {
   function open_toolbox() {
     var pan = map.getCenter();
 
-    var mdiv, tb;
     $('#toolbox_toggle').removeClass('fa-chevron-right')
     $('#toolbox_toggle').addClass('fa-chevron-left')
-    tb = $("#toolbox");
-    mdiv = $("#map");
-    tb.animate({
+
+    $("#toolbox").animate({
       left: 0
     });
-    mdiv.animate({
-      left: 250
+    $("#map").animate({
+      left: 230
     }, function () {
       map.invalidateSize();
       map.panTo(pan, {animate:true, duration:1.0});
     });
-    tb.data("collapsed", false);
+    $("#toolbox").data("collapsed", false);
   };
 
   // minimize toolbox to left of screen
   function close_toolbox() {
     var pan = map.getCenter();
 
-    var mdiv, tb;
     $('#toolbox_toggle').removeClass('fa-chevron-left')
     $('#toolbox_toggle').addClass('fa-chevron-right')
-    tb = $("#toolbox");
-    mdiv = $("#map");
-    tb.animate({
-      left: -220
+
+    $("#toolbox").animate({
+      left: -200
     });
-    mdiv.animate({
+    $("#map").animate({
       left: 30
     }, function () {
       map.invalidateSize();
       map.panTo(pan, {animate:true, duration:1.0});
     });
-    tb.data("collapsed", true);
+    $("#toolbox").data("collapsed", true);
   };
 
+ function updateJenksBins(column_name, how_many_bins, table_name, sublayer) {
+    map.spin(true)
+
+    sql.execute('select CDB_JenksBins(array_agg(' + column_name + '::numeric), ' + how_many_bins + ') from ' + table_name + ' where ' + column_name + ' is not null')
+            .done(function (data) {
+                // console.log(data.rows[0].cdb_jenksbins);
+
+                var jbins = data.rows[0].cdb_jenksbins;
+
+                // var css_old = sublayer.getCartoCSS()
+
+                var css_new = '' +
+
+                    '#'+table_name+'{ polygon-fill: #FFFFB2; polygon-opacity: 0.7; line-color: #000000; line-width: 0.5; line-opacity: 0.5; }' +
+                    '#'+table_name+' [ '+column_name+' <= '+jbins[6]+'] { polygon-fill: #B10026; }' +
+                    '#'+table_name+' [ '+column_name+' <= '+jbins[5]+'] { polygon-fill: #E31A1C; }' +
+                    '#'+table_name+' [ '+column_name+' <= '+jbins[4]+'] { polygon-fill: #FC4E2A; }' +
+                    '#'+table_name+' [ '+column_name+' <= '+jbins[3]+'] { polygon-fill: #FD8D3C; }' +
+                    '#'+table_name+' [ '+column_name+' <= '+jbins[2]+'] { polygon-fill: #FEB24C; }' +
+                    '#'+table_name+' [ '+column_name+' <= '+jbins[1]+'] { polygon-fill: #FED976; }' +
+                    '#'+table_name+' [ '+column_name+' <= '+jbins[0]+'] { polygon-fill: #FFFFB2; }' +
+
+                '';
+
+                // update carto css
+                sublayer.setCartoCSS(css_new);
+
+                // update hover tooltip
+                // sublayer.setInteractivity(‘cartodb_id, name, …’)
+
+                // update legend
+                //
+
+                // add year to map or something
+                //
+                map.spin(false);
+
+
+            })
+            .error(function (errors) {
+                // errors contains a list of errors
+                console.log("error:" + errors);
+                map.spin(false);
+            })
+
+  }
+
+  function toggle_field(el) {
+
+    var field, nbins, t, key, sublayer, tn;
+
+    field = el.val();
+    nbins = 7
+
+    $(".cartodb-tooltip").hide();
+    $(".cartodb-infowindow").hide();
+    $(".cartodb-popup").remove();
+
+    t = el.parent().find('.layer_toggle');
+    key = $(t).data('key');
+    sublayer = active_layers[key].getSubLayer(0);
+    tn = sublayer.get('layer_name');
+
+    updateJenksBins(field, nbins, tn, sublayer);
+
+  }
 
   // filter layer using toolbox (sub list) as selector
   function toggle_filter(f) {
@@ -738,18 +904,60 @@ $(function() {
 
     filter = ""
     
-    if (filter_list.length == 0) {
-      sql = "SELECT * from " + tn;
-    } else {
-      for (var i=0, ix=filter_list.length; i<ix; i++) {
-        filter += ( i == 0 ? "" : " OR ");
-        filter += filter_list[i];
+    var layer_name = t.data('title');
+    var sub_filter_list = [];
+    for (var i=0, ix=filter_list.length; i<ix; i++) {
+      if (filter_list[i].substr(0, filter_list[i].indexOf("_||_")) == layer_name) {
+        sub_filter_list.push(filter_list[i].substr(filter_list[i].indexOf("_||_")+4))
       }
-      sql = "SELECT * from " + tn + " where " + filter;
     }
-    sublayer.setSQL(sql);
+
+    var sql_string = "";
+    if (sub_filter_list.length == 0) {
+      sql_string = "SELECT * from " + tn;
+
+      if (t.data('sql') && t.data('sql') != "" ) {
+        sql_string += " WHERE " + t.data('sql')
+      }
+
+    } else {
+
+      sql_string = "SELECT * from " + tn + " WHERE "
+
+      if (t.data('sql') && t.data('sql') != "" ) {
+        sql_string += "(" + t.data('sql') + ") AND "
+      }
+
+      for (var i=0, ix=sub_filter_list.length; i<ix; i++) {
+        filter += ( i == 0 ? "" : " OR ");
+        filter += sub_filter_list[i];
+      }
+
+      sql_string += "(" + filter + ")";
+    }
+
+
+    console.log(sql_string)
+    sublayer.setSQL(sql_string);
 
   };
+
+  function layer_slider(el, state) {
+
+    // slide fields
+    var sf = $('.layer_extent, .layer_description, .layer_info, .filter_toggle, .field_select');
+
+    if (state == "up") {
+        el.find(sf).slideUp();
+
+    } else if (state == "down") {
+        el.find(sf).slideDown();
+
+    } else {
+      console.log("invalid state option in layer_slider function");
+    }
+
+  }
 
   // toggle map layer using toolbox as selector
   function toggle_layer(t, force, callback) {
@@ -762,8 +970,6 @@ $(function() {
 
     group.old = group.new;
     group.new = t.data('group');
-    // clear filter list on layer change
-    filter_list = [];
 
     // force when layer is from hashtag link data  
     force = ( force == null ? false : force);
@@ -821,19 +1027,21 @@ $(function() {
       layer_list.splice( layer_list.indexOf(t.data('title')), 1 );
       t.removeClass("active_layer");
       t.parent().find(".layer_sign").removeClass("active_layer_sign");
+      t.parent().find(".filter_sign").removeClass("active_filter_sign");
+
       // t.parent().find('.layer_content').slideUp();
-      t.parent().find('.layer_extent').slideUp();
-      t.parent().find('.layer_description').slideUp();
-      t.parent().find('.layer_info').slideUp();
-      t.parent().find('.filter_toggle').slideUp();
-      _gaq.push(['_trackEvent', 'Layers', 'Hide', $(this).data("key")]);
+      layer_slider(t.parent(), "up");
+
+      // _gaq.push(['_trackEvent', 'Layers', 'Hide', $(this).data("key")]);
     }
 
 
-    // manage previously active layer when switching layer groups
-    $(".filter_sign").removeClass("active_layer_sign");
-
     if ( !sublayer || group.new != group.old) {
+      // clear filter list on group change
+      filter_list = [];
+      // manage previously active layer when switching layer groups
+      $(".filter_sign").removeClass("active_filter_sign");
+
       $('#legend_label').empty();
       $('.legend_tab').each( function () {
         $(this).remove();
@@ -855,12 +1063,11 @@ $(function() {
         }
         active_hashtag = undefined;
         $(this).removeClass("active_layer");
+
         // t.parent().find('.layer_content').slideUp();
-        $(this).parent().find('.layer_extent').slideUp();
-        $(this).parent().find('.layer_description').slideUp();
-        $(this).parent().find('.layer_info').slideUp();
-        $(this).parent().find('.filter_toggle').slideUp();
-        _gaq.push(['_trackEvent', 'Layers', 'Hide', $(this).data("key")]);
+        layer_slider($(this).parent(), "up");
+
+        // _gaq.push(['_trackEvent', 'Layers', 'Hide', $(this).data("key")]);
       });
 
     }
@@ -927,6 +1134,10 @@ $(function() {
 
         map.spin(false);
 
+        // if layer has fields, set cartocss using current field
+        t.parent().find(".field_select").change();
+
+
         // callback is for managing filters from hashtag links only 
         if (callback) {
           callback();
@@ -938,12 +1149,12 @@ $(function() {
 
       // update toolbox for new layer
       t.addClass("active_layer");
+
       // t.parent().find('.layer_content').slideDown();
-      t.parent().find('.layer_extent').slideDown();
-      t.parent().find('.layer_description').slideDown();
-      t.parent().find('.layer_info').slideDown();
-      t.parent().find('.filter_toggle').slideDown();
-      _gaq.push(['_trackEvent', 'Layers', 'Show', t.data("key")]);
+      layer_slider(t.parent(), "down");
+
+
+      // _gaq.push(['_trackEvent', 'Layers', 'Show', t.data("key")]);
 
     }
 
@@ -1012,47 +1223,99 @@ $(function() {
 
     h = [].concat(h)
 
-    var hash_layer_info = {
-      layer: false
-    };
-
-    $(".layer_toggle").each(function() {
+    if (url_query.zoom && url_query.lat && url_query.lng) {
+      map.setView([url_query.lat, url_query.lng], url_query.zoom);
+    }
+    
+    $(".layer_toggle").each(function(index) {
       
       if ( h.indexOf( $(this).data('hashtag') ) > -1 || h.indexOf( $(this).data('title') ) > -1 ) {
-        var $layer = $(this);
+      
+        // autozoom to extents for hashtag layers (when extent data is available - single layer links only. ie: old hashtag link)
+        if ( h.length == 1 && h.indexOf( $(this).data('hashtag') ) > -1 && $(this).data('centerlon') && $(this).data('centerlat') && $(this).data('zoom') ) {
+          map.setView([$(this).data('centerlat'), $(this).data('centerlon')], $(this).data('zoom'));
 
-        // autozoom to extents for hashtag layers (when extent data is available)
-        if ( h.indexOf( $(this).data('hashtag') ) > -1 && $(this).data('centerlon') && $(this).data('centerlat') && $(this).data('zoom') ) {
-          hash_layer_info.layer = true;
-          hash_layer_info.centerlat = $(this).data('centerlat');
-          hash_layer_info.centerlon = $(this).data('centerlon');
-          hash_layer_info.zoom = $(this).data('zoom');
-        } 
+        } // else if (url_query.zoom && url_query.lat && url_query.lng) {
+        //   map.setView([url_query.lat, url_query.lng], url_query.zoom);
+        // }
+
 
         // manage layers, filters, sublayers
-        toggle_layer($layer, true, function(){
-          
-          if ( active_layers[$layer.data("key")] && url_query.filters && url_query.filters.length > 0 ) {
+        var $layer = $(this);
 
-            $layer.parent().find('.filter_toggle').each(function () {
-              if ( url_query.filters.indexOf( $(this).data('sql') ) > -1 ) {
-                $(this).click();
+        setTimeout( function() {
+          toggle_layer($layer, true, function(){
+            
+            if ( active_layers[$layer.data("key")] && url_query.filters && url_query.filters.length > 0 ) {
+
+              var layer_name =  $layer.parent().find('.layer_toggle').data('title');
+
+              $layer.parent().find('.filter_toggle').each(function () {
+                if ( url_query.filters.indexOf( layer_name+"_||_"+$(this).data('sql') ) > -1 ) {
+                  $(this).click();
+                }
+              });
+            }
+
+
+            if ( active_layers[$layer.data("key")] && url_query.fields && url_query.fields.length > 0 ) {
+
+              url_query.fields = [].concat(url_query.fields)
+              var layer_name =  $layer.parent().find('.layer_toggle').data('title');
+
+              for (var i=0, ix=url_query.fields.length; i<ix; i++) {
+                console.log(url_query.fields[i])
+                var tmp_name = url_query.fields[i].substr(0, url_query.fields[i].indexOf("_||_"));
+                var tmp_val = url_query.fields[i].substr(url_query.fields[i].indexOf("_||_") + 4);
+                console.log(tmp_name)
+                console.log(tmp_val)
+                if (layer_name == tmp_name) {
+                  $layer.parent().find('.field_select').val(tmp_val);
+                  $layer.parent().find('.field_select').change();
+                }
               }
-            });
-          }
-        });
 
-        if ( hash_layer_info.layer ) {
-          map.setView([ hash_layer_info.centerlat,  hash_layer_info.centerlon],  hash_layer_info.zoom);
-        } else if (url_query.zoom && url_query.lat && url_query.lng) {
-          map.setView([url_query.lat, url_query.lng], url_query.zoom);
-        }
+              // $layer.parent().find('.filter_toggle').each(function () {
+              //   if ( url_query.filters.indexOf( layer_name+"_||_"+$(this).data('sql') ) > -1 ) {
+              //     $(this).click();
+              //   }
+              // });
+            }
+          });
+
+          if (url_query.legend) {
+            setTimeout(function () {
+              $('.legend_tab').each(function () {
+                if ($(this).attr('id') == url_query.legend && $(this).hasClass('legend_tab_active') == false) {
+                  $(this).click()
+                }
+              })
+            }, 250); // bad fix for updating active legend from link. this is probably going to break
+          }
+
+        }, 250*index) // bad fix for overlap issue when generating legend tabs from link. this is probably going to break
+
 
       }
+
     });
 
-
   };
+
+  // function link_legend(leg_id) {
+  //   console.log("call leg")
+  //   // add active legend if exists
+  //   if ($('#'+leg_id).length == 1) {
+  //     // console.log(leg_id)
+
+  //     $('.legend_tab').each(function () {
+  //       console.log($(this).attr('id'))
+  //       $(this).removeClass("legend_tab_active");
+  //     })
+  //     // $('#'+leg_id).click()
+  //     $('#'+leg_id).addClass("legend_tab_active");
+  //   }
+  // }
 
   // check hashtag (called on page load or on hashtag change)
   function open_hashtag() {
@@ -1082,25 +1345,5 @@ $(function() {
   };
 
   // --------------------------------------------------
-  // printing
-  
-  function afterPrint() {
-    _gaq.push(['_trackEvent', 'Layers', 'Print']);
-  };
-
-  function beforePrint() {};
-
-  if (window.matchMedia) {
-    mediaQueryList = window.matchMedia('print');
-    mediaQueryList.addListener(function(mql) {
-      if (mql.matches) {
-        afterPrint();
-      } else {
-        beforePrint();
-      }
-    });
-  }
-
-  window.onafterprint = afterPrint;
 
 })
